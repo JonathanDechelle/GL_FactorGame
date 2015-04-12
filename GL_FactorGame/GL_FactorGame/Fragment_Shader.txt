@@ -3,6 +3,7 @@
 uniform int textureSelect;
 uniform sampler2D texCircuit;
 uniform sampler2D texOr;
+uniform sampler2D texMetal;
 
 in VS_OUT
 {
@@ -17,7 +18,8 @@ void main(void)
 	
 	if(textureSelect == 0) 
 		color = texture2D(texCircuit, fs_in.TexCoord.st) * fs_in.Intensity;
-	else
-		
+	else if(textureSelect == 1)
 		color = texture2D(texOr, fs_in.TexCoord.st) * fs_in.Intensity;
+	else
+		color = texture2D(texMetal, fs_in.TexCoord.st) * fs_in.Intensity;
 }
