@@ -40,24 +40,24 @@ void MouseMove(int x, int y)
 void keyUpdate()
 {
 	//Camera Position X
-	if(keyboard.IsHold('W')) camera.Position += SpeedChange * camera.center;
-	if(keyboard.IsHold('S')) camera.Position -= SpeedChange * camera.center;
-	if(keyboard.IsHold('A')) camera.Position -= normalize(cross(camera.center, camera.Up)) * SpeedChange * 2;
-	if(keyboard.IsHold('D')) camera.Position += normalize(cross(camera.center, camera.Up)) * SpeedChange * 2; 
-	
-	//Camera Position Z
-	if(keyboard.IsHold('Q')) camera.Position[1] += SpeedChange;
-	else if(keyboard.IsHold('E')) camera.Position[1] -= SpeedChange;
+	//if(keyboard.IsHold('W')) camera.Position += SpeedChange * camera.center;
+	//if(keyboard.IsHold('S')) camera.Position -= SpeedChange * camera.center;
+	//if(keyboard.IsHold('A')) camera.Position -= normalize(cross(camera.center, camera.Up)) * SpeedChange * 2;
+	//if(keyboard.IsHold('D')) camera.Position += normalize(cross(camera.center, camera.Up)) * SpeedChange * 2; 
+	//
+	////Camera Position Z
+	//if(keyboard.IsHold('Q')) camera.Position[1] += SpeedChange;
+	//else if(keyboard.IsHold('E')) camera.Position[1] -= SpeedChange;
 
-	//Camera Rotation
-	if(keyboard.IsHold('J')) camera.center[0] += SpeedChange;
-	else if(keyboard.IsHold('L')) camera.center[0] -= SpeedChange;
+	////Camera Rotation
+	//if(keyboard.IsHold('J')) camera.center[0] += SpeedChange;
+	//else if(keyboard.IsHold('L')) camera.center[0] -= SpeedChange;
 
-	if(keyboard.IsHold('I')) camera.center[1] += SpeedChange;
-	else if(keyboard.IsHold('K')) camera.center[1] -= SpeedChange;
+	//if(keyboard.IsHold('I')) camera.center[1] += SpeedChange;
+	//else if(keyboard.IsHold('K')) camera.center[1] -= SpeedChange;
 
-	if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
-	else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
+	//if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
+	//else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
 
 	//camera.Position[1] = 0.0f;
 }
@@ -113,6 +113,8 @@ void Initialize_ALL()
 
 void Set_Model()
 {
+	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
+	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
 	player.Draw(Models_factory,CurrentTime);
 }
 
@@ -122,10 +124,8 @@ void render(float CurrentTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	camera.Update();
+	player.Udpate(keyboard);
 	keyUpdate();
-
-	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
-	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
 
 	Set_Model(); 
 }

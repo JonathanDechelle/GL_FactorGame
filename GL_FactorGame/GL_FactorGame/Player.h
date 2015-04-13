@@ -17,5 +17,11 @@ public:
 	int mv_location;
 	int rendering_program;
 	vec3 Position;
+	vec3 Last_Position;
+	vec3 Next_Position;
+	vec3 Rotation;
+	float Speed;
+	float Friction;
+	float Distance;
 };
 
