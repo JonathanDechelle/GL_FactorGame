@@ -9,8 +9,7 @@
 #include "Load_Image.h"
 #include "Keyboard.h"
 #include "Camera.h"
-#include "objloader.h"
-
+#include "Model_Factory.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
@@ -27,12 +26,7 @@ unsigned int* Map;
 DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
-
-
-
-TabVertex Torus_Model;
-TabVertex Ball_Model;
-TabVertex Saw_Model;
+Model_Factory Models_factory = Model_Factory();
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -68,32 +62,17 @@ void keyUpdate()
 
 void Set_VertexArray()
 {
-	vector<vec3> vertices;
-	vector<vec2> uvs;
-	vector<vec3> normals; // Won't be used at the moment.
-	objloader::LoadObj("Torus.obj", vertices, uvs, normals);
-	Torus_Model = TabVertex(vertices,uvs);
-	objloader::LoadObj("Ball.obj", vertices, uvs, normals);
-	Ball_Model = TabVertex(vertices,uvs);
-	objloader::LoadObj("Saw.obj",vertices,uvs,normals);
-	Saw_Model = TabVertex(vertices,uvs);
-
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 
-		Torus_Model.GetArraySize(),
-		Torus_Model.ArrayPoints, 
-		GL_STATIC_DRAW);
 
-	glBufferData(GL_ARRAY_BUFFER, 
-		Ball_Model.GetArraySize(),
-		Ball_Model.ArrayPoints, 
-		GL_STATIC_DRAW);
-
-	glBufferData(GL_ARRAY_BUFFER, 
-		Saw_Model.GetArraySize(),
-		Saw_Model.ArrayPoints, 
-		GL_STATIC_DRAW);
+	Models_factory.Load_Models();
+	for (int i =0; i < Models_factory.NbModels; i++)
+	{
+		glBufferData(GL_ARRAY_BUFFER, 
+			Models_factory.Models[i].GetArraySize(),
+			Models_factory.Models[i].ArrayPoints, 
+			GL_STATIC_DRAW);
+	}
 
 	glEnableVertexAttribArray(0); // Position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,  sizeof(vertex), (void *)offsetof(vertex, x));
@@ -112,15 +91,16 @@ void Initialize_ALL()
 	
 
 	glGenTextures(3, textures);
-	Load_Image::generate_texture("Circuit.jpg",textures, 0);
-	Load_Image::generate_texture("Or.jpg",textures, 1);
-	Load_Image::generate_texture("Metal.jpg",textures, 2);
-	Set_VertexArray();																					//initialize DataVertex
+	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
+	Load_Image::generate_texture("Or.jpg",textures, Load_Image::Type_Image::Or);
+	Load_Image::generate_texture("Metal.jpg",textures, Load_Image::Type_Image::Metal);
+
+	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(rendering_program);
-	Load_Image::set_UniformTexture("Circuit.jpg", 0, rendering_program);
-	Load_Image::set_UniformTexture("Or.jpg",1, rendering_program);
-	Load_Image::set_UniformTexture("Metal.jpg",2, rendering_program);
+	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit, rendering_program);
+	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or, rendering_program);
+	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, rendering_program);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
@@ -133,25 +113,19 @@ void Set_Model()
 		rotate(CurrentTime * 50, 0.0f, 1.0f, 0.0f) *
 		rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
 
-	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
-	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 0);
-	glDrawArrays( GL_TRIANGLES, 0, Torus_Model.NbVertex);	
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
 
 	mv_matrix = translate(0.0f,0.0f,-15.0f) *
 	rotate(CurrentTime * 50, 1.0f, 0.0f, 0.0f) *
 	rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
-
-	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
-	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 1);
-	glDrawArrays( GL_TRIANGLES, Torus_Model.NbVertex, Ball_Model.NbVertex - Torus_Model.NbVertex);	
+	
+	Models_factory.Draw_Models(Models_factory.ModelType::Ball,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
 
 	mv_matrix = translate(7.0f,0.0f,-15.0f) *
 		rotate(90.0f, 1.0f, 0.0f, 0.0f) * 
 		rotate(CurrentTime * 250, 0.0f, 1.0f, 0.0f);
 
-	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
-	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 2);
-	glDrawArrays( GL_TRIANGLES, Ball_Model.NbVertex , Saw_Model.NbVertex - Ball_Model.NbVertex);
+	Models_factory.Draw_Models(Models_factory.ModelType::Saw,mv_matrix,mv_location,Load_Image::Type_Image::Metal,rendering_program);
 }
 
 void render(float CurrentTime) 
