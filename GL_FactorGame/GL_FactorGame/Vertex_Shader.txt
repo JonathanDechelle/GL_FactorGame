@@ -1,0 +1,23 @@
+#version 430 core 
+
+in vec4 position;
+layout (location = 1) in vec2 TextCoord;
+
+uniform mat4 mv_matrix;
+uniform mat4 proj_matrix;
+uniform mat4 lookAtMatrix_matrix;
+
+out VS_OUT
+{
+	vec2 TexCoord;
+	float Intensity;
+}vs_out;
+
+
+void main(void) 
+{ 
+	//gl_Position = proj_matrix * mv_matrix * position;
+	gl_Position = proj_matrix * (lookAtMatrix_matrix * (mv_matrix *  position));
+	vs_out.Intensity = 1;
+	vs_out.TexCoord = TextCoord;
+}
