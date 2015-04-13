@@ -10,6 +10,7 @@
 #include "Keyboard.h"
 #include "Camera.h"
 #include "Model_Factory.h"
+#include "Player.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
@@ -27,6 +28,7 @@ DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
+Player player;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -105,27 +107,13 @@ void Initialize_ALL()
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
 	glutPassiveMotionFunc(MouseMove);	
+
+	player = Player(mv_location,rendering_program);
 }
 
 void Set_Model()
 {
-	mv_matrix = translate(0.0f,0.0f,-15.0f) *
-		rotate(CurrentTime * 50, 0.0f, 1.0f, 0.0f) *
-		rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-
-	mv_matrix = translate(0.0f,0.0f,-15.0f) *
-	rotate(CurrentTime * 50, 1.0f, 0.0f, 0.0f) *
-	rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
-	
-	Models_factory.Draw_Models(Models_factory.ModelType::Ball,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
-
-	mv_matrix = translate(7.0f,0.0f,-15.0f) *
-		rotate(90.0f, 1.0f, 0.0f, 0.0f) * 
-		rotate(CurrentTime * 250, 0.0f, 1.0f, 0.0f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Saw,mv_matrix,mv_location,Load_Image::Type_Image::Metal,rendering_program);
+	player.Draw(Models_factory,CurrentTime);
 }
 
 void render(float CurrentTime) 
