@@ -30,8 +30,9 @@ Camera camera = Camera();
 
 
 
-TabVertex Torus_model;
+TabVertex Torus_Model;
 TabVertex Ball_Model;
+TabVertex Saw_Model;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -71,21 +72,28 @@ void Set_VertexArray()
 	vector<vec2> uvs;
 	vector<vec3> normals; // Won't be used at the moment.
 	objloader::LoadObj("Torus.obj", vertices, uvs, normals);
-	Torus_model = TabVertex(vertices,uvs);
+	Torus_Model = TabVertex(vertices,uvs);
 	objloader::LoadObj("Ball.obj", vertices, uvs, normals);
 	Ball_Model = TabVertex(vertices,uvs);
+	objloader::LoadObj("Saw.obj",vertices,uvs,normals);
+	/*Saw_Model = TabVertex(vertices,uvs);*/
 
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 	glBufferData(GL_ARRAY_BUFFER, 
-		Torus_model.GetArraySize(),
-		Torus_model.ArrayPoints, 
+		Torus_Model.GetArraySize(),
+		Torus_Model.ArrayPoints, 
 		GL_STATIC_DRAW);
 
 	glBufferData(GL_ARRAY_BUFFER, 
 		Ball_Model.GetArraySize(),
 		Ball_Model.ArrayPoints, 
 		GL_STATIC_DRAW);
+
+	/*glBufferData(GL_ARRAY_BUFFER, 
+		Saw_Model.GetArraySize(),
+		Saw_Model.ArrayPoints, 
+		GL_STATIC_DRAW);*/
 
 	glEnableVertexAttribArray(0); // Position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,  sizeof(vertex), (void *)offsetof(vertex, x));
@@ -126,7 +134,7 @@ void Set_Model()
 
 	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
 	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 0);
-	glDrawArrays( GL_TRIANGLES, 0, Torus_model.NbVertex);	
+	glDrawArrays( GL_TRIANGLES, 0, Torus_Model.NbVertex);	
 
 	mv_matrix = translate(0.0f,0.0f,-15.0f) *
 		rotate(CurrentTime * 50, 1.0f, 0.0f, 0.0f) *
@@ -134,7 +142,7 @@ void Set_Model()
 
 	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
 	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 1);
-	glDrawArrays( GL_TRIANGLES, Torus_model.NbVertex,Ball_Model.NbVertex );	
+	glDrawArrays( GL_TRIANGLES, Torus_Model.NbVertex,Ball_Model.NbVertex );	
 }
 
 void render(float CurrentTime) 
