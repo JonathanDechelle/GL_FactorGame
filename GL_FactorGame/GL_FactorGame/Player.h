@@ -23,5 +23,6 @@ public:
 	float Speed;
 	float Friction;
 	float Distance;
+	float BaseFactor;
 };
 

@@ -24,6 +24,8 @@ Player::Player(int mv_location, int rendering_program)
 	Next_Position[0] = 0;
 	Next_Position[1] = 0;
 	Next_Position[2] = 0;
+
+	BaseFactor = 10000;
 }
 
 void Player::Udpate(Keyboard keyboard)
@@ -42,19 +44,54 @@ void Player::Udpate(Keyboard keyboard)
 		Next_Position[0] = Distance;
 
 	Position += Next_Position;
-	Rotation = -(Position - Next_Position) * (Friction * 10000);
+	Rotation = -(Position - Next_Position) * (Friction * BaseFactor);
 }
 
 void Player::Draw(Model_Factory Models_factory, float CurrentTime)
 {
-	//mv_matrix = translate(Position[0],Position[1],Position[2]) *
-	//	rotate(0.0f,0.0f,0.0f,0.0f) *
-	//	rotate(0.0f,0.0f,0.0f,0.0f);
+	//TORUS EFFECT (5 torus same rotation only angle start is different)
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
+		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		scale(0.85f,0.85f,0.85f);
 
-	//Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
 
 	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate(Rotation[0] * 10000,0.0f,0.0f,1.0f) *
+		rotate(45.0f, 0.0f, 0.0f, 1.0f) * 
+		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
+		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		scale(0.85f,0.85f,0.85f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
+
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate(90.0f, 0.0f, 0.0f, 1.0f) * 
+		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
+		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		scale(0.85f,0.85f,0.85f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
+
+
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate(135.0f, 0.0f, 0.0f, 1.0f) * 
+		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
+		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		scale(0.85f,0.85f,0.85f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
+
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate(180.0f, 0.0f, 0.0f, 1.0f) * 
+		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
+		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		scale(0.85f,0.85f,0.85f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
+
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
 		rotate(0.0f,0.0f,0.0f,0.0f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Ball,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
