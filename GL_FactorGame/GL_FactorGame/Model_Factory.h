@@ -23,5 +23,6 @@ public:
 
 	void Load_Models();
 	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program);
+	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program, float Percent);
 };
 

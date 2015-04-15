@@ -67,8 +67,12 @@ bool Keyboard::IsPressed(unsigned char key)
 	{
 		if(!m_OldKeyActive[i] && m_KeyActive[i])
 		{
-			m_OldKeyActive[i] = true;
-			return true;
+			if(Index == i)
+			{
+				m_OldKeyActive[i] = true;
+				return true;
+			}
+
 		}
 	}
 	return false;

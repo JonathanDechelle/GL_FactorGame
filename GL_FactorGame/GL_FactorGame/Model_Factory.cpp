@@ -40,3 +40,14 @@ void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location,
 	else
 		glDrawArrays( GL_TRIANGLES, 0, Models[0].NbVertex);	
 }
+
+void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture, int rendering_program, float Percent)
+{
+	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
+	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), Texture);
+
+	if((int)Type != 0)
+		glDrawArrays( GL_TRIANGLES, Models[Type - 1].NbVertex, (Models[Type].NbVertex - Models[Type - 1].NbVertex) * Percent);	
+	else
+		glDrawArrays( GL_TRIANGLES, 0, Models[0].NbVertex);	
+}

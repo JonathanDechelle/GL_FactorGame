@@ -17,12 +17,14 @@ public:
 	int mv_location;
 	int rendering_program;
 	vec3 Position;
-	vec3 Last_Position;
 	vec3 Next_Position;
 	vec3 Rotation;
+	vec3 Distance;
+	vec3 BasePosition;
 	float Speed;
 	float Friction;
-	float Distance;
 	float BaseFactor;
+	float Falling;
+	float Fake_Floor; //will change in futur
 };
 
