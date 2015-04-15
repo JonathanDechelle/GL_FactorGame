@@ -15,7 +15,9 @@ public:
 	static enum Type_Image{
 		Circuit,
 		Or,
-		Metal
+		Metal,
+		GreenEye,
+		RedEye
 	};
 };
 

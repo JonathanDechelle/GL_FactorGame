@@ -13,15 +13,18 @@ public:
 	{
 		Torus,
 		Ball,
-		Saw
+		Saw,
+		HalfBall
 	};
 	TabVertex Torus_Model;
 	TabVertex Ball_Model;
 	TabVertex Saw_Model;
-	TabVertex Models[3];
+	TabVertex Half_Ball_Model;
+	TabVertex Models[4];
 	int NbModels;
 
 	void Load_Models();
 	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program);
+	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program, float Percent);
 };
 

@@ -10,13 +10,14 @@
 #include "Keyboard.h"
 #include "Camera.h"
 #include "Model_Factory.h"
+#include "Player.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
 float SpeedChange = 0.001f;
 GLuint rendering_program;
 GLuint vertex_array_object,buffer;
-GLuint textures[4];
+GLuint textures[6];
 GLint mv_location, proj_location, lookAtMatrix_Location;
 mat4 mv_matrix, proj_matrix;
 vec2 WindowSize(800,600);
@@ -27,6 +28,7 @@ DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
+Player player;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -38,24 +40,24 @@ void MouseMove(int x, int y)
 void keyUpdate()
 {
 	//Camera Position X
-	if(keyboard.IsHold('W')) camera.Position += SpeedChange * camera.center;
-	if(keyboard.IsHold('S')) camera.Position -= SpeedChange * camera.center;
-	if(keyboard.IsHold('A')) camera.Position -= normalize(cross(camera.center, camera.Up)) * SpeedChange * 2;
-	if(keyboard.IsHold('D')) camera.Position += normalize(cross(camera.center, camera.Up)) * SpeedChange * 2; 
-	
-	//Camera Position Z
-	if(keyboard.IsHold('Q')) camera.Position[1] += SpeedChange;
-	else if(keyboard.IsHold('E')) camera.Position[1] -= SpeedChange;
+	//if(keyboard.IsHold('W')) camera.Position += SpeedChange * camera.center;
+	//if(keyboard.IsHold('S')) camera.Position -= SpeedChange * camera.center;
+	//if(keyboard.IsHold('A')) camera.Position -= normalize(cross(camera.center, camera.Up)) * SpeedChange * 2;
+	//if(keyboard.IsHold('D')) camera.Position += normalize(cross(camera.center, camera.Up)) * SpeedChange * 2; 
+	//
+	////Camera Position Z
+	//if(keyboard.IsHold('Q')) camera.Position[1] += SpeedChange;
+	//else if(keyboard.IsHold('E')) camera.Position[1] -= SpeedChange;
 
-	//Camera Rotation
-	if(keyboard.IsHold('J')) camera.center[0] += SpeedChange;
-	else if(keyboard.IsHold('L')) camera.center[0] -= SpeedChange;
+	////Camera Rotation
+	//if(keyboard.IsHold('J')) camera.center[0] += SpeedChange;
+	//else if(keyboard.IsHold('L')) camera.center[0] -= SpeedChange;
 
-	if(keyboard.IsHold('I')) camera.center[1] += SpeedChange;
-	else if(keyboard.IsHold('K')) camera.center[1] -= SpeedChange;
+	//if(keyboard.IsHold('I')) camera.center[1] += SpeedChange;
+	//else if(keyboard.IsHold('K')) camera.center[1] -= SpeedChange;
 
-	if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
-	else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
+	//if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
+	//else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
 
 	//camera.Position[1] = 0.0f;
 }
@@ -90,42 +92,33 @@ void Initialize_ALL()
 	lookAtMatrix_Location = glGetUniformLocation(rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
 	
 
-	glGenTextures(3, textures);
+	glGenTextures(5, textures);
 	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
 	Load_Image::generate_texture("Or.jpg",textures, Load_Image::Type_Image::Or);
 	Load_Image::generate_texture("Metal.jpg",textures, Load_Image::Type_Image::Metal);
-
+	Load_Image::generate_texture("GreenEye.jpg",textures, Load_Image::Type_Image::GreenEye);
+	Load_Image::generate_texture("RedEye.jpg",textures, Load_Image::Type_Image::RedEye);
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(rendering_program);
 	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit, rendering_program);
 	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or, rendering_program);
 	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, rendering_program);
+	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye,rendering_program);
+	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye,rendering_program);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
 	glutPassiveMotionFunc(MouseMove);	
+
+	player = Player(mv_location,rendering_program);
 }
 
 void Set_Model()
 {
-	mv_matrix = translate(0.0f,0.0f,-15.0f) *
-		rotate(CurrentTime * 50, 0.0f, 1.0f, 0.0f) *
-		rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-
-	mv_matrix = translate(0.0f,0.0f,-15.0f) *
-	rotate(CurrentTime * 50, 1.0f, 0.0f, 0.0f) *
-	rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
-	
-	Models_factory.Draw_Models(Models_factory.ModelType::Ball,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
-
-	mv_matrix = translate(7.0f,0.0f,-15.0f) *
-		rotate(90.0f, 1.0f, 0.0f, 0.0f) * 
-		rotate(CurrentTime * 250, 0.0f, 1.0f, 0.0f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Saw,mv_matrix,mv_location,Load_Image::Type_Image::Metal,rendering_program);
+	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
+	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
+	player.Draw(Models_factory,CurrentTime);
 }
 
 void render(float CurrentTime) 
@@ -134,10 +127,8 @@ void render(float CurrentTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	camera.Update();
+	player.Udpate(keyboard);
 	keyUpdate();
-
-	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
-	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
 
 	Set_Model(); 
 }
