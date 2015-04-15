@@ -10,7 +10,7 @@ public:
 	Player(void);
 	~Player(void);
 	Player(int mv_location, int rendering_program);
-	void Udpate(Keyboard keyboard);
+	void Udpate(Keyboard keyboard,float GameSpeed);
 	void Draw(Model_Factory Models_factory,float CurrentTime);
 	void Jump();
 	void ApplyGravity(float LimiteY, float gravity);

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
 #include "Shader_Compiler.h"
@@ -11,6 +12,7 @@
 #include "Camera.h"
 #include "Model_Factory.h"
 #include "Player.h"
+#include "Map_Creator.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
@@ -21,14 +23,15 @@ GLuint textures[10];
 GLint mv_location, proj_location, lookAtMatrix_Location;
 mat4 mv_matrix, proj_matrix;
 vec2 WindowSize(800,600);
-unsigned int* Map;
 
 
 DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
+Map_Creator Map;
 Player player;
+float GameSpeed = 100;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -59,7 +62,7 @@ void keyUpdate()
 	//if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
 	//else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
 
-	//camera.Position[1] = 0.0f;
+
 }
 
 void Set_VertexArray()
@@ -118,14 +121,14 @@ void Initialize_ALL()
 	glutPassiveMotionFunc(MouseMove);	
 
 	player = Player(mv_location,rendering_program);
-	//Load_Image::generate_Map("TrueMap2.png",Map);
+	Map = Map_Creator(mv_location,rendering_program);
+	Map.Load("Map1.png");
 }
 
-void Set_Model()
+void Set_Uniform()
 {
 	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
 	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
-	player.Draw(Models_factory,CurrentTime);
 }
 
 void render(float CurrentTime) 
@@ -134,10 +137,13 @@ void render(float CurrentTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	camera.Update();
-	player.Udpate(keyboard);
+	player.Udpate(keyboard,GameSpeed);
 	keyUpdate();
 
-	Set_Model(); 
+	Set_Uniform(); 
+
+	Map.UpdateAndDraw(Models_factory,GameSpeed);
+	player.Draw(Models_factory,CurrentTime);
 }
 
 void display() 

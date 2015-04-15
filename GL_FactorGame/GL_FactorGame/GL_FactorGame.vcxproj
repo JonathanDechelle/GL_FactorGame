@@ -74,6 +74,7 @@
     <ClInclude Include="Data.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Load_Image.h" />
+    <ClInclude Include="Map_Creator.h" />
     <ClInclude Include="Model_Factory.h" />
     <ClInclude Include="objloader.h" />
     <ClInclude Include="Player.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Load_Image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map_Creator.cpp" />
     <ClCompile Include="Model_Factory.cpp" />
     <ClCompile Include="objloader.cpp" />
     <ClCompile Include="Player.cpp" />

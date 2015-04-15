@@ -24,6 +24,4 @@ class DATA
 public:
 	DATA(void);
 	~DATA(void);
-	TabVertex SimpleCube;
-	TabVertex Model;
 };
