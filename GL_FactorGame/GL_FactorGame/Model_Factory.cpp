@@ -22,12 +22,14 @@ void Model_Factory::Load_Models()
 	Ball_Model = TabVertex(vertices,uvs);
 	objloader::LoadObj("Saw.obj",vertices,uvs,normals); 	
 	Saw_Model = TabVertex(vertices,uvs);
-
+	objloader::LoadObj("Half_Ball.obj",vertices,uvs,normals); 	
+	Half_Ball_Model = TabVertex(vertices,uvs);
 
 	Models[Torus] = Torus_Model;
 	Models[Ball] = Ball_Model;
 	Models[Saw] = Saw_Model;
-	NbModels = 3;
+	Models[HalfBall] = Half_Ball_Model;
+	NbModels = 4;
 }
 
 void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture, int rendering_program)

@@ -125,6 +125,13 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime)
 		rotate( 90.0f,1.0f,0.0f,0.0f) *
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
 
-	Models_factory.Draw_Models(Models_factory.ModelType::Ball,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
+	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
+
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
+		rotate( -90.0f,1.0f,0.0f,0.0f) *
+		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
 
 }
