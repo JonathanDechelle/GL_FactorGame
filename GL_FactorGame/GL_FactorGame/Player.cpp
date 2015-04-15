@@ -32,6 +32,7 @@ Player::Player(int mv_location, int rendering_program)
 	Fake_Floor = 0;
 	Falling = 0;
 	BasePosition = Position;
+	gravity = 0.000015f;
 }
 
 void Player::Udpate(Keyboard keyboard)
@@ -44,27 +45,23 @@ void Player::Udpate(Keyboard keyboard)
 	Distance[0] = abs(Next_Position[0]);
 	Distance[2] = abs(Next_Position[2]);
 	
-	if(Distance[0] > 0) Distance[0] -= Friction;
-	else Distance[0] = 0;
-	if(Distance[2] > 0) Distance[2] -= Friction;
-	else Distance[2] = 0;
+	if(Distance[0] > 0)		Distance[0] -= Friction;
+	else					Distance[0] = 0;
 
-	if(Next_Position[0] < 0) 
-		Next_Position[0] = Distance[0] * -1;
-	else					
-		Next_Position[0] = Distance[0];
+	if(Distance[2] > 0)		Distance[2] -= Friction;
+	else					Distance[2] = 0;
 
-	if(Next_Position[2] < 0) 
-		Next_Position[2] = Distance[2] * -1;
-	else					
-		Next_Position[2] = Distance[2];
+	if(Next_Position[0] < 0) 	Next_Position[0] = Distance[0] * -1;
+	else						Next_Position[0] = Distance[0];
+
+	if(Next_Position[2] < 0) 	Next_Position[2] = Distance[2] * -1;
+	else						Next_Position[2] = Distance[2];
 
 	Position += Next_Position;
-	Rotation = -(Position - Next_Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
+	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 
 	if(Position[1] > Fake_Floor) 
 	{
-		float gravity = 0.000015f;
 		Falling += gravity;
 		Position[1] -= Falling;
 	}
@@ -125,13 +122,13 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime)
 		rotate( 90.0f,1.0f,0.0f,0.0f) *
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
 
-	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
+	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::GreenEye,rendering_program);
 
 	mv_matrix = translate(Position[0],Position[1],Position[2]) *
 		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
 		rotate( -90.0f,1.0f,0.0f,0.0f) *
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
 
-	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
+	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::RedEye,rendering_program);
 
 }

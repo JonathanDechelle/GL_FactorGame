@@ -24,6 +24,9 @@ public:
 	float Speed;
 	float Friction;
 	float BaseFactor;
+
+	//Gravity Section
+	float gravity;
 	float Falling;
 	float Fake_Floor; //will change in futur
 };

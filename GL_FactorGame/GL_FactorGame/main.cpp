@@ -17,7 +17,7 @@ float Speed = 0.0005f;
 float SpeedChange = 0.001f;
 GLuint rendering_program;
 GLuint vertex_array_object,buffer;
-GLuint textures[4];
+GLuint textures[6];
 GLint mv_location, proj_location, lookAtMatrix_Location;
 mat4 mv_matrix, proj_matrix;
 vec2 WindowSize(800,600);
@@ -92,17 +92,20 @@ void Initialize_ALL()
 	lookAtMatrix_Location = glGetUniformLocation(rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
 	
 
-	glGenTextures(3, textures);
+	glGenTextures(5, textures);
 	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
 	Load_Image::generate_texture("Or.jpg",textures, Load_Image::Type_Image::Or);
 	Load_Image::generate_texture("Metal.jpg",textures, Load_Image::Type_Image::Metal);
-
+	Load_Image::generate_texture("GreenEye.jpg",textures, Load_Image::Type_Image::GreenEye);
+	Load_Image::generate_texture("RedEye.jpg",textures, Load_Image::Type_Image::RedEye);
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(rendering_program);
 	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit, rendering_program);
 	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or, rendering_program);
 	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, rendering_program);
+	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye,rendering_program);
+	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye,rendering_program);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
