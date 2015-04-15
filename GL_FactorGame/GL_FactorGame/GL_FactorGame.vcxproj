@@ -74,6 +74,7 @@
     <ClInclude Include="Data.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Load_Image.h" />
+    <ClInclude Include="Model_Factory.h" />
     <ClInclude Include="objloader.h" />
     <ClInclude Include="Shader_Compiler.h" />
     <ClInclude Include="Shader_Stream.h" />
@@ -100,6 +101,7 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Load_Image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model_Factory.cpp" />
     <ClCompile Include="objloader.cpp" />
     <ClCompile Include="Shader_Compiler.cpp" />
     <ClCompile Include="Shader_Stream.cpp" />
