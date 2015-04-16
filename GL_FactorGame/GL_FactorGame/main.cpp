@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
 #include "Shader_Compiler.h"
@@ -11,6 +12,7 @@
 #include "Camera.h"
 #include "Model_Factory.h"
 #include "Player.h"
+#include "Map_Creator.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
@@ -21,13 +23,13 @@ GLuint textures[10];
 GLint mv_location, proj_location, lookAtMatrix_Location;
 mat4 mv_matrix, proj_matrix;
 vec2 WindowSize(800,600);
-unsigned int* Map;
 
 
 DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
+Map_Creator Map;
 Player player;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
@@ -118,34 +120,8 @@ void Initialize_ALL()
 	glutPassiveMotionFunc(MouseMove);	
 
 	player = Player(mv_location,rendering_program);
-	Load_Image::generate_Map("Map1.png",Map);
-}
-
-void Set_Map(int i,int j,int Index)
-{
-	mv_matrix = translate((float)j * 4.50f,(float)-i * 4.50f, -20.0f) *
-		scale(2.0f,2.0f,2.0f);
-
-	if(Map[Index] != 0)
-		glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
-
-	switch(Map[Index])
-	{
-	case 0:
-		/* Nothing In map*/ 
-		break;
-	case 1:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 1);
-		break;
-	case 2:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 2);
-		break;
-	case 3:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 0);
-		break;
-	}
-
-	if(Map[Index] != 0) Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
+	Map = Map_Creator(mv_location,rendering_program);
+	Map.Load("Map1.png");
 }
 
 void Set_Uniform()
@@ -162,19 +138,10 @@ void render(float CurrentTime)
 	camera.Update();
 	player.Udpate(keyboard);
 	keyUpdate();
-	
+
 	Set_Uniform(); 
 
-	int Index = 0;
-	for(int i = 0; i < 20; i++)
-	{
-		for(int j = 0; j < 20; j++)
-		{
-			Index+= 3;
-			Set_Map(i,j,Index);
-		}
-	}
-	
+	Map.UpdateAndDraw(Models_factory);
 	player.Draw(Models_factory,CurrentTime);
 }
 
