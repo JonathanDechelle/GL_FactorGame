@@ -14,13 +14,15 @@ public:
 		Torus,
 		Ball,
 		Saw,
-		HalfBall
+		HalfBall,
+		Cube
 	};
 	TabVertex Torus_Model;
 	TabVertex Ball_Model;
 	TabVertex Saw_Model;
 	TabVertex Half_Ball_Model;
-	TabVertex Models[4];
+	TabVertex Cube_Model;
+	TabVertex Models[5];
 	int NbModels;
 
 	void Load_Models();

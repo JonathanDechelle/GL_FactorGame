@@ -37,72 +37,7 @@ int TabVertex::GetArraySize()
 
 DATA::DATA(void)
 {
-	
-	vertex CubePositions[]=
-	{
-		// FRONT
-		vertex(-0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		vertex(-0.25f, -0.25f, -0.25f, 0.0f   , 1.0f),
-		vertex( 0.25f, -0.25f, -0.25f, 1.0f   , 1.0f),
 
-		vertex( 0.25f, -0.25f, -0.25f, 1.0f   , 1.0f),
-		vertex( 0.25f,  0.25f, -0.25f, 1.0f   , 0.0f),
-		vertex(-0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		/////
-
-
-		//BACK
-		vertex(-0.25f,  0.25f, 0.25f, 0.0f   , 0.0f),
-		vertex(-0.25f, -0.25f, 0.25f, 0.0f   , 1.0f),
-		vertex( 0.25f, -0.25f, 0.25f, 1.0f   , 1.0f),
-
-		vertex( 0.25f, -0.25f, 0.25f, 1.0f   , 1.0f),
-		vertex( 0.25f,  0.25f, 0.25f, 1.0f   , 0.0f),
-		vertex(-0.25f,  0.25f, 0.25f, 0.0f   , 0.0f),
-		////
-
-		//TOP
-		vertex(-0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		vertex( 0.25f,  0.25f, -0.25f, 0.0f   , 1.0f),
-		vertex( 0.25f,  0.25f,  0.25f, 1.0f   , 1.0f),
-
-		vertex( 0.25f,  0.25f,  0.25f, 1.0f   , 1.0f),
-		vertex(-0.25f,  0.25f,  0.25f, 1.0f   , 0.0f),
-		vertex(-0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		//
-
-		//BOTTOM
-		vertex(-0.25f, -0.25f, -0.25f, 0.0f   , 0.0f),
-		vertex( 0.25f, -0.25f, -0.25f, 0.0f   , 1.0f),
-		vertex( 0.25f, -0.25f,  0.25f, 1.0f   , 1.0f),
-
-		vertex( 0.25f, -0.25f,  0.25f, 1.0f   , 1.0f),
-		vertex(-0.25f, -0.25f,  0.25f, 1.0f   , 0.0f),
-		vertex(-0.25f, -0.25f, -0.25f, 0.0f   , 0.0f),
-		//
-
-		//LEFT SIDE
-		vertex( 0.25f, -0.25f, -0.25f, 0.0f   , 1.0f),
-		vertex( 0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		vertex( 0.25f, -0.25f,  0.25f, 1.0f   , 1.0f),
-
-		vertex( 0.25f,  0.25f,  0.25f, 1.0f   , 0.0f),
-		vertex( 0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		vertex( 0.25f, -0.25f,  0.25f, 1.0f   , 1.0f),
-		////
-
-		//RIGHT SIDE
-		vertex(-0.25f, -0.25f, -0.25f, 0.0f   , 1.0f),
-		vertex(-0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		vertex(-0.25f, -0.25f,  0.25f, 1.0f   , 1.0f),
-
-		vertex(-0.25f,  0.25f,  0.25f, 1.0f   , 0.0f),
-		vertex(-0.25f,  0.25f, -0.25f, 0.0f   , 0.0f),
-		vertex(-0.25f, -0.25f,  0.25f, 1.0f   , 1.0f),
-
-	};
-
-	 SimpleCube = TabVertex(CubePositions, 36);
 }
 
 

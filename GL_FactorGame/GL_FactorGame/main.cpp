@@ -118,14 +118,40 @@ void Initialize_ALL()
 	glutPassiveMotionFunc(MouseMove);	
 
 	player = Player(mv_location,rendering_program);
-	//Load_Image::generate_Map("TrueMap2.png",Map);
+	Load_Image::generate_Map("Map1.png",Map);
 }
 
-void Set_Model()
+void Set_Map(int i,int j,int Index)
+{
+	mv_matrix = translate((float)j * 4.50f,(float)-i * 4.50f, -20.0f) *
+		scale(2.0f,2.0f,2.0f);
+
+	if(Map[Index] != 0)
+		glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
+
+	switch(Map[Index])
+	{
+	case 0:
+		/* Nothing In map*/ 
+		break;
+	case 1:
+		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 1);
+		break;
+	case 2:
+		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 2);
+		break;
+	case 3:
+		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 0);
+		break;
+	}
+
+	if(Map[Index] != 0) Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
+}
+
+void Set_Uniform()
 {
 	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
 	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
-	player.Draw(Models_factory,CurrentTime);
 }
 
 void render(float CurrentTime) 
@@ -136,8 +162,20 @@ void render(float CurrentTime)
 	camera.Update();
 	player.Udpate(keyboard);
 	keyUpdate();
+	
+	Set_Uniform(); 
 
-	Set_Model(); 
+	int Index = 0;
+	for(int i = 0; i < 20; i++)
+	{
+		for(int j = 0; j < 20; j++)
+		{
+			Index+= 3;
+			Set_Map(i,j,Index);
+		}
+	}
+	
+	player.Draw(Models_factory,CurrentTime);
 }
 
 void display() 
