@@ -17,7 +17,10 @@ public:
 		Or,
 		Metal,
 		GreenEye,
-		RedEye
+		RedEye,
+		Leaf,
+		Sand,
+		WoodBox
 	};
 };
 
