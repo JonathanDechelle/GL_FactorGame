@@ -31,6 +31,7 @@ Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
 Map_Creator Map;
 Player player;
+float GameSpeed = 100;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -61,7 +62,7 @@ void keyUpdate()
 	//if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
 	//else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
 
-	//camera.Position[1] = 0.0f;
+
 }
 
 void Set_VertexArray()
@@ -136,12 +137,12 @@ void render(float CurrentTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	camera.Update();
-	player.Udpate(keyboard);
+	player.Udpate(keyboard,GameSpeed);
 	keyUpdate();
 
 	Set_Uniform(); 
 
-	Map.UpdateAndDraw(Models_factory);
+	Map.UpdateAndDraw(Models_factory,GameSpeed);
 	player.Draw(Models_factory,CurrentTime);
 }
 

@@ -44,7 +44,7 @@ void ApplyFriction(float &Distance, float Friction)
 void Player::Jump()
 {
 	Position[1] += 2;
-	Falling = -0.0125f;
+	Falling = -0.125f;
 	keyboard.SetActive(' ',false);
 }
 
@@ -63,19 +63,19 @@ void Player::ApplyGravity(float LimiteY, float gravity)
 	}
 }
 
-void Player::Udpate(Keyboard keyboard)
+void Player::Udpate(Keyboard keyboard, float GameSpeed)
 {
 	this->keyboard = keyboard;
-	if(keyboard.IsHold('W')) Next_Position[2]-= Speed;
-	if(keyboard.IsHold('S')) Next_Position[2]+= Speed;
-	if(keyboard.IsHold('A')) Next_Position[0]-= Speed;
-	if(keyboard.IsHold('D')) Next_Position[0]+= Speed;
+	if(keyboard.IsHold('W')) Next_Position[2]-= Speed * GameSpeed;
+	if(keyboard.IsHold('S')) Next_Position[2]+= Speed * GameSpeed;
+	if(keyboard.IsHold('A')) Next_Position[0]-= Speed * GameSpeed;
+	if(keyboard.IsHold('D')) Next_Position[0]+= Speed * GameSpeed;
 
 	Distance[0] = abs(Next_Position[0]);
 	Distance[2] = abs(Next_Position[2]);
 	
-	ApplyFriction(Distance[0],Friction);
-	ApplyFriction(Distance[2],Friction);
+	ApplyFriction(Distance[0],Friction * GameSpeed);
+	ApplyFriction(Distance[2],Friction * GameSpeed);
 
 	if(Next_Position[0] < 0) 	Next_Position[0] = Distance[0] * -1;
 	else						Next_Position[0] = Distance[0];
@@ -86,7 +86,7 @@ void Player::Udpate(Keyboard keyboard)
 	Position += Next_Position;
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 
-	ApplyGravity(Fake_Floor,gravity);
+	ApplyGravity(Fake_Floor,gravity * GameSpeed);
 }
 
 void Player::Draw(Model_Factory Models_factory, float CurrentTime)
