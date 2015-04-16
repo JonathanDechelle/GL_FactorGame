@@ -12,7 +12,9 @@ public:
 	Player(int mv_location, int rendering_program);
 	void Udpate(Keyboard keyboard);
 	void Draw(Model_Factory Models_factory,float CurrentTime);
-	
+	void Jump();
+	void ApplyGravity(float LimiteY, float gravity);
+
 	mat4 mv_matrix;
 	int mv_location;
 	int rendering_program;
@@ -24,6 +26,8 @@ public:
 	float Speed;
 	float Friction;
 	float BaseFactor;
+
+	Keyboard keyboard;
 
 	//Gravity Section
 	float gravity;
