@@ -14,6 +14,8 @@ Map_Creator::Map_Creator(int mv_location, int rendering_program)
 {
 	this->rendering_program = rendering_program;
 	this->mv_location = mv_location;
+	Base_FactorDistance_BetweenTile = 4.50f;
+	BaseScale = 2;
 }
 
 void Map_Creator::SetBase_Position(vec3 Position)
@@ -21,11 +23,46 @@ void Map_Creator::SetBase_Position(vec3 Position)
 	BaseOffset = Position;
 }
 
+bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject)
+{
+	return false;
+}
+
+bool Map_Creator::CollideWithBlock(vec3 Position)
+{
+	int Index = 0;
+	int i = 0, j = 0;
+	while(i < 20)
+	{
+		while(j < 20)
+		{
+			Index += 3;
+
+			j++;
+		}
+		i++;
+		j = 0;
+	}
+	return false;
+}
+
 void Map_Creator::SetTexture(int i, int j, int Index)
 {
-	mv_matrix = translate((float)j * 4.50f,(float)-i * 4.50f, -20.0f) *
-			translate(BaseOffset[0],BaseOffset[1],BaseOffset[2]) *
-		scale(2.0f,2.0f,2.0f);
+	/*mv_matrix = translate( j * Base_FactorDistance_BetweenTile + BaseOffset[0],
+						  -i * Base_FactorDistance_BetweenTile + BaseOffset[1],
+																 BaseOffset[2]) *
+				scale(BaseScale);*/
+
+	mv_matrix = translate( j * Base_FactorDistance_BetweenTile,
+						  -i * Base_FactorDistance_BetweenTile,
+						  0.0f);
+
+	mapBase_mv_matrix = translate( BaseOffset[0],
+								   BaseOffset[1],
+								   BaseOffset[2]) *
+						scale(BaseScale);
+
+	mv_matrix *= mapBase_mv_matrix;
 
 	if(Content[Index] != 0)
 		glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);

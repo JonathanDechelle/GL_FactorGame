@@ -63,8 +63,9 @@ void Player::ApplyGravity(float LimiteY, float gravity)
 	}
 }
 
-void Player::Udpate(Keyboard keyboard, float GameSpeed)
+void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map)
 {
+	Collision_Test = false;
 	this->keyboard = keyboard;
 	if(keyboard.IsHold('W')) Next_Position[2]-= Speed * GameSpeed;
 	if(keyboard.IsHold('S')) Next_Position[2]+= Speed * GameSpeed;
@@ -87,6 +88,7 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed)
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 
 	ApplyGravity(Fake_Floor,gravity * GameSpeed);
+	Collision_Test = Map.CollideWithBlock(Position);
 }
 
 void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpeed)
@@ -140,6 +142,8 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpe
 		rotate( -90.0f,1.0f,0.0f,0.0f) *
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
 
-	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::RedEye,rendering_program);
-
+	if(!Collision_Test)
+		Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::RedEye,rendering_program);
+	else
+		Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::RedEye,rendering_program);
 }

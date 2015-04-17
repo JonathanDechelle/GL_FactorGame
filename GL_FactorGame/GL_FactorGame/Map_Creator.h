@@ -15,10 +15,14 @@ public:
 	void SetTexture(int i, int j, int Index);
 	void SetBase_Position(vec3 Position);
 	void UpdateAndDraw(Model_Factory Models_factory,float GameSpeed);
+	bool CollideWithBlock(vec3 Position);
 	unsigned int* Content;
 	int rendering_program;
 	mat4 mv_matrix;
+	mat4 mapBase_mv_matrix;
 	int mv_location;
 	vec3 BaseOffset;
+	float Base_FactorDistance_BetweenTile;
+	float BaseScale;
 };
 

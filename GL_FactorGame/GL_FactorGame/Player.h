@@ -3,6 +3,7 @@
 #include "vmath.h"
 #include "Model_Factory.h"
 #include "Load_Image.h"
+#include "Map_Creator.h"
 
 class Player
 {
@@ -10,7 +11,7 @@ public:
 	Player(void);
 	~Player(void);
 	Player(int mv_location, int rendering_program);
-	void Udpate(Keyboard keyboard,float GameSpeed);
+	void Udpate(Keyboard keyboard,float GameSpeed,Map_Creator Map);
 	void Draw(Model_Factory Models_factory,float CurrentTime, float GameSpeed);
 	void Jump();
 	void ApplyGravity(float LimiteY, float gravity);
@@ -33,5 +34,7 @@ public:
 	float gravity;
 	float Falling;
 	float Fake_Floor; //will change in futur
+
+	bool Collision_Test; //Test only
 };
 
