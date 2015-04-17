@@ -30,7 +30,8 @@ Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
 Map_Creator Map;
 Player player;
-float GameSpeed = 100;
+float GameSpeed = 1000; //off sector
+//float GameSpeed = 300; //on sector
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -116,8 +117,9 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	camera.Update(player);
 	player.Udpate(keyboard,GameSpeed);
+	camera.Update(player);
+
 	keyUpdate();
 
 	Set_Uniform(); 

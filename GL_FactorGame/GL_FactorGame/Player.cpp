@@ -44,7 +44,7 @@ void ApplyFriction(float &Distance, float Friction)
 void Player::Jump()
 {
 	Position[1] += 2;
-	Falling = -0.125f;
+	Falling = -0.35f;
 	keyboard.SetActive(' ',false);
 }
 
@@ -95,7 +95,7 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpe
 	mv_matrix = translate(Position[0],Position[1],Position[2]) *
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
@@ -104,7 +104,7 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpe
 		rotate(45.0f, 0.0f, 0.0f, 1.0f) * 
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
@@ -113,7 +113,7 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpe
 		rotate(90.0f, 0.0f, 0.0f, 1.0f) * 
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
@@ -123,7 +123,7 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpe
 		rotate(135.0f, 0.0f, 0.0f, 1.0f) * 
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed *(BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed/25 *(BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
