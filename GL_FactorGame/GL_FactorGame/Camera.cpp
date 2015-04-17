@@ -3,17 +3,47 @@
 
 Camera::Camera(void)
 {
-	Position = vec3(0, 0.5f, 3);
+	Position = vec3(15.0f, -15.0f, 21.0f);
 	center = vec3(0,0,-4);
 	Up = vec3(0, 1, 0);
 	Yaw = 0;
 	Pitch = 0;
+	CameraSpeed = 0.01f;
+	SetBasePosition(vec3(0.0f,0.0f,6.0f));
 }
 
 
 Camera::~Camera(void)
 {
 
+}
+
+void Camera::SetBasePosition(vec3 Position)
+{
+	BaseOffset = Position;
+}
+
+void Camera::Keyboard_Update(Keyboard keyboard)
+{
+	//Camera Position X
+	//if(keyboard.IsHold('W')) Position += CameraSpeed * center;
+	//if(keyboard.IsHold('S')) Position -= CameraSpeed * center;
+	//if(keyboard.IsHold('A')) Position -= normalize(cross(center, Up)) * CameraSpeed * 2;
+	//if(keyboard.IsHold('D')) Position += normalize(cross(center, Up)) * CameraSpeed * 2; 
+
+	//Camera Position Z
+	if(keyboard.IsHold('Q')) Position[1] += CameraSpeed;
+	else if(keyboard.IsHold('E')) Position[1] -= CameraSpeed;
+
+	//Camera Rotation
+	if(keyboard.IsHold('J')) center[0] += CameraSpeed;
+	else if(keyboard.IsHold('L')) center[0] -= CameraSpeed;
+
+	if(keyboard.IsHold('I')) center[1] += CameraSpeed;
+	else if(keyboard.IsHold('K')) center[1] -= CameraSpeed;
+
+	if(keyboard.IsHold('U')) center[2] += CameraSpeed;
+	else if(keyboard.IsHold('O')) center[2] -= CameraSpeed;
 }
 
 void Camera::MouseMove(int x, int y)
@@ -50,8 +80,10 @@ void Camera::MouseMove(int x, int y)
 	center = normalize(center);
 }
 
-void Camera::Update()
+void Camera::Update(Player player)
 {
+	Position[2] = abs(player.Position[2]) + BaseOffset[2];
+	Position[0] = player.Position[0];
 	lookAtMatrix_matrix = lookAt(Position,Position + center, Up);
 }
 

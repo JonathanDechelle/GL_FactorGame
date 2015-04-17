@@ -29,7 +29,7 @@ Player::Player(int mv_location, int rendering_program)
 	Distance[2] = 0;
 
 	BaseFactor = 10000;
-	Fake_Floor = 0;
+	Fake_Floor = -20;
 	Falling = 0;
 	BasePosition = Position;
 	gravity = 0.000015f;
@@ -89,13 +89,13 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed)
 	ApplyGravity(Fake_Floor,gravity * GameSpeed);
 }
 
-void Player::Draw(Model_Factory Models_factory, float CurrentTime)
+void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpeed)
 {
 	//TORUS EFFECT (5 torus same rotation only angle start is different)
 	mv_matrix = translate(Position[0],Position[1],Position[2]) *
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
@@ -104,7 +104,7 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime)
 		rotate(45.0f, 0.0f, 0.0f, 1.0f) * 
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
@@ -113,7 +113,7 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime)
 		rotate(90.0f, 0.0f, 0.0f, 1.0f) * 
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
@@ -123,7 +123,7 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime)
 		rotate(135.0f, 0.0f, 0.0f, 1.0f) * 
 		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
 		rotate(Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		rotate(CurrentTime * GameSpeed *(BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);

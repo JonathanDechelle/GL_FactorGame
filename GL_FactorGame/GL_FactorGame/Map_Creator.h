@@ -13,10 +13,12 @@ public:
 	Map_Creator(int mv_location, int rendering_program);
 	void Load(string FileName);
 	void SetTexture(int i, int j, int Index);
+	void SetBase_Position(vec3 Position);
 	void UpdateAndDraw(Model_Factory Models_factory,float GameSpeed);
 	unsigned int* Content;
 	int rendering_program;
 	mat4 mv_matrix;
 	int mv_location;
+	vec3 BaseOffset;
 };
 
