@@ -24,5 +24,6 @@ public:
 	vec3 BaseOffset;
 	float Base_FactorDistance_BetweenTile;
 	float BaseScale;
+	vec3 DimensionObject;
 };
 

@@ -8,11 +8,19 @@
 class Player
 {
 public:
+	enum EyeColor
+	{
+		Green,Red
+	};
 	Player(void);
 	~Player(void);
 	Player(int mv_location, int rendering_program);
 	void Udpate(Keyboard keyboard,float GameSpeed,Map_Creator Map);
 	void Draw(Model_Factory Models_factory,float CurrentTime, float GameSpeed);
+	void Draw_Torus(Model_Factory Models_factory,float CurrentTime, float GameSpeed,float AngleStart);
+	void Draw_AllTorus(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed);
+	void Draw_Eye(Model_Factory Models_factory,float CurrentTime, float GameSpeed,float AngleStart,int NoEye);
+	void Draw_AllEyes(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed);
 	void Jump();
 	void ApplyGravity(float LimiteY, float gravity);
 
@@ -27,7 +35,7 @@ public:
 	float Speed;
 	float Friction;
 	float BaseFactor;
-
+	int ColorEyes[2];
 	Keyboard keyboard;
 
 	//Gravity Section

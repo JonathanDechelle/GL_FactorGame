@@ -29,10 +29,13 @@ Player::Player(int mv_location, int rendering_program)
 	Distance[2] = 0;
 
 	BaseFactor = 10000;
-	Fake_Floor = -20;
+	Fake_Floor = -5;
 	Falling = 0;
 	BasePosition = Position;
 	gravity = 0.000015f;
+
+	ColorEyes[0] = Green;
+	ColorEyes[1] = Red;
 }
 
 void ApplyFriction(float &Distance, float Friction)
@@ -91,59 +94,71 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map)
 	Collision_Test = Map.CollideWithBlock(Position);
 }
 
+void Player::Draw_Torus(Model_Factory Models_factory, float CurrentTime, float GameSpeed,float AngleStart)
+{
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate(AngleStart, 0.0f, 0.0f, 1.0f) *
+		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
+		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
+		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
+		scale(0.85f,0.85f,0.85f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
+}
+
+void Player::Draw_AllTorus(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed)
+{
+	float Ecart = 45.0f;
+	float Angle;
+
+	for (int i = 0; i < nb; i++)
+	{
+		Angle = i * Ecart;
+		Draw_Torus(Models_factory,CurrentTime,GameSpeed,Angle);
+	}
+};
+
+void Player::Draw_Eye(Model_Factory Models_factory,float CurrentTime, float GameSpeed,float AngleStart,int NoEye)
+{
+	int EyeColor = ColorEyes[NoEye];
+	int EyeTexture;
+
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
+		rotate( AngleStart,1.0f,0.0f,0.0f) *
+		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
+
+	if(EyeColor == 0) 	EyeTexture = Load_Image::Type_Image::GreenEye;
+	else				EyeTexture = Load_Image::Type_Image::RedEye;
+
+	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,EyeTexture,rendering_program);
+}
+
+void Player::Draw_AllEyes(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed)
+{
+	float Ecart = 90.0f;
+	float Angle;
+
+	for (int i = 1; i < nb + 1; i++)
+	{
+		if(i % 2 == 1)
+			Angle = Ecart * i;
+		else
+			Angle = -(Ecart * (i-1));
+		Draw_Eye(Models_factory,CurrentTime,GameSpeed,Angle, (i - 1));
+	}
+}
+
 void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpeed)
 {
-	//TORUS EFFECT (5 torus same rotation only angle start is different)
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
-		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
-		scale(0.85f,0.85f,0.85f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate(45.0f, 0.0f, 0.0f, 1.0f) * 
-		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
-		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
-		scale(0.85f,0.85f,0.85f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate(90.0f, 0.0f, 0.0f, 1.0f) * 
-		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
-		rotate(Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
-		scale(0.85f,0.85f,0.85f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-
-
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate(135.0f, 0.0f, 0.0f, 1.0f) * 
-		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
-		rotate(Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed/25 *(BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
-		scale(0.85f,0.85f,0.85f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
-		rotate( 90.0f,1.0f,0.0f,0.0f) *
-		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::GreenEye,rendering_program);
-
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
-		rotate( -90.0f,1.0f,0.0f,0.0f) *
-		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
-
+	
 	if(!Collision_Test)
-		Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,Load_Image::Type_Image::RedEye,rendering_program);
+	{
+		Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
+		Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
+	}
 	else
-		Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::RedEye,rendering_program);
+	{	
+		Draw_AllTorus(1,Models_factory,CurrentTime,GameSpeed);
+	}
 }
