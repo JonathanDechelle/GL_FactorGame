@@ -31,10 +31,10 @@ bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject)
 {
 	float DistanceX = abs(PositionObject[0] - PosPlayer[0]); 
 	float DistanceY = abs(PositionObject[1] - PosPlayer[1]); 
-	float DistanceZ = PositionObject[2] - PosPlayer[2]; 
+	float DistanceZ = abs(PositionObject[2] - PosPlayer[2]); 
 
 	//cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
-	return (DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2] && DistanceZ > -0.8f);
+	return (DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2]);
 }
 
 vec3 SetMap_Position(int i, int j, float DistanceBetweenTile, float Scale, vec3 Offset)

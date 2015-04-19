@@ -29,6 +29,7 @@ public:
 	int rendering_program;
 	vec3 Position;
 	vec3 Next_Position;
+	vec3 Last_Position;
 	vec3 Rotation;
 	vec3 Distance;
 	vec3 BasePosition;
@@ -37,6 +38,7 @@ public:
 	float BaseFactor;
 	int ColorEyes[2];
 	Keyboard keyboard;
+	float JumpHeight;
 
 	//Gravity Section
 	float gravity;

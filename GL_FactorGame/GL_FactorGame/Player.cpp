@@ -29,7 +29,7 @@ Player::Player(int mv_location, int rendering_program)
 	Distance[2] = 0;
 
 	BaseFactor = 10000;
-	Fake_Floor = -5;
+	Fake_Floor = -8;
 	Falling = 0;
 	BasePosition = Position;
 	gravity = 0.000015f;
@@ -46,7 +46,7 @@ void ApplyFriction(float &Distance, float Friction)
 
 void Player::Jump()
 {
-	Position[1] += 2;
+	Next_Position[1] += 0.15f;
 	Falling = -0.35f;
 	keyboard.SetActive(' ',false);
 }
@@ -61,6 +61,7 @@ void Player::ApplyGravity(float LimiteY, float gravity)
 	else
 	{
 		Position[1] = LimiteY;
+		Next_Position[1] = 0;
 		Falling = 0;
 		if(keyboard.IsPressed(' ')) Jump();
 	}
@@ -76,22 +77,37 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map)
 	if(keyboard.IsHold('D')) Next_Position[0]+= Speed * GameSpeed;
 
 	Distance[0] = abs(Next_Position[0]);
+	Distance[1] = abs(Next_Position[1]);
 	Distance[2] = abs(Next_Position[2]);
 	
 	ApplyFriction(Distance[0],Friction * GameSpeed);
+	ApplyFriction(Distance[1],Friction * 3 *  GameSpeed);
 	ApplyFriction(Distance[2],Friction * GameSpeed);
-
+	
 	if(Next_Position[0] < 0) 	Next_Position[0] = Distance[0] * -1;
 	else						Next_Position[0] = Distance[0];
+
+	if(Next_Position[1] < 0) 	Next_Position[1] = Distance[1] * -1;
+	else						Next_Position[1] = Distance[1];
 
 	if(Next_Position[2] < 0) 	Next_Position[2] = Distance[2] * -1;
 	else						Next_Position[2] = Distance[2];
 
+	
+	Collision_Test = Map.CollideWithBlock(Position + Next_Position);
+	if(Collision_Test)
+	{
+		Falling *= -0.50f;
+		Next_Position *= -0.75f;
+	}
+
 	Position += Next_Position;
+
+	Last_Position = Position;
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 
 	ApplyGravity(Fake_Floor,gravity * GameSpeed);
-	Collision_Test = Map.CollideWithBlock(Position);
+	
 }
 
 void Player::Draw_Torus(Model_Factory Models_factory, float CurrentTime, float GameSpeed,float AngleStart)
@@ -152,13 +168,13 @@ void Player::Draw_AllEyes(int nb,Model_Factory Models_factory, float CurrentTime
 void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpeed)
 {
 	
-	if(!Collision_Test)
-	{
+	/*if(!Collision_Test)
+	{*/
 		Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
 		Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
-	}
-	else
-	{	
+	//}
+		/*else
+		{	*/
 		Draw_AllTorus(1,Models_factory,CurrentTime,GameSpeed);
-	}
+	//}
 }
