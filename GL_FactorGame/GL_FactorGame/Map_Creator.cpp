@@ -17,7 +17,7 @@ Map_Creator::Map_Creator(int mv_location, int rendering_program)
 	Base_FactorDistance_BetweenTile = 4.50f;
 	BaseScale = 2;
 	BaseOffset = vec3(0.0f,0.0f,0.0f);
-	DimensionObject = vec3(4);
+	DimensionObject = vec3(4.5);
 }
 
 void Map_Creator::Get_proj_Matrix(mat4 proj_matrix)
@@ -37,15 +37,17 @@ vec3 Map_Creator::Get_Initial_TilePosition(int i, int j)
 				  0.0f);
 }
 
-bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject)
+bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject)
 {
 	float DistanceX = abs(PositionObject[0] - PosPlayer[0]); 
 	float DistanceY = abs(PositionObject[1] - PosPlayer[1]); 
 	float DistanceZ = abs(PositionObject[2] - PosPlayer[2]); 
+	OnTopOf = false;
 
 	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
 	{
 		cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
+		OnTopOf = (PosPlayer[1] > PositionObject[1]);
 		return true;
 	}
 	return false;
@@ -90,7 +92,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 			{
 				Final_PlayerPosition = Set_Player_Position(Position);
 				mv_matrix = translate(Final_PlayerPosition);
-				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
+				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
 
 				Initial_TilePosition = Get_Initial_TilePosition(i,j);
 				Final_TilePosition = Set_Tile_Position(Initial_TilePosition);
@@ -103,8 +105,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 					return true;
 				}
 
-				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program); 
-				return false;
+				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program); 
 			}
 			j++;
 		}
@@ -161,7 +162,6 @@ void Map_Creator::UpdateAndDraw(Model_Factory Models_factory,float GameSpeed)
 			if(Content[Index] != 0) 
 			{
 				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
-				return;
 			}
 		}
 	}

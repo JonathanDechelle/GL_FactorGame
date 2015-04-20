@@ -16,6 +16,7 @@ public:
 	void SetBase_Position(vec3 Position);
 	void UpdateAndDraw(Model_Factory Models_factory,float GameSpeed);
 	bool CollideWithBlock(vec3 Position,Model_Factory Models_factory);
+	bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject);
 	vec3 Set_Tile_Position(vec3 Initial_TilePosition);
 	vec3 Set_Player_Position(vec3 Initial_PlayerPosition);
 	vec3 Get_Initial_TilePosition(int i, int j);
@@ -30,5 +31,6 @@ public:
 	float Base_FactorDistance_BetweenTile;
 	float BaseScale;
 	vec3 DimensionObject;
+	bool OnTopOf;
 };
 

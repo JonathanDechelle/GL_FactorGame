@@ -23,7 +23,7 @@ public:
 	void Draw_Eye(Model_Factory Models_factory,float CurrentTime, float GameSpeed,float AngleStart,int NoEye);
 	void Draw_AllEyes(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed);
 	void Jump();
-	void ApplyGravity(float LimiteY, float gravity);
+	void ApplyGravity(float gravity);
 
 	mat4 mv_matrix;
 	int mv_location;

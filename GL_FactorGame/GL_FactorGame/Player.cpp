@@ -29,7 +29,7 @@ Player::Player(int mv_location, int rendering_program)
 	Distance[2] = 0;
 
 	BaseFactor = 10000;
-	Fake_Floor = -8;
+	Fake_Floor = -20;
 	Falling = 0;
 	BasePosition = Position;
 	gravity = 0.000015f;
@@ -56,25 +56,27 @@ void Player::Jump()
 	keyboard.SetActive(' ',false);
 }
 
-void Player::ApplyGravity(float LimiteY, float gravity)
+void Player::ApplyGravity(float gravity)
 {
-	if(Position[1] > LimiteY) 
-	{
+	//if(Position[1] > LimiteY) 
+	//{
 		Falling += gravity;
 		Position[1] -= Falling;
-	}
-	else
-	{
-		Position[1] = LimiteY;
-		Next_Position[1] = 0;
-		Falling = 0;
-		if(keyboard.IsPressed(' ')) Jump();
-	}
+	//}
+	//else
+	//{
+		//Position[1] = LimiteY;
+		//Next_Position[1] = 0;
+		//Falling = 0;
+		//if(keyboard.IsPressed(' ')) Jump();
+	//}
 }
 
 void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_Factory Models_factory)
 {
 	Collision_Test = false;
+	bool OnTopOf = false;
+
 	this->keyboard = keyboard;
 	if(keyboard.IsHold('W')) Next_Position[2]-= Speed * GameSpeed;
 	if(keyboard.IsHold('S')) Next_Position[2]+= Speed * GameSpeed;
@@ -101,19 +103,29 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 	
 	Collision_Test = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
 	
-	if(Collision_Test)
+	if(!Map.OnTopOf)
 	{
-		Falling *= -0.50f;
-		Next_Position *= -0.75f;
+		if(Collision_Test)
+		{
+			Falling *= -0.50f;
+			Next_Position *= -0.75f;
+		}
 	}
-
+	else
+	{
+		Next_Position[1] = 0;
+		Falling = 0;
+		Position[1] = Last_Position[1];
+		if(keyboard.IsPressed(' ')) Jump();
+	}
+	
 	Position += Next_Position;
 
 	Last_Position = Position;
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 
-	ApplyGravity(Fake_Floor,gravity * GameSpeed);
-	
+	if(!OnTopOf)
+		ApplyGravity(gravity * GameSpeed);
 }
 
 void Player::Draw_Torus(Model_Factory Models_factory, float CurrentTime, float GameSpeed,float AngleStart)
@@ -176,14 +188,9 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpe
 	
 	/*if(!Collision_Test)
 	{*/
-		//Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
-		//Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
-		rotate( 90.0f,1.0f,0.0f,0.0f) *
-		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
-
-		//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program);
+		Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
+		Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
+		Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program);
 	//}
 		/*else
 		{	*/

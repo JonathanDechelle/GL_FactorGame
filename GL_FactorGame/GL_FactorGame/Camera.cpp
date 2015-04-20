@@ -83,6 +83,7 @@ void Camera::MouseMove(int x, int y)
 void Camera::Update(Player player)
 {
 	Position[2] = abs(player.Position[2]) + BaseOffset[2];
+	Position[1] = player.Position[1];
 	Position[0] = player.Position[0];
 	lookAtMatrix_matrix = lookAt(Position,Position + center, Up);
 }
