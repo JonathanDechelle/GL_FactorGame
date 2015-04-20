@@ -35,21 +35,47 @@ Player::Player(int mv_location, int rendering_program)
 	gravity = 0.000015f;
 }
 
-void Player::Udpate(Keyboard keyboard)
+void ApplyFriction(float &Distance, float Friction)
 {
-	if(keyboard.IsHold('W')) Next_Position[2]-= Speed;
-	if(keyboard.IsHold('S')) Next_Position[2]+= Speed;
-	if(keyboard.IsHold('A')) Next_Position[0]-= Speed;
-	if(keyboard.IsHold('D')) Next_Position[0]+= Speed;
+	if(Distance > 0)	Distance -= Friction;
+	else				Distance = 0;
+}
+
+void Player::Jump()
+{
+	Position[1] += 2;
+	Falling = -0.125f;
+	keyboard.SetActive(' ',false);
+}
+
+void Player::ApplyGravity(float LimiteY, float gravity)
+{
+	if(Position[1] > LimiteY) 
+	{
+		Falling += gravity;
+		Position[1] -= Falling;
+	}
+	else
+	{
+		Position[1] = LimiteY;
+		Falling = 0;
+		if(keyboard.IsPressed(' ')) Jump();
+	}
+}
+
+void Player::Udpate(Keyboard keyboard, float GameSpeed)
+{
+	this->keyboard = keyboard;
+	if(keyboard.IsHold('W')) Next_Position[2]-= Speed * GameSpeed;
+	if(keyboard.IsHold('S')) Next_Position[2]+= Speed * GameSpeed;
+	if(keyboard.IsHold('A')) Next_Position[0]-= Speed * GameSpeed;
+	if(keyboard.IsHold('D')) Next_Position[0]+= Speed * GameSpeed;
 
 	Distance[0] = abs(Next_Position[0]);
 	Distance[2] = abs(Next_Position[2]);
 	
-	if(Distance[0] > 0)		Distance[0] -= Friction;
-	else					Distance[0] = 0;
-
-	if(Distance[2] > 0)		Distance[2] -= Friction;
-	else					Distance[2] = 0;
+	ApplyFriction(Distance[0],Friction * GameSpeed);
+	ApplyFriction(Distance[2],Friction * GameSpeed);
 
 	if(Next_Position[0] < 0) 	Next_Position[0] = Distance[0] * -1;
 	else						Next_Position[0] = Distance[0];
@@ -60,22 +86,7 @@ void Player::Udpate(Keyboard keyboard)
 	Position += Next_Position;
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 
-	if(Position[1] > Fake_Floor) 
-	{
-		Falling += gravity;
-		Position[1] -= Falling;
-	}
-	else
-	{
-		Position[1] = Fake_Floor;
-		Falling = 0;
-		if(keyboard.IsPressed(' ')) 
-		{
-			Position[1] += 2;
-			Falling = -0.0125f;
-			keyboard.SetActive(' ',false);
-		}
-	}
+	ApplyGravity(Fake_Floor,gravity * GameSpeed);
 }
 
 void Player::Draw(Model_Factory Models_factory, float CurrentTime)

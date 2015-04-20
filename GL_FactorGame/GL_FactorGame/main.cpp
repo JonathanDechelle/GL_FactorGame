@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
 #include "Shader_Compiler.h"
@@ -11,24 +12,26 @@
 #include "Camera.h"
 #include "Model_Factory.h"
 #include "Player.h"
+#include "Map_Creator.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
 float SpeedChange = 0.001f;
 GLuint rendering_program;
 GLuint vertex_array_object,buffer;
-GLuint textures[6];
+GLuint textures[10];
 GLint mv_location, proj_location, lookAtMatrix_Location;
 mat4 mv_matrix, proj_matrix;
 vec2 WindowSize(800,600);
-unsigned int* Map;
 
 
 DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
+Map_Creator Map;
 Player player;
+float GameSpeed = 100;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -59,7 +62,7 @@ void keyUpdate()
 	//if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
 	//else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
 
-	//camera.Position[1] = 0.0f;
+
 }
 
 void Set_VertexArray()
@@ -92,12 +95,15 @@ void Initialize_ALL()
 	lookAtMatrix_Location = glGetUniformLocation(rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
 	
 
-	glGenTextures(5, textures);
+	glGenTextures(10, textures);
 	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
 	Load_Image::generate_texture("Or.jpg",textures, Load_Image::Type_Image::Or);
 	Load_Image::generate_texture("Metal.jpg",textures, Load_Image::Type_Image::Metal);
 	Load_Image::generate_texture("GreenEye.jpg",textures, Load_Image::Type_Image::GreenEye);
 	Load_Image::generate_texture("RedEye.jpg",textures, Load_Image::Type_Image::RedEye);
+	Load_Image::generate_texture("Leaf.png",textures, Load_Image::Type_Image::Leaf);
+	Load_Image::generate_texture("Sand.png",textures, Load_Image::Type_Image::Sand);
+	Load_Image::generate_texture("Woodbox.png",textures, Load_Image::Type_Image::WoodBox);
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(rendering_program);
@@ -106,19 +112,23 @@ void Initialize_ALL()
 	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, rendering_program);
 	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye,rendering_program);
 	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye,rendering_program);
+	Load_Image::set_UniformTexture("Leaf.png",Load_Image::Type_Image::Leaf,rendering_program);
+	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand,rendering_program);
+	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox,rendering_program);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
 	glutPassiveMotionFunc(MouseMove);	
 
 	player = Player(mv_location,rendering_program);
+	Map = Map_Creator(mv_location,rendering_program);
+	Map.Load("Map1.png");
 }
 
-void Set_Model()
+void Set_Uniform()
 {
 	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
 	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
-	player.Draw(Models_factory,CurrentTime);
 }
 
 void render(float CurrentTime) 
@@ -127,10 +137,13 @@ void render(float CurrentTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	camera.Update();
-	player.Udpate(keyboard);
+	player.Udpate(keyboard,GameSpeed);
 	keyUpdate();
 
-	Set_Model(); 
+	Set_Uniform(); 
+
+	Map.UpdateAndDraw(Models_factory,GameSpeed);
+	player.Draw(Models_factory,CurrentTime);
 }
 
 void display() 
