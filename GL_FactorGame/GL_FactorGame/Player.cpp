@@ -17,8 +17,8 @@ Player::Player(int mv_location, int rendering_program)
 	Speed = 0.000005f;
 	Friction = 0.0000005f;
 	Position[0] = 0;
-    Position[1] = 10;
-	Position[2] = -15;
+    Position[1] = 0;
+	Position[2] = 0;
 
 	Next_Position[0] = 0;
 	Next_Position[1] = 0;
@@ -36,6 +36,11 @@ Player::Player(int mv_location, int rendering_program)
 
 	ColorEyes[0] = Green;
 	ColorEyes[1] = Red;
+}
+
+void Player::SetBase_Position(vec3 Position)
+{
+	this->Position = Position;
 }
 
 void ApplyFriction(float &Distance, float Friction)
@@ -67,7 +72,7 @@ void Player::ApplyGravity(float LimiteY, float gravity)
 	}
 }
 
-void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map)
+void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_Factory Models_factory)
 {
 	Collision_Test = false;
 	this->keyboard = keyboard;
@@ -94,7 +99,8 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map)
 	else						Next_Position[2] = Distance[2];
 
 	
-	Collision_Test = Map.CollideWithBlock(Position + Next_Position);
+	Collision_Test = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
+	
 	if(Collision_Test)
 	{
 		Falling *= -0.50f;
@@ -170,11 +176,17 @@ void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpe
 	
 	/*if(!Collision_Test)
 	{*/
-		Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
-		Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
+		//Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
+		//Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
+	mv_matrix = translate(Position[0],Position[1],Position[2]) *
+		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
+		rotate( 90.0f,1.0f,0.0f,0.0f) *
+		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
+
+		//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program);
 	//}
 		/*else
 		{	*/
-		Draw_AllTorus(1,Models_factory,CurrentTime,GameSpeed);
+		//Draw_AllTorus(1,Models_factory,CurrentTime,GameSpeed);
 	//}
 }

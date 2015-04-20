@@ -104,6 +104,8 @@ void Initialize_ALL()
 	Map = Map_Creator(mv_location,rendering_program);
 	Map.Load("Map1.png");
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
+	Map.Get_proj_Matrix(proj_matrix);
+	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
 }
 
 void Set_Uniform()
@@ -117,7 +119,7 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	player.Udpate(keyboard,GameSpeed,Map);
+	player.Udpate(keyboard,GameSpeed,Map,Models_factory);
 	camera.Update(player);
 
 	keyUpdate();

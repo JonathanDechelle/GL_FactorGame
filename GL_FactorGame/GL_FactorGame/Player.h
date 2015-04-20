@@ -15,7 +15,8 @@ public:
 	Player(void);
 	~Player(void);
 	Player(int mv_location, int rendering_program);
-	void Udpate(Keyboard keyboard,float GameSpeed,Map_Creator Map);
+	void Udpate(Keyboard keyboard,float GameSpeed,Map_Creator Map, Model_Factory Models_factory);
+	void SetBase_Position(vec3 Position);
 	void Draw(Model_Factory Models_factory,float CurrentTime, float GameSpeed);
 	void Draw_Torus(Model_Factory Models_factory,float CurrentTime, float GameSpeed,float AngleStart);
 	void Draw_AllTorus(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed);

@@ -18,7 +18,6 @@ public:
 	void MouseMove(int x, int y);
 	void SetBasePosition(vec3 Position);
 	mat4 lookAtMatrix_matrix;
-	mat4 RotationMatrix_matrix;
 	float LastX,LastY;
 	float Yaw,Pitch;
 	bool firstMouse;
