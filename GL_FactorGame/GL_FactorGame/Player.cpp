@@ -75,8 +75,7 @@ void Player::ApplyGravity(float gravity)
 void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_Factory Models_factory)
 {
 	Collision_Test = false;
-	bool OnTopOf = false;
-
+	
 	this->keyboard = keyboard;
 	if(keyboard.IsHold('W')) Next_Position[2]-= Speed * GameSpeed;
 	if(keyboard.IsHold('S')) Next_Position[2]+= Speed * GameSpeed;
@@ -102,7 +101,6 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 
 	
 	Collision_Test = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
-	
 	if(!Map.OnTopOf)
 	{
 		if(Collision_Test)
@@ -118,14 +116,13 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 		Position[1] = Last_Position[1];
 		if(keyboard.IsPressed(' ')) Jump();
 	}
-	
+
 	Position += Next_Position;
 
 	Last_Position = Position;
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
-
-	if(!OnTopOf)
-		ApplyGravity(gravity * GameSpeed);
+	
+	ApplyGravity(gravity * GameSpeed);
 }
 
 void Player::Draw_Torus(Model_Factory Models_factory, float CurrentTime, float GameSpeed,float AngleStart)

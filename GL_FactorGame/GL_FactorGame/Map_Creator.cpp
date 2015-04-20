@@ -47,7 +47,8 @@ bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionO
 	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
 	{
 		cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
-		OnTopOf = (PosPlayer[1] > PositionObject[1]);
+		OnTopOf = (PosPlayer[1] > PositionObject[1] && DistanceY > 3.8);
+
 		return true;
 	}
 	return false;
