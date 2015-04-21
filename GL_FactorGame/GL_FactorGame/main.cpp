@@ -13,6 +13,7 @@
 #include "Model_Factory.h"
 #include "Player.h"
 #include "Map_Creator.h"
+#include "Drawing_Manager.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
@@ -30,6 +31,7 @@ Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
 Map_Creator Map;
 Player player;
+Drawing_Manager Drawing_manager;
 float GameSpeed = 3000; //off sector
 //float GameSpeed = 300; //on sector
 
@@ -106,6 +108,7 @@ void Initialize_ALL()
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
 	Map.Get_proj_Matrix(proj_matrix);
 	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
+	Drawing_manager = Drawing_Manager(Models_factory,mv_location,rendering_program);
 }
 
 void Set_Uniform()
@@ -127,7 +130,10 @@ void render(float CurrentTime)
 	Set_Uniform(); 
 
 	Map.UpdateAndDraw(Models_factory,GameSpeed);
-	player.Draw(Models_factory,CurrentTime,GameSpeed);
+
+	Drawing_manager.PlayerPosition = player.Position;
+	Drawing_manager.PlayerRotation = player.Rotation;
+	Drawing_manager.Draw(CurrentTime,GameSpeed);
 }
 
 void display() 

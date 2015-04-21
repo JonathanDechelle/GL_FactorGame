@@ -16,26 +16,20 @@ Player::Player(int mv_location, int rendering_program)
 	this->rendering_program = rendering_program;
 	Speed = 0.000005f;
 	Friction = 0.0000005f;
-	Position[0] = 0;
-    Position[1] = 0;
-	Position[2] = 0;
 
-	Next_Position[0] = 0;
-	Next_Position[1] = 0;
-	Next_Position[2] = 0;
-
-	Distance[0] = 0;
-	Distance[1] = 0;
-	Distance[2] = 0;
-
+	for(int i = 0; i < 3; i++)
+	{
+		Position[i] = 0;
+		Next_Position[i] = 0;
+		Distance[i] = 0;
+	}
+	
 	BaseFactor = 10000;
 	Fake_Floor = -20;
 	Falling = 0;
 	BasePosition = Position;
 	gravity = 0.000015f;
 	BaseJump = 1.05f;
-	ColorEyes[0] = Green;
-	ColorEyes[1] = Red;
 }
 
 void Player::SetBase_Position(vec3 Position)
@@ -47,6 +41,12 @@ void ApplyFriction(float &Distance, float Friction)
 {
 	if(Distance > 0)	Distance -= Friction;
 	else				Distance = 0;
+}
+
+void Check_Limit(float &Next_Position, float Distance)
+{
+	if(Next_Position < 0) 	Next_Position = Distance * -1;
+	else					Next_Position = Distance;
 }
 
 void Player::Jump()
@@ -64,36 +64,30 @@ void Player::ApplyGravity(float gravity)
 
 void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_Factory Models_factory)
 {
-	Collision_Test = false;
+	IsCollide = false;
 	
 	this->keyboard = keyboard;
-	if(keyboard.IsHold('W')) Next_Position[2]-= Speed * GameSpeed;
-	if(keyboard.IsHold('S')) Next_Position[2]+= Speed * GameSpeed;
-	if(keyboard.IsHold('A')) Next_Position[0]-= Speed * GameSpeed;
-	if(keyboard.IsHold('D')) Next_Position[0]+= Speed * GameSpeed;
+	if(keyboard.IsHold('W')) Next_Position[Z]-= Speed * GameSpeed;
+	if(keyboard.IsHold('S')) Next_Position[Z]+= Speed * GameSpeed;
+	if(keyboard.IsHold('A')) Next_Position[X]-= Speed * GameSpeed;
+	if(keyboard.IsHold('D')) Next_Position[X]+= Speed * GameSpeed;
 
-	Distance[0] = abs(Next_Position[0]);
-	Distance[1] = abs(Next_Position[1]);
-	Distance[2] = abs(Next_Position[2]);
-	
-	ApplyFriction(Distance[0],Friction * GameSpeed);
-	ApplyFriction(Distance[1],Friction * 3 *  GameSpeed);
-	ApplyFriction(Distance[2],Friction * GameSpeed);
-	
-	if(Next_Position[0] < 0) 	Next_Position[0] = Distance[0] * -1;
-	else						Next_Position[0] = Distance[0];
-
-	if(Next_Position[1] < 0) 	Next_Position[1] = Distance[1] * -1;
-	else						Next_Position[1] = Distance[1];
-
-	if(Next_Position[2] < 0) 	Next_Position[2] = Distance[2] * -1;
-	else						Next_Position[2] = Distance[2];
-
-	
-	Collision_Test = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
-	if(!Map.OnTopOf)
+	for (int Axe = 0; Axe < Z + 1; Axe++) 
 	{
-		if(Collision_Test)
+		Distance[Axe] = abs(Next_Position[Axe]);
+
+		if(Axe != Y)	ApplyFriction(Distance[Axe],Friction * GameSpeed);
+		else			ApplyFriction(Distance[1],Friction * 3 *  GameSpeed);
+
+		Check_Limit(Next_Position[Axe],Distance[Axe]);
+	}
+	
+	IsCollide = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
+	OnTopOf = Map.OnTopOf;
+
+	if(!OnTopOf)
+	{
+		if(IsCollide)
 		{
 			Falling *= -0.50f;
 			Next_Position *= -0.75f;
@@ -101,9 +95,9 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 	}
 	else
 	{
-		Next_Position[1] = 0;
+		Next_Position[Y] = 0;
 		Falling = 0;
-		Position[1] = Last_Position[1];
+		Position[Y] = Last_Position[1];
 		if(keyboard.IsPressed(' ')) Jump();
 	}
 
@@ -115,63 +109,3 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 	ApplyGravity(gravity * GameSpeed);
 }
 
-void Player::Draw_Torus(Model_Factory Models_factory, float CurrentTime, float GameSpeed,float AngleStart)
-{
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate(AngleStart, 0.0f, 0.0f, 1.0f) *
-		rotate(Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) * 
-		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f) *
-		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
-		scale(0.85f,0.85f,0.85f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-}
-
-void Player::Draw_AllTorus(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed)
-{
-	float Ecart = 45.0f;
-	float Angle;
-
-	for (int i = 0; i < nb; i++)
-	{
-		Angle = i * Ecart;
-		Draw_Torus(Models_factory,CurrentTime,GameSpeed,Angle);
-	}
-};
-
-void Player::Draw_Eye(Model_Factory Models_factory,float CurrentTime, float GameSpeed,float AngleStart,int NoEye)
-{
-	int EyeColor = ColorEyes[NoEye];
-	int EyeTexture;
-
-	mv_matrix = translate(Position[0],Position[1],Position[2]) *
-		rotate( Rotation[0] * BaseFactor,0.0f,0.0f,1.0f) *
-		rotate( AngleStart,1.0f,0.0f,0.0f) *
-		rotate(-Rotation[2] * BaseFactor,1.0f,0.0f,0.0f);
-
-	if(EyeColor == 0) 	EyeTexture = Load_Image::Type_Image::GreenEye;
-	else				EyeTexture = Load_Image::Type_Image::RedEye;
-
-	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,EyeTexture,rendering_program);
-}
-
-void Player::Draw_AllEyes(int nb,Model_Factory Models_factory, float CurrentTime, float GameSpeed)
-{
-	float Ecart = 90.0f;
-	float Angle;
-
-	for (int i = 1; i < nb + 1; i++)
-	{
-		if(i % 2 == 1)
-			Angle = Ecart * i;
-		else
-			Angle = -(Ecart * (i-1));
-		Draw_Eye(Models_factory,CurrentTime,GameSpeed,Angle, (i - 1));
-	}
-}
-
-void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpeed)
-{
-	Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
-	Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
-}
