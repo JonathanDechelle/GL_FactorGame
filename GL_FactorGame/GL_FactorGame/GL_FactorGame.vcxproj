@@ -72,6 +72,7 @@
     <ClInclude Include="..\Include\wglew.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="Drawing_Manager.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Load_Image.h" />
     <ClInclude Include="Map_Creator.h" />
@@ -100,6 +101,7 @@
     <ClCompile Include="..\Src\stb_image_aug.c" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="Drawing_Manager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Load_Image.cpp" />
     <ClCompile Include="main.cpp" />

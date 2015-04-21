@@ -13,10 +13,10 @@
 #include "Model_Factory.h"
 #include "Player.h"
 #include "Map_Creator.h"
+#include "Drawing_Manager.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
-float SpeedChange = 0.001f;
 GLuint rendering_program;
 GLuint vertex_array_object,buffer;
 GLuint textures[10];
@@ -31,7 +31,9 @@ Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
 Map_Creator Map;
 Player player;
-float GameSpeed = 100;
+Drawing_Manager Drawing_manager;
+//float GameSpeed = 3000; //off sector
+float GameSpeed = 1500; //on sector
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -42,27 +44,7 @@ void MouseMove(int x, int y)
 
 void keyUpdate()
 {
-	//Camera Position X
-	//if(keyboard.IsHold('W')) camera.Position += SpeedChange * camera.center;
-	//if(keyboard.IsHold('S')) camera.Position -= SpeedChange * camera.center;
-	//if(keyboard.IsHold('A')) camera.Position -= normalize(cross(camera.center, camera.Up)) * SpeedChange * 2;
-	//if(keyboard.IsHold('D')) camera.Position += normalize(cross(camera.center, camera.Up)) * SpeedChange * 2; 
-	//
-	////Camera Position Z
-	//if(keyboard.IsHold('Q')) camera.Position[1] += SpeedChange;
-	//else if(keyboard.IsHold('E')) camera.Position[1] -= SpeedChange;
-
-	////Camera Rotation
-	//if(keyboard.IsHold('J')) camera.center[0] += SpeedChange;
-	//else if(keyboard.IsHold('L')) camera.center[0] -= SpeedChange;
-
-	//if(keyboard.IsHold('I')) camera.center[1] += SpeedChange;
-	//else if(keyboard.IsHold('K')) camera.center[1] -= SpeedChange;
-
-	//if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
-	//else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
-
-
+	camera.Keyboard_Update(keyboard);
 }
 
 void Set_VertexArray()
@@ -123,6 +105,10 @@ void Initialize_ALL()
 	player = Player(mv_location,rendering_program);
 	Map = Map_Creator(mv_location,rendering_program);
 	Map.Load("Map1.png");
+	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
+	Map.Get_proj_Matrix(proj_matrix);
+	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
+	Drawing_manager = Drawing_Manager(Models_factory,mv_location,rendering_program);
 }
 
 void Set_Uniform()
@@ -136,14 +122,18 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	camera.Update();
-	player.Udpate(keyboard,GameSpeed);
+	player.Udpate(keyboard,GameSpeed,Map,Models_factory);
+	camera.Update(player);
+
 	keyUpdate();
 
 	Set_Uniform(); 
 
 	Map.UpdateAndDraw(Models_factory,GameSpeed);
-	player.Draw(Models_factory,CurrentTime);
+
+	Drawing_manager.PlayerPosition = player.Position;
+	Drawing_manager.PlayerRotation = player.Rotation;
+	Drawing_manager.Draw(CurrentTime,GameSpeed);
 }
 
 void display() 
