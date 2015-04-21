@@ -33,7 +33,7 @@ Player::Player(int mv_location, int rendering_program)
 	Falling = 0;
 	BasePosition = Position;
 	gravity = 0.000015f;
-
+	BaseJump = 1.05f;
 	ColorEyes[0] = Green;
 	ColorEyes[1] = Red;
 }
@@ -52,24 +52,14 @@ void ApplyFriction(float &Distance, float Friction)
 void Player::Jump()
 {
 	Next_Position[1] += 0.15f;
-	Falling = -0.35f;
+	Falling = -BaseJump;
 	keyboard.SetActive(' ',false);
 }
 
 void Player::ApplyGravity(float gravity)
 {
-	//if(Position[1] > LimiteY) 
-	//{
-		Falling += gravity;
-		Position[1] -= Falling;
-	//}
-	//else
-	//{
-		//Position[1] = LimiteY;
-		//Next_Position[1] = 0;
-		//Falling = 0;
-		//if(keyboard.IsPressed(' ')) Jump();
-	//}
+	Falling += gravity;
+	Position[1] -= Falling;
 }
 
 void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_Factory Models_factory)
@@ -182,15 +172,6 @@ void Player::Draw_AllEyes(int nb,Model_Factory Models_factory, float CurrentTime
 
 void Player::Draw(Model_Factory Models_factory, float CurrentTime, float GameSpeed)
 {
-	
-	/*if(!Collision_Test)
-	{*/
-		Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
-		Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
-		Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program);
-	//}
-		/*else
-		{	*/
-		//Draw_AllTorus(1,Models_factory,CurrentTime,GameSpeed);
-	//}
+	Draw_AllTorus(4,Models_factory,CurrentTime,GameSpeed);
+	Draw_AllEyes(2,Models_factory,CurrentTime,GameSpeed);
 }

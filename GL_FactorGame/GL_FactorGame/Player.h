@@ -36,6 +36,7 @@ public:
 	vec3 BasePosition;
 	float Speed;
 	float Friction;
+	float BaseJump;
 	float BaseFactor;
 	int ColorEyes[2];
 	Keyboard keyboard;

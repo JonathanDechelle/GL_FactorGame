@@ -14,10 +14,10 @@ Map_Creator::Map_Creator(int mv_location, int rendering_program)
 {
 	this->rendering_program = rendering_program;
 	this->mv_location = mv_location;
-	Base_FactorDistance_BetweenTile = 4.50f;
+	DimensionObject = vec3(4.5);
+	Base_FactorDistance_BetweenTile = DimensionObject[1];
 	BaseScale = 2;
 	BaseOffset = vec3(0.0f,0.0f,0.0f);
-	DimensionObject = vec3(4.5);
 }
 
 void Map_Creator::Get_proj_Matrix(mat4 proj_matrix)
@@ -47,20 +47,25 @@ bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionO
 	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
 	{
 		cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
-		OnTopOf = (PosPlayer[1] > PositionObject[1] && DistanceY > 3.8);
+		OnTopOf = (PosPlayer[1] > PositionObject[1] && DistanceY > 2.5);
 
 		return true;
 	}
 	return false;
 }
 
+vec3 Map_Creator::Get_projected_Position(vec3 Position)
+{
+	Position[0] += proj_matrix[3][0] * proj_matrix[0][0];
+	Position[1] += proj_matrix[3][1] * proj_matrix[1][1];
+	Position[2] += proj_matrix[3][2] * proj_matrix[2][2];
+
+	return Position;
+}
+
 vec3 Map_Creator::Set_Player_Position(vec3 Initial_PlayerPosition)
 {
-	Initial_PlayerPosition[0] += proj_matrix[3][0] * proj_matrix[0][0];
-	Initial_PlayerPosition[1] += proj_matrix[3][1] * proj_matrix[1][1];
-	Initial_PlayerPosition[2] += proj_matrix[3][2] * proj_matrix[2][2];
-
-	return Initial_PlayerPosition;
+	return Get_projected_Position(Initial_PlayerPosition);
 }
 
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
@@ -68,12 +73,7 @@ vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 	Initial_TilePosition[0] += Base_mv_matrix[3][0];
 	Initial_TilePosition[1] += Base_mv_matrix[3][1];
 	Initial_TilePosition[2] += Base_mv_matrix[3][2];
-
-	Initial_TilePosition[0] += proj_matrix[3][0] * proj_matrix[0][0];
-	Initial_TilePosition[1] += proj_matrix[3][1] * proj_matrix[1][1];
-	Initial_TilePosition[2] += proj_matrix[3][2] * proj_matrix[2][2];
-
-	return Initial_TilePosition;
+	return Get_projected_Position(Initial_TilePosition);
 }
 
 bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)

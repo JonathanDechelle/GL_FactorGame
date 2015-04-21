@@ -30,7 +30,7 @@ Camera camera = Camera();
 Model_Factory Models_factory = Model_Factory();
 Map_Creator Map;
 Player player;
-float GameSpeed = 1000; //off sector
+float GameSpeed = 3000; //off sector
 //float GameSpeed = 300; //on sector
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
