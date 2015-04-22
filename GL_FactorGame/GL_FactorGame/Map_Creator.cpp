@@ -46,7 +46,7 @@ bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionO
 
 	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
 	{
-		cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
+		//cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
 		OnTopOf = (PosPlayer[1] > PositionObject[1] && DistanceY > 2.5);
 
 		return true;
@@ -89,7 +89,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 		while(j < 20)
 		{
 			Index += 3;
-			if(Content[Index] != 0)
+			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw)
 			{
 				Final_PlayerPosition = Set_Player_Position(Position);
 				mv_matrix = translate(Final_PlayerPosition);
@@ -102,7 +102,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 
 				if(IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
 				{
-					cout << "Collide with " << i << " " << j <<endl;
+					//cout << "Collide with " << i << " " << j <<endl;
 					return true;
 				}
 
@@ -121,7 +121,6 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 {
 	vec3 Initial_TilePosition = Get_Initial_TilePosition(i,j);
 
-	Base_mv_matrix = translate(BaseOffset) * scale(BaseScale);
 	mv_matrix = translate(Initial_TilePosition); 
 	
 	mv_matrix *= Base_mv_matrix;
@@ -149,9 +148,30 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 void Map_Creator::Load(string FileName)
 {
 	Load_Image::generate_Map(FileName,Content);
+	int Index = 0;
+	Base_mv_matrix = translate(BaseOffset) * scale(BaseScale);
+
+	vec3 SawPosition;
+	for(int i = 0; i < 20; i++)
+	{
+		for(int j = 0; j < 20; j++)
+		{
+			Index+= 3;
+			if(Content[Index] == TypeContent::T_Saw)
+			{
+				cout << endl << "Saw at " << i << " , " << j;
+				SawPosition = Set_Tile_Position(Get_Initial_TilePosition(i,j));
+				//-1 -22.5 -19.80/ 17 -40.50 -19.80/ 3.50 -81 -19.80
+			}
+		}
+	}
+
+	TabSaw[0] = Saw(vec3(-1   , -22.5 , -19.80));
+	TabSaw[1] = Saw(vec3( 17   , -40.50, -19.80));
+	TabSaw[2] = Saw(vec3( 3.50, -81   , -19.80));
 }
 
-void Map_Creator::UpdateAndDraw(Model_Factory Models_factory,float GameSpeed)
+void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory,float GameSpeed)
 { 
 	int Index = 0;
 	for(int i = 0; i < 20; i++)
@@ -160,10 +180,15 @@ void Map_Creator::UpdateAndDraw(Model_Factory Models_factory,float GameSpeed)
 		{
 			Index+= 3;
 			SetTexture(i,j,Index);
-			if(Content[Index] != 0) 
+			if(Content[Index] != TypeContent::T_Nothing && Content[Index] != TypeContent::T_Saw) 
 			{
 				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,Load_Image::Type_Image::Leaf); 
 			}
 		}
+	}
+
+	for(int i = 0; i < 3; i++)
+	{
+		TabSaw[i].Draw(drawing_manager);
 	}
 }

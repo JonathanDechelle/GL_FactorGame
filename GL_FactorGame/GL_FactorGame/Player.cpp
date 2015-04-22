@@ -21,8 +21,8 @@ Player::Player()
 	Falling = 0;
 	BasePosition = Position;
 	gravity = 0.000015f;
-	//BaseJump = 1.05f; //off sector
-	BaseJump = 0.85f; //on sector
+	BaseJump = 1.05f; //off sector
+	//BaseJump = 0.85f; //on sector
 }
 
 void Player::SetBase_Position(vec3 Position)

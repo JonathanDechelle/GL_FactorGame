@@ -4,6 +4,7 @@
 #include "..\Include\glut.h"
 #include "vmath.h"
 #include "Model_Factory.h"
+#include "Saw.h"
 
 class Map_Creator
 {
@@ -15,7 +16,7 @@ public:
 	void SetTexture(int i, int j, int Index);
 	void SetBase_Position(vec3 Position);
 	void Get_proj_Matrix(mat4 proj_matrix);
-	void UpdateAndDraw(Model_Factory Models_factory,float GameSpeed);
+	void UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory,float GameSpeed);
 	bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject);
 	bool CollideWithBlock(vec3 Position,Model_Factory Models_factory);
 	vec3 Set_Tile_Position(vec3 Initial_TilePosition);
@@ -25,14 +26,24 @@ public:
 
 	unsigned int* Content;
 	int rendering_program;
+	int mv_location;
 	mat4 mv_matrix;
 	mat4 Base_mv_matrix;
 	mat4 proj_matrix;
-	int mv_location;
 	vec3 BaseOffset;
+	vec3 DimensionObject;
 	float Base_FactorDistance_BetweenTile;
 	float BaseScale;
-	vec3 DimensionObject;
 	bool OnTopOf;
+	Saw TabSaw[10];
+
+	enum TypeContent
+	{
+		T_Nothing,
+		T_Leaf,
+		T_Sand,
+		T_WoodBox,
+		T_Saw
+	};
 };
 

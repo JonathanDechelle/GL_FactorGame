@@ -3,12 +3,17 @@
 
 Saw::Saw(void)
 {
-	Position = vec3(0,-22,-19);
+	
 }
 
+Saw::Saw(vec3 Position)
+{
+	this->Position = Position;
+}
 
 Saw::~Saw(void)
 {
+
 }
 
 void Saw::Update()

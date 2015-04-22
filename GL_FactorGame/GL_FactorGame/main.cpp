@@ -33,10 +33,9 @@ Model_Factory Models_factory;
 Map_Creator Map;
 Player player;
 Drawing_Manager Drawing_manager;
-//float GameSpeed = 3000; //off sector
-float GameSpeed = 1500; //on sector
+float GameSpeed = 3500; //off sector
+//float GameSpeed = 1500; //on sector
 
-Saw TestSaw;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -107,13 +106,12 @@ void Initialize_ALL()
 
 	player = Player();
 	Map = Map_Creator(mv_location,rendering_program);
-	Map.Load("Map1.png");
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
 	Map.Get_proj_Matrix(proj_matrix);
+	Map.Load("Map1.png");
 	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
 	Drawing_manager = Drawing_Manager(Models_factory);
 
-	TestSaw = Saw();
 }
 
 void Set_Uniform()
@@ -134,12 +132,11 @@ void render(float CurrentTime)
 
 	Set_Uniform(); 
 
-	Map.UpdateAndDraw(Models_factory,GameSpeed);
+	Map.UpdateAndDraw(Drawing_manager,Models_factory,GameSpeed);
 
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;
 	Drawing_manager.Draw(CurrentTime,GameSpeed);
-	TestSaw.Draw(Drawing_manager);
 }
 
 void display() 
