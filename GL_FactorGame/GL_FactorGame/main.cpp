@@ -32,8 +32,8 @@ Model_Factory Models_factory = Model_Factory();
 Map_Creator Map;
 Player player;
 Drawing_Manager Drawing_manager;
-float GameSpeed = 3000; //off sector
-//float GameSpeed = 300; //on sector
+//float GameSpeed = 3000; //off sector
+float GameSpeed = 1500; //on sector
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
