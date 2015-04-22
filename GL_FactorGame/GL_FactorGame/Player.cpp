@@ -92,17 +92,19 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 		{
 			Falling *= -0.50f;
 			Next_Position *= -0.75f;
-			if(keyboard.IsPressed(' ')) Jump();
+			//if(keyboard.IsPressed(' ')) Jump();
 		}
 	}
 	else
 	{
 		Next_Position[Y] = 0;
-		Falling = 0;
+		Falling *= -0.50f;
+		//Falling = 0;
 		Position[Y] = Last_Position[1];
 		if(keyboard.IsPressed(' ')) Jump();
 	}
 
+	
 	Position += Next_Position;
 
 	Last_Position = Position;
