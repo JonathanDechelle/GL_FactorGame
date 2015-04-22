@@ -162,7 +162,7 @@ void Map_Creator::UpdateAndDraw(Model_Factory Models_factory,float GameSpeed)
 			SetTexture(i,j,Index);
 			if(Content[Index] != 0) 
 			{
-				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
+				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,Load_Image::Type_Image::Leaf); 
 			}
 		}
 	}

@@ -9,6 +9,7 @@ class Model_Factory
 public:
 	Model_Factory();
 	~Model_Factory(void);
+	Model_Factory(int mv_location, int rendering_program);
 	enum ModelType
 	{
 		Torus,
@@ -24,9 +25,11 @@ public:
 	TabVertex Cube_Model;
 	TabVertex Models[5];
 	int NbModels;
+	int mv_location;
+	int rendering_program;
 
 	void Load_Models();
-	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program);
-	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program, float Percent);
+	void Draw_Models(ModelType Type, mat4 mv_matrix, int Texture);
+	void Draw_Models(ModelType Type, mat4 mv_matrix, int Texture, float Percent);
 };
 

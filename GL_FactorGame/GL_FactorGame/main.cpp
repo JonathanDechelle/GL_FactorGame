@@ -14,6 +14,7 @@
 #include "Player.h"
 #include "Map_Creator.h"
 #include "Drawing_Manager.h"
+#include "Saw.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
@@ -28,12 +29,14 @@ vec2 WindowSize(800,600);
 DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
-Model_Factory Models_factory = Model_Factory();
+Model_Factory Models_factory;
 Map_Creator Map;
 Player player;
 Drawing_Manager Drawing_manager;
 //float GameSpeed = 3000; //off sector
 float GameSpeed = 1500; //on sector
+
+Saw TestSaw;
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -52,6 +55,7 @@ void Set_VertexArray()
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
+	Models_factory = Model_Factory(mv_location,rendering_program);
 	Models_factory.Load_Models();
 	for (int i =0; i < Models_factory.NbModels; i++)
 	{
@@ -71,7 +75,6 @@ void Initialize_ALL()
 {
 	proj_matrix = perspective(50.0f, (float)(WindowSize[0]/WindowSize[1]),	0.1f,	1000.0f);			//Initialize Matrix
 	
-
 	mv_location = glGetUniformLocation(rendering_program, "mv_matrix");
 	proj_location = glGetUniformLocation(rendering_program, "proj_matrix");
 	lookAtMatrix_Location = glGetUniformLocation(rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
@@ -102,13 +105,15 @@ void Initialize_ALL()
 	glutKeyboardUpFunc(keyUp);
 	glutPassiveMotionFunc(MouseMove);	
 
-	player = Player(mv_location,rendering_program);
+	player = Player();
 	Map = Map_Creator(mv_location,rendering_program);
 	Map.Load("Map1.png");
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
 	Map.Get_proj_Matrix(proj_matrix);
 	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
-	Drawing_manager = Drawing_Manager(Models_factory,mv_location,rendering_program);
+	Drawing_manager = Drawing_Manager(Models_factory);
+
+	TestSaw = Saw();
 }
 
 void Set_Uniform()
@@ -134,6 +139,7 @@ void render(float CurrentTime)
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;
 	Drawing_manager.Draw(CurrentTime,GameSpeed);
+	TestSaw.Draw(Drawing_manager);
 }
 
 void display() 

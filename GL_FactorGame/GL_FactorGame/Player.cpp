@@ -1,19 +1,11 @@
 #include "Player.h"
 
-
-Player::Player(void)
-{
-}
-
-
 Player::~Player(void)
 {
 }
 
-Player::Player(int mv_location, int rendering_program)
+Player::Player()
 {
-	this->mv_location = mv_location;
-	this->rendering_program = rendering_program;
 	Speed = 0.000005f;
 	Friction = 0.0000005f;
 

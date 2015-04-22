@@ -10,14 +10,12 @@ Drawing_Manager::~Drawing_Manager(void)
 {
 }
 
-Drawing_Manager::Drawing_Manager(Model_Factory Models_factory,int mv_location, int rendering_program)
+Drawing_Manager::Drawing_Manager(Model_Factory Models_factory)
 {
 	this->Models_factory = Models_factory;
 	BaseFactor = 10000;
 	ColorEyes[0] = Green;
 	ColorEyes[1] = Red;
-	this->mv_location = mv_location;
-	this->rendering_program = rendering_program;
 }
 
 void Drawing_Manager::Draw_Torus(float AngleStart)
@@ -29,7 +27,7 @@ void Drawing_Manager::Draw_Torus(float AngleStart)
 		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,Load_Image::Type_Image::Circuit);
 }
 
 void Drawing_Manager::Draw_AllTorus(int nb)
@@ -57,7 +55,7 @@ void Drawing_Manager::Draw_Eye(float AngleStart,int NoEye)
 	if(EyeColor == 0) 	EyeTexture = Load_Image::Type_Image::GreenEye;
 	else				EyeTexture = Load_Image::Type_Image::RedEye;
 
-	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,mv_location,EyeTexture,rendering_program);
+	Models_factory.Draw_Models(Models_factory.ModelType::HalfBall,mv_matrix,EyeTexture);
 }
 
 void Drawing_Manager::Draw_AllEyes(int nb)
@@ -79,6 +77,15 @@ void Drawing_Manager::DrawPlayer()
 {
 	Draw_AllTorus(4);
 	Draw_AllEyes(2);
+}
+
+void Drawing_Manager::DrawSaw(vec3 Position)
+{
+	mv_matrix = translate(Position) * 
+		rotate(CurrentTime * GameSpeed/5 * (BaseFactor/100), 0.0f, 0.0f, 1.0f)  *
+		rotate(90.0f, 1.0f, 0.0f, 0.0f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::Saw,mv_matrix,Load_Image::Metal);
 }
 
 void Drawing_Manager::Draw(float CurrentTime,float GameSpeed)

@@ -79,6 +79,7 @@
     <ClInclude Include="Model_Factory.h" />
     <ClInclude Include="objloader.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Saw.h" />
     <ClInclude Include="Shader_Compiler.h" />
     <ClInclude Include="Shader_Stream.h" />
     <ClInclude Include="vertex.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="Model_Factory.cpp" />
     <ClCompile Include="objloader.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Saw.cpp" />
     <ClCompile Include="Shader_Compiler.cpp" />
     <ClCompile Include="Shader_Stream.cpp" />
   </ItemGroup>

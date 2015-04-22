@@ -10,6 +10,12 @@ Model_Factory::~Model_Factory()
 {
 }
 
+Model_Factory::Model_Factory(int mv_location, int rendering_program)
+{
+	this->mv_location = mv_location;
+	this->rendering_program = rendering_program;
+}
+
 void Model_Factory::Load_Models()
 {
 	vector<vec3> vertices;
@@ -35,7 +41,7 @@ void Model_Factory::Load_Models()
 	NbModels = 5;
 }
 
-void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture, int rendering_program)
+void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture)
 {
 	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
 	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), Texture);
@@ -46,7 +52,7 @@ void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location,
 		glDrawArrays( GL_TRIANGLES, 0, Models[0].NbVertex);	
 }
 
-void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture, int rendering_program, float Percent)
+void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture, float Percent)
 {
 	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
 	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), Texture);
