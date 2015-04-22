@@ -19,9 +19,6 @@ public:
 	float GameSpeed;
 	float CurrentTime;
 	int ColorEyes[2];
-	int mv_location;
-	int rendering_program;
-	mat4 mv_matrix;
 	vec3 PlayerPosition;
 	vec3 PlayerRotation;
 

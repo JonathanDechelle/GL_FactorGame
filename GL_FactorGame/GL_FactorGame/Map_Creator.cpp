@@ -3,26 +3,15 @@
 
 Map_Creator::Map_Creator(void)
 {
-}
-
-
-Map_Creator::~Map_Creator(void)
-{
-}
-
-Map_Creator::Map_Creator(int mv_location, int rendering_program)
-{
-	this->rendering_program = rendering_program;
-	this->mv_location = mv_location;
 	DimensionObject = vec3(4.5);
 	Base_FactorDistance_BetweenTile = DimensionObject[1];
 	BaseScale = 2;
 	BaseOffset = vec3(0.0f,0.0f,0.0f);
 }
 
-void Map_Creator::Get_proj_Matrix(mat4 proj_matrix)
+
+Map_Creator::~Map_Creator(void)
 {
-	this->proj_matrix = proj_matrix;
 }
 
 void Map_Creator::SetBase_Position(vec3 Position)
@@ -37,43 +26,12 @@ vec3 Map_Creator::Get_Initial_TilePosition(int i, int j)
 				  0.0f);
 }
 
-bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject)
-{
-	float DistanceX = abs(PositionObject[0] - PosPlayer[0]); 
-	float DistanceY = abs(PositionObject[1] - PosPlayer[1]); 
-	float DistanceZ = abs(PositionObject[2] - PosPlayer[2]); 
-	OnTopOf = false;
-
-	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
-	{
-		//cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
-		OnTopOf = (PosPlayer[1] > PositionObject[1] && DistanceY > 2.5);
-
-		return true;
-	}
-	return false;
-}
-
-vec3 Map_Creator::Get_projected_Position(vec3 Position)
-{
-	Position[0] += proj_matrix[3][0] * proj_matrix[0][0];
-	Position[1] += proj_matrix[3][1] * proj_matrix[1][1];
-	Position[2] += proj_matrix[3][2] * proj_matrix[2][2];
-
-	return Position;
-}
-
-vec3 Map_Creator::Set_Player_Position(vec3 Initial_PlayerPosition)
-{
-	return Get_projected_Position(Initial_PlayerPosition);
-}
-
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 {
-	Initial_TilePosition[0] += Base_mv_matrix[3][0];
-	Initial_TilePosition[1] += Base_mv_matrix[3][1];
-	Initial_TilePosition[2] += Base_mv_matrix[3][2];
-	return Get_projected_Position(Initial_TilePosition);
+	Initial_TilePosition[0] += StaticHandle::MapBase_matrix[3][0];
+	Initial_TilePosition[1] += StaticHandle::MapBase_matrix[3][1];
+	Initial_TilePosition[2] += StaticHandle::MapBase_matrix[3][2];
+	return Collision_Helper::Get_projected_Position(Initial_TilePosition);
 }
 
 bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
@@ -91,22 +49,19 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 			Index += 3;
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw)
 			{
-				Final_PlayerPosition = Set_Player_Position(Position);
-				mv_matrix = translate(Final_PlayerPosition);
-				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
+				Final_PlayerPosition = Collision_Helper::Get_projected_Position(Position);
+				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
 
 				Initial_TilePosition = Get_Initial_TilePosition(i,j);
 				Final_TilePosition = Set_Tile_Position(Initial_TilePosition);
 				
-				mv_matrix = translate(Final_TilePosition) * scale(BaseScale);
-
-				if(IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
+				if(Collision_Helper::IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
 				{
 					//cout << "Collide with " << i << " " << j <<endl;
 					return true;
 				}
 
-				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program); 
+				//Collision_Helper::RenderCollision(Models_factory,Final_TilePosition); 
 			}
 			j++;
 		}
@@ -121,12 +76,12 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 {
 	vec3 Initial_TilePosition = Get_Initial_TilePosition(i,j);
 
-	mv_matrix = translate(Initial_TilePosition); 
+	StaticHandle::mv_matrix = translate(Initial_TilePosition); 
 	
-	mv_matrix *= Base_mv_matrix;
+	StaticHandle::mv_matrix *= StaticHandle::MapBase_matrix;
 	
 	if(Content[Index] != 0)
-		glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
+		glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, StaticHandle::mv_matrix);
 
 	switch(Content[Index])
 	{
@@ -134,13 +89,13 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 		/* Nothing In map*/ 
 		break;
 	case 1:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 1);
+		glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), 1);
 		break;
 	case 2:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 2);
+		glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), 2);
 		break;
 	case 3:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 0);
+		glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), 0);
 		break;
 	}
 }
@@ -149,7 +104,7 @@ void Map_Creator::Load(string FileName)
 {
 	Load_Image::generate_Map(FileName,Content);
 	int Index = 0;
-	Base_mv_matrix = translate(BaseOffset) * scale(BaseScale);
+	StaticHandle::MapBase_matrix = translate(BaseOffset) * scale(BaseScale);
 
 	vec3 SawPosition;
 	for(int i = 0; i < 20; i++)
@@ -182,7 +137,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 			SetTexture(i,j,Index);
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index] != TypeContent::T_Saw) 
 			{
-				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,Load_Image::Type_Image::Leaf); 
+				Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
 			}
 		}
 	}

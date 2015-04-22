@@ -4,6 +4,7 @@
 #include "Model_Factory.h"
 #include "Load_Image.h"
 #include "Map_Creator.h"
+#include "Collision_Helper.h"
 
 #define X 0
 #define Y 1
@@ -20,7 +21,6 @@ public:
 	void Jump();
 	void ApplyGravity(float gravity);
 
-	mat4 mv_matrix;
 	vec3 Position;
 	vec3 Next_Position;
 	vec3 Last_Position;

@@ -71,6 +71,7 @@
     <ClInclude Include="..\Include\stb_image_aug.h" />
     <ClInclude Include="..\Include\wglew.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision_Helper.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="Drawing_Manager.h" />
     <ClInclude Include="Keyboard.h" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Saw.h" />
     <ClInclude Include="Shader_Compiler.h" />
     <ClInclude Include="Shader_Stream.h" />
+    <ClInclude Include="StaticHandle.h" />
     <ClInclude Include="vertex.h" />
     <ClInclude Include="vmath.h" />
   </ItemGroup>
@@ -101,6 +103,7 @@
     <ClCompile Include="..\Src\SOIL.c" />
     <ClCompile Include="..\Src\stb_image_aug.c" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision_Helper.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="Drawing_Manager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
@@ -113,6 +116,7 @@
     <ClCompile Include="Saw.cpp" />
     <ClCompile Include="Shader_Compiler.cpp" />
     <ClCompile Include="Shader_Stream.cpp" />
+    <ClCompile Include="StaticHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Lib\glew32.lib" />
