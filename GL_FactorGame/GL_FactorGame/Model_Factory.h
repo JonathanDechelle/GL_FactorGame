@@ -3,6 +3,7 @@
 #include "objloader.h"
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
+#include "StaticHandle.h"
 
 class Model_Factory
 {
@@ -26,7 +27,7 @@ public:
 	int NbModels;
 
 	void Load_Models();
-	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program);
-	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program, float Percent);
+	void Draw_Models(ModelType Type, int Texture);
+	void Draw_Models(ModelType Type, int Texture, float Percent);
 };
 

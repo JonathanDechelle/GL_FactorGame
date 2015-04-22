@@ -4,6 +4,7 @@
 #include "Model_Factory.h"
 #include "Load_Image.h"
 #include "Map_Creator.h"
+#include "Collision_Helper.h"
 
 #define X 0
 #define Y 1
@@ -12,17 +13,14 @@
 class Player
 {
 public:
-	Player(void);
 	~Player(void);
-	Player(int mv_location, int rendering_program);
+	Player();
+	Player(vec3 Position);
 	void Udpate(Keyboard keyboard,float GameSpeed,Map_Creator Map, Model_Factory Models_factory);
 	void SetBase_Position(vec3 Position);
 	void Jump();
 	void ApplyGravity(float gravity);
 
-	mat4 mv_matrix;
-	int mv_location;
-	int rendering_program;
 	vec3 Position;
 	vec3 Next_Position;
 	vec3 Last_Position;

@@ -1,21 +1,14 @@
 #include "Player.h"
 
-
-Player::Player(void)
-{
-}
-
-
 Player::~Player(void)
 {
 }
 
-Player::Player(int mv_location, int rendering_program)
+Player::Player()
 {
-	this->mv_location = mv_location;
-	this->rendering_program = rendering_program;
 	Speed = 0.000005f;
 	Friction = 0.0000005f;
+	OnTopOf = false;
 
 	for(int i = 0; i < 3; i++)
 	{
@@ -84,7 +77,7 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 	}
 	
 	IsCollide = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
-	OnTopOf = Map.OnTopOf;
+	OnTopOf = Collision_Helper::OnTopOf;
 
 	if(!OnTopOf)
 	{
