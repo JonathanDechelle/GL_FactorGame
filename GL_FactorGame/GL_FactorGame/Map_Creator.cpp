@@ -26,23 +26,6 @@ vec3 Map_Creator::Get_Initial_TilePosition(int i, int j)
 				  0.0f);
 }
 
-bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject)
-{
-	float DistanceX = abs(PositionObject[0] - PosPlayer[0]); 
-	float DistanceY = abs(PositionObject[1] - PosPlayer[1]); 
-	float DistanceZ = abs(PositionObject[2] - PosPlayer[2]); 
-	OnTopOf = false;
-
-	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
-	{
-		//cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
-		OnTopOf = (PosPlayer[1] > PositionObject[1] && DistanceY > 2.5);
-
-		return true;
-	}
-	return false;
-}
-
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 {
 	Initial_TilePosition[0] += Base_mv_matrix[3][0];
@@ -75,7 +58,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 				
 				StaticHandle::mv_matrix = translate(Final_TilePosition) * scale(BaseScale);
 
-				if(IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
+				if(Collision_Helper::IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
 				{
 					//cout << "Collide with " << i << " " << j <<endl;
 					return true;

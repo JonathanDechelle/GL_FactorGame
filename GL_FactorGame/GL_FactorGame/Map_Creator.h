@@ -15,7 +15,6 @@ public:
 	void SetTexture(int i, int j, int Index);
 	void SetBase_Position(vec3 Position);
 	void UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory,float GameSpeed);
-	bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject);
 	bool CollideWithBlock(vec3 Position,Model_Factory Models_factory);
 	vec3 Set_Tile_Position(vec3 Initial_TilePosition);
 	vec3 Get_Initial_TilePosition(int i, int j);
@@ -26,7 +25,6 @@ public:
 	vec3 DimensionObject;
 	float Base_FactorDistance_BetweenTile;
 	float BaseScale;
-	bool OnTopOf;
 	Saw TabSaw[10];
 
 	enum TypeContent

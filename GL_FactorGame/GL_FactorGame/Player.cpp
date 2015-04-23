@@ -76,7 +76,7 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 	}
 	
 	IsCollide = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
-	OnTopOf = Map.OnTopOf;
+	OnTopOf = Collision_Helper::OnTopOf;
 
 	if(!OnTopOf)
 	{
