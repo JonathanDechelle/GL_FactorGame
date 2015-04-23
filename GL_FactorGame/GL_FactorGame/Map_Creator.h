@@ -1,10 +1,9 @@
 #pragma once
 #include "Load_Image.h"
-#include "..\Include\glew.h"
-#include "..\Include\glut.h"
-#include "vmath.h"
 #include "Model_Factory.h"
 #include "Saw.h"
+#include "StaticHandle.h"
+#include "Collision_Helper.h"
 
 class Map_Creator
 {
@@ -19,9 +18,7 @@ public:
 	bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject);
 	bool CollideWithBlock(vec3 Position,Model_Factory Models_factory);
 	vec3 Set_Tile_Position(vec3 Initial_TilePosition);
-	vec3 Set_Player_Position(vec3 Initial_PlayerPosition);
 	vec3 Get_Initial_TilePosition(int i, int j);
-	vec3 Get_projected_Position(vec3 Position);
 
 	unsigned int* Content;
 	mat4 Base_mv_matrix;

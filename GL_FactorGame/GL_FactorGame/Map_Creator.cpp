@@ -43,26 +43,12 @@ bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionO
 	return false;
 }
 
-vec3 Map_Creator::Get_projected_Position(vec3 Position)
-{
-	Position[0] += StaticHandle::proj_matrix[3][0] * StaticHandle::proj_matrix[0][0];
-	Position[1] += StaticHandle::proj_matrix[3][1] * StaticHandle::proj_matrix[1][1];
-	Position[2] += StaticHandle::proj_matrix[3][2] * StaticHandle::proj_matrix[2][2];
-
-	return Position;
-}
-
-vec3 Map_Creator::Set_Player_Position(vec3 Initial_PlayerPosition)
-{
-	return Get_projected_Position(Initial_PlayerPosition);
-}
-
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 {
 	Initial_TilePosition[0] += Base_mv_matrix[3][0];
 	Initial_TilePosition[1] += Base_mv_matrix[3][1];
 	Initial_TilePosition[2] += Base_mv_matrix[3][2];
-	return Get_projected_Position(Initial_TilePosition);
+	return Collision_Helper::Get_projected_Position(Initial_TilePosition);
 }
 
 bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
@@ -80,7 +66,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 			Index += 3;
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw)
 			{
-				Final_PlayerPosition = Set_Player_Position(Position);
+				Final_PlayerPosition = Collision_Helper::Get_projected_Position(Position);
 				StaticHandle::mv_matrix = translate(Final_PlayerPosition);
 				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,StaticHandle::mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
 
