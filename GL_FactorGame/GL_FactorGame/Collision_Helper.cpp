@@ -27,3 +27,9 @@ bool Collision_Helper::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 Dimen
 	}
 	return false;
 }
+
+void Collision_Helper::RenderCollision(Model_Factory Models_factory,vec3 Position)
+{
+	StaticHandle::mv_matrix = translate(Position) * scale(2.0f);
+	Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
+}

@@ -50,21 +50,18 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw)
 			{
 				Final_PlayerPosition = Collision_Helper::Get_projected_Position(Position);
-				StaticHandle::mv_matrix = translate(Final_PlayerPosition);
-				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,StaticHandle::mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
+				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
 
 				Initial_TilePosition = Get_Initial_TilePosition(i,j);
 				Final_TilePosition = Set_Tile_Position(Initial_TilePosition);
 				
-				StaticHandle::mv_matrix = translate(Final_TilePosition) * scale(BaseScale);
-
 				if(Collision_Helper::IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
 				{
 					//cout << "Collide with " << i << " " << j <<endl;
 					return true;
 				}
 
-				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,StaticHandle::mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program); 
+				//Collision_Helper::RenderCollision(Models_factory,Final_TilePosition); 
 			}
 			j++;
 		}
@@ -140,7 +137,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 			SetTexture(i,j,Index);
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index] != TypeContent::T_Saw) 
 			{
-				Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
+				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
 			}
 		}
 	}
