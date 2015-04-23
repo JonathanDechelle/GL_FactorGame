@@ -3,33 +3,19 @@
 
 char* Shader_Stream::ReadShaderFile(string File)
 {
-	ifstream fichier(File, ios::in);  
-	ifstream is (File, std::ifstream::in);
-	char * Retour = new char;
+	ifstream temp(File.c_str());
+	int count = 0;
+	char *buf;
 
-	if(fichier)  // si l'ouverture a réussi
-	{ 
-		char caractere; 
-		char* TempTab_Caractere = new char [2000];
-		char* RealTab_Caractere;
-		int NbCarac = 0;
+	temp.seekg(0, ios::end);
+	count = temp.tellg();
 
-		while(fichier.get(caractere))
-		{
-			TempTab_Caractere[NbCarac] = caractere;
-			NbCarac++;
-		}
+	buf = new char[count + 1];
+	memset(buf,0,count);
+	temp.seekg(0, ios::beg);
+	temp.read(buf, count);
+	buf[count] = 0;
+	temp.close();
 
-		//Remplis le vrai tableau sans les caractere de fin de fichier
-		RealTab_Caractere = new char [NbCarac];
-		for(int i =0; i < NbCarac; i++)
-		{
-			RealTab_Caractere[i] = TempTab_Caractere[i];
-		}
-		fichier.close(); 
-		RealTab_Caractere[NbCarac] = 0;
-		Retour = RealTab_Caractere;
-	}
-
-	return Retour;
+	return buf;
 }

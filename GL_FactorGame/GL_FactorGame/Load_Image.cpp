@@ -89,11 +89,11 @@ void Load_Image::generate_texture(string FileName,GLuint* textures, int Index)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Load_Image::set_UniformTexture(string FileName, int Index, GLuint &program)
+void Load_Image::set_UniformTexture(string FileName, int Index)
 {
 	//Take file name and substract type of file and name Uniform tex + FileName;
 	FileName.erase(FileName.length() - 4,4);
 	string UniformName = "tex";
 	UniformName.append(FileName);
-	glUniform1i(glGetUniformLocation(program, UniformName.c_str()), Index);
+	glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, UniformName.c_str()), Index);
 }

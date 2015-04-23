@@ -20,7 +20,6 @@
 
 GLuint vertex_array_object,buffer;
 GLuint textures[10];
-mat4 mv_matrix, proj_matrix;
 vec2 WindowSize(800,600);
 
 
@@ -68,7 +67,7 @@ void Set_VertexArray()
 
 void Initialize_ALL()
 {
-	proj_matrix = perspective(50.0f, (float)(WindowSize[0]/WindowSize[1]),	0.1f,	1000.0f);			//Initialize Matrix
+	StaticHandle::proj_matrix = perspective(50.0f, (float)(WindowSize[0]/WindowSize[1]),	0.1f,	1000.0f);			//Initialize Matrix
 	
 	StaticHandle::mv_location = glGetUniformLocation(StaticHandle::rendering_program, "mv_matrix");
 	StaticHandle::proj_location = glGetUniformLocation(StaticHandle::rendering_program, "proj_matrix");
@@ -87,14 +86,14 @@ void Initialize_ALL()
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit, StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or, StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye,StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye,StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("Leaf.png",Load_Image::Type_Image::Leaf,StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand,StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox,StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit);
+	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or);
+	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal);
+	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye);
+	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye);
+	Load_Image::set_UniformTexture("Leaf.png",Load_Image::Type_Image::Leaf);
+	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand);
+	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
@@ -110,7 +109,7 @@ void Initialize_ALL()
 
 void Set_Uniform()
 {
-	glUniformMatrix4fv(StaticHandle::proj_location, 1, GL_FALSE, proj_matrix);
+	glUniformMatrix4fv(StaticHandle::proj_location, 1, GL_FALSE, StaticHandle::proj_matrix);
 	glUniformMatrix4fv(StaticHandle::lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
 }
 
