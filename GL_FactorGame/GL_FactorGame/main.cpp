@@ -17,8 +17,7 @@
 #include "Saw.h"
 #include "StaticHandle.h"
 
-float CurrentTime = 0;
-float Speed = 0.0005f;
+
 GLuint vertex_array_object,buffer;
 GLuint textures[10];
 mat4 mv_matrix, proj_matrix;
@@ -32,8 +31,6 @@ Model_Factory Models_factory;
 Map_Creator Map;
 Player player;
 Drawing_Manager Drawing_manager;
-//float GameSpeed = 3500; //off sector
-float GameSpeed = 1500; //on sector
 
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
@@ -123,24 +120,24 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	player.Udpate(keyboard,GameSpeed,Map,Models_factory);
+	player.Udpate(keyboard,StaticHandle::GameSpeed,Map,Models_factory);
 	camera.Update(player);
 
 	keyUpdate();
 
 	Set_Uniform(); 
 
-	Map.UpdateAndDraw(Drawing_manager,Models_factory,GameSpeed);
+	Map.UpdateAndDraw(Drawing_manager,Models_factory,StaticHandle::GameSpeed);
 
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;
-	Drawing_manager.Draw(CurrentTime,GameSpeed);
+	Drawing_manager.Draw(CurrentTime,StaticHandle::GameSpeed);
 }
 
 void display() 
 {   
-	CurrentTime += Speed;
-	render(CurrentTime);
+	StaticHandle::CurrentTime += StaticHandle::Speed;
+	render(StaticHandle::CurrentTime);
 	glutSwapBuffers(); 
 	glutPostRedisplay(); // Permet de faire une vraie loop
 }

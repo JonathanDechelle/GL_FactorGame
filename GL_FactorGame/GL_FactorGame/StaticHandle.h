@@ -9,5 +9,8 @@ public:
 	static GLuint mv_location;
 	static GLuint proj_location;
 	static GLuint lookAtMatrix_Location;
+	static float CurrentTime;
+	static float Speed;
+	static float GameSpeed;
 };
 
