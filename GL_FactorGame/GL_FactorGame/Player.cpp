@@ -8,6 +8,7 @@ Player::Player()
 {
 	Speed = 0.000005f;
 	Friction = 0.0000005f;
+	OnTopOf = false;
 
 	for(int i = 0; i < 3; i++)
 	{

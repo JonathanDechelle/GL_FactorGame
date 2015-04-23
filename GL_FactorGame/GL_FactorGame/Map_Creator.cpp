@@ -28,9 +28,9 @@ vec3 Map_Creator::Get_Initial_TilePosition(int i, int j)
 
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 {
-	Initial_TilePosition[0] += Base_mv_matrix[3][0];
-	Initial_TilePosition[1] += Base_mv_matrix[3][1];
-	Initial_TilePosition[2] += Base_mv_matrix[3][2];
+	Initial_TilePosition[0] += StaticHandle::MapBase_matrix[3][0];
+	Initial_TilePosition[1] += StaticHandle::MapBase_matrix[3][1];
+	Initial_TilePosition[2] += StaticHandle::MapBase_matrix[3][2];
 	return Collision_Helper::Get_projected_Position(Initial_TilePosition);
 }
 
@@ -78,7 +78,7 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 
 	StaticHandle::mv_matrix = translate(Initial_TilePosition); 
 	
-	StaticHandle::mv_matrix *= Base_mv_matrix;
+	StaticHandle::mv_matrix *= StaticHandle::MapBase_matrix;
 	
 	if(Content[Index] != 0)
 		glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, StaticHandle::mv_matrix);
@@ -104,7 +104,7 @@ void Map_Creator::Load(string FileName)
 {
 	Load_Image::generate_Map(FileName,Content);
 	int Index = 0;
-	Base_mv_matrix = translate(BaseOffset) * scale(BaseScale);
+	StaticHandle::MapBase_matrix = translate(BaseOffset) * scale(BaseScale);
 
 	vec3 SawPosition;
 	for(int i = 0; i < 20; i++)
@@ -137,7 +137,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 			SetTexture(i,j,Index);
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index] != TypeContent::T_Saw) 
 			{
-				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
+				Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
 			}
 		}
 	}

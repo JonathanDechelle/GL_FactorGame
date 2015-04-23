@@ -20,7 +20,6 @@ public:
 	vec3 Get_Initial_TilePosition(int i, int j);
 
 	unsigned int* Content;
-	mat4 Base_mv_matrix;
 	vec3 BaseOffset;
 	vec3 DimensionObject;
 	float Base_FactorDistance_BetweenTile;

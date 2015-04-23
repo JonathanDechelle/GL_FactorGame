@@ -15,5 +15,6 @@ public:
 	static float GameSpeed;
 	static mat4 mv_matrix;
 	static mat4 proj_matrix;
+	static mat4 MapBase_matrix;
 };
 

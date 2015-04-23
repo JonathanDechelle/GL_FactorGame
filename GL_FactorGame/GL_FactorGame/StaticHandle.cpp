@@ -11,3 +11,4 @@ float StaticHandle::GameSpeed = 3500; //off sector
 
 mat4 StaticHandle::mv_matrix = 0;
 mat4 StaticHandle::proj_matrix = 0;
+mat4 StaticHandle::MapBase_matrix = 0;
