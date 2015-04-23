@@ -166,9 +166,9 @@ void Map_Creator::Load(string FileName)
 		}
 	}
 
-	TabSaw[0] = Saw(vec3(-1   , -22.5 , -19.80));
-	TabSaw[1] = Saw(vec3( 17   , -40.50, -19.80));
-	TabSaw[2] = Saw(vec3( 3.50, -81   , -19.80));
+	TabSaw[0] = Saw(vec3(-1    , -22.5 , -19.80), vec2(1,0));
+	TabSaw[1] = Saw(vec3( 17   , -40.50, -19.80), vec2(0,1));
+	TabSaw[2] = Saw(vec3( 3.50 , -81   , -19.80), vec2(1,0));
 }
 
 void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory,float GameSpeed)
@@ -189,6 +189,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 
 	for(int i = 0; i < 3; i++)
 	{
+		TabSaw[i].Update();
 		TabSaw[i].Draw(drawing_manager);
 	}
 }
