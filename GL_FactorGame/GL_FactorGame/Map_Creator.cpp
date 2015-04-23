@@ -3,21 +3,15 @@
 
 Map_Creator::Map_Creator(void)
 {
+	DimensionObject = vec3(4.5);
+	Base_FactorDistance_BetweenTile = DimensionObject[1];
+	BaseScale = 2;
+	BaseOffset = vec3(0.0f,0.0f,0.0f);
 }
 
 
 Map_Creator::~Map_Creator(void)
 {
-}
-
-Map_Creator::Map_Creator(int mv_location, int rendering_program)
-{
-	this->rendering_program = rendering_program;
-	this->mv_location = mv_location;
-	DimensionObject = vec3(4.5);
-	Base_FactorDistance_BetweenTile = DimensionObject[1];
-	BaseScale = 2;
-	BaseOffset = vec3(0.0f,0.0f,0.0f);
 }
 
 void Map_Creator::Get_proj_Matrix(mat4 proj_matrix)
@@ -126,7 +120,7 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 	mv_matrix *= Base_mv_matrix;
 	
 	if(Content[Index] != 0)
-		glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
+		glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, mv_matrix);
 
 	switch(Content[Index])
 	{
@@ -134,13 +128,13 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 		/* Nothing In map*/ 
 		break;
 	case 1:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 1);
+		glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), 1);
 		break;
 	case 2:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 2);
+		glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), 2);
 		break;
 	case 3:
-		glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), 0);
+		glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), 0);
 		break;
 	}
 }

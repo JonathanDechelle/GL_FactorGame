@@ -82,6 +82,7 @@
     <ClInclude Include="Saw.h" />
     <ClInclude Include="Shader_Compiler.h" />
     <ClInclude Include="Shader_Stream.h" />
+    <ClInclude Include="StaticHandle.h" />
     <ClInclude Include="vertex.h" />
     <ClInclude Include="vmath.h" />
   </ItemGroup>
@@ -113,6 +114,7 @@
     <ClCompile Include="Saw.cpp" />
     <ClCompile Include="Shader_Compiler.cpp" />
     <ClCompile Include="Shader_Stream.cpp" />
+    <ClCompile Include="StaticHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Lib\glew32.lib" />

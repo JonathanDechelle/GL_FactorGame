@@ -10,11 +10,6 @@ Model_Factory::~Model_Factory()
 {
 }
 
-Model_Factory::Model_Factory(int mv_location, int rendering_program)
-{
-	this->mv_location = mv_location;
-	this->rendering_program = rendering_program;
-}
 
 void Model_Factory::Load_Models()
 {
@@ -43,8 +38,8 @@ void Model_Factory::Load_Models()
 
 void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture)
 {
-	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
-	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), Texture);
+	glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, mv_matrix);
+	glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), Texture);
 	
 	if((int)Type != 0)
 		glDrawArrays( GL_TRIANGLES, Models[Type - 1].NbVertex, Models[Type].NbVertex - Models[Type - 1].NbVertex);	
@@ -54,8 +49,8 @@ void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture)
 
 void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture, float Percent)
 {
-	glUniformMatrix4fv(mv_location, 1, GL_FALSE, mv_matrix);
-	glUniform1i(glGetUniformLocation(rendering_program, "textureSelect"), Texture);
+	glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, mv_matrix);
+	glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), Texture);
 
 	if((int)Type != 0)
 		glDrawArrays( GL_TRIANGLES, Models[Type - 1].NbVertex, (Models[Type].NbVertex - Models[Type - 1].NbVertex) * Percent);	

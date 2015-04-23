@@ -25,8 +25,6 @@ public:
 	vec3 Get_projected_Position(vec3 Position);
 
 	unsigned int* Content;
-	int rendering_program;
-	int mv_location;
 	mat4 mv_matrix;
 	mat4 Base_mv_matrix;
 	mat4 proj_matrix;

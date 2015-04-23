@@ -15,13 +15,12 @@
 #include "Map_Creator.h"
 #include "Drawing_Manager.h"
 #include "Saw.h"
+#include "StaticHandle.h"
 
 float CurrentTime = 0;
 float Speed = 0.0005f;
-GLuint rendering_program;
 GLuint vertex_array_object,buffer;
 GLuint textures[10];
-GLint mv_location, proj_location, lookAtMatrix_Location;
 mat4 mv_matrix, proj_matrix;
 vec2 WindowSize(800,600);
 
@@ -54,7 +53,7 @@ void Set_VertexArray()
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
-	Models_factory = Model_Factory(mv_location,rendering_program);
+	Models_factory = Model_Factory();
 	Models_factory.Load_Models();
 	for (int i =0; i < Models_factory.NbModels; i++)
 	{
@@ -74,9 +73,9 @@ void Initialize_ALL()
 {
 	proj_matrix = perspective(50.0f, (float)(WindowSize[0]/WindowSize[1]),	0.1f,	1000.0f);			//Initialize Matrix
 	
-	mv_location = glGetUniformLocation(rendering_program, "mv_matrix");
-	proj_location = glGetUniformLocation(rendering_program, "proj_matrix");
-	lookAtMatrix_Location = glGetUniformLocation(rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
+	StaticHandle::mv_location = glGetUniformLocation(StaticHandle::rendering_program, "mv_matrix");
+	StaticHandle::proj_location = glGetUniformLocation(StaticHandle::rendering_program, "proj_matrix");
+	StaticHandle::lookAtMatrix_Location = glGetUniformLocation(StaticHandle::rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
 	
 
 	glGenTextures(10, textures);
@@ -90,34 +89,33 @@ void Initialize_ALL()
 	Load_Image::generate_texture("Woodbox.png",textures, Load_Image::Type_Image::WoodBox);
 	Set_VertexArray();																					//initialize DataVertex and Model
 
-	glUseProgram(rendering_program);
-	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit, rendering_program);
-	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or, rendering_program);
-	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, rendering_program);
-	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye,rendering_program);
-	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye,rendering_program);
-	Load_Image::set_UniformTexture("Leaf.png",Load_Image::Type_Image::Leaf,rendering_program);
-	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand,rendering_program);
-	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox,rendering_program);
+	glUseProgram(StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit, StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or, StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye,StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye,StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Leaf.png",Load_Image::Type_Image::Leaf,StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand,StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox,StaticHandle::rendering_program);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
 	glutPassiveMotionFunc(MouseMove);	
 
 	player = Player();
-	Map = Map_Creator(mv_location,rendering_program);
+	Map = Map_Creator();
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
 	Map.Get_proj_Matrix(proj_matrix);
 	Map.Load("Map1.png");
 	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
 	Drawing_manager = Drawing_Manager(Models_factory);
-
 }
 
 void Set_Uniform()
 {
-	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
-	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
+	glUniformMatrix4fv(StaticHandle::proj_location, 1, GL_FALSE, proj_matrix);
+	glUniformMatrix4fv(StaticHandle::lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
 }
 
 void render(float CurrentTime) 
@@ -149,7 +147,7 @@ void display()
 
 void startup()
 {
-	rendering_program = Shader_Compiler::Compile_Shader("Vertex_Shader.txt",
+	StaticHandle::rendering_program = Shader_Compiler::Compile_Shader("Vertex_Shader.txt",
 														"Fragment_Shader.txt",
 														"TesselationControl_Shader.txt",
 														"TesselationEvaluation_Shader.txt",
@@ -172,7 +170,7 @@ void shutdown()
 	glDeleteBuffers(1,&vertex_array_object);
 	glDeleteBuffers(1, &buffer);
 	glDeleteTextures(3, textures);
-	glDeleteProgram(rendering_program);
+	glDeleteProgram(StaticHandle::rendering_program);
 }
 
 int main(int argc, char *argv[])
