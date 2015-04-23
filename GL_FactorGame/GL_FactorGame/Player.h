@@ -20,7 +20,6 @@ public:
 	void Jump();
 	void ApplyGravity(float gravity);
 
-	mat4 mv_matrix;
 	vec3 Position;
 	vec3 Next_Position;
 	vec3 Last_Position;

@@ -15,7 +15,6 @@ public:
 	void Load(string FileName);
 	void SetTexture(int i, int j, int Index);
 	void SetBase_Position(vec3 Position);
-	void Get_proj_Matrix(mat4 proj_matrix);
 	void UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory,float GameSpeed);
 	bool IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionObject);
 	bool CollideWithBlock(vec3 Position,Model_Factory Models_factory);
@@ -25,9 +24,7 @@ public:
 	vec3 Get_projected_Position(vec3 Position);
 
 	unsigned int* Content;
-	mat4 mv_matrix;
 	mat4 Base_mv_matrix;
-	mat4 proj_matrix;
 	vec3 BaseOffset;
 	vec3 DimensionObject;
 	float Base_FactorDistance_BetweenTile;

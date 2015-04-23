@@ -1,6 +1,7 @@
 #pragma once
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
+#include "vmath.h"
 
 class StaticHandle
 {
@@ -12,5 +13,7 @@ public:
 	static float CurrentTime;
 	static float Speed;
 	static float GameSpeed;
+	static mat4 mv_matrix;
+	static mat4 proj_matrix;
 };
 

@@ -8,3 +8,6 @@ float StaticHandle::CurrentTime = 0;
 float StaticHandle::Speed = 0.0005f;
 //float StaticHandle::GameSpeed = 3500; //off sector
 float StaticHandle::GameSpeed = 1500; //on sector
+
+mat4 StaticHandle::mv_matrix = 0;
+mat4 StaticHandle::proj_matrix = 0;

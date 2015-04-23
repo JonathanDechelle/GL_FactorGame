@@ -14,11 +14,6 @@ Map_Creator::~Map_Creator(void)
 {
 }
 
-void Map_Creator::Get_proj_Matrix(mat4 proj_matrix)
-{
-	this->proj_matrix = proj_matrix;
-}
-
 void Map_Creator::SetBase_Position(vec3 Position)
 {
 	this->BaseOffset = Position;
@@ -50,9 +45,9 @@ bool Map_Creator::IsCollide(vec3 PositionObject, vec3 PosPlayer, vec3 DimensionO
 
 vec3 Map_Creator::Get_projected_Position(vec3 Position)
 {
-	Position[0] += proj_matrix[3][0] * proj_matrix[0][0];
-	Position[1] += proj_matrix[3][1] * proj_matrix[1][1];
-	Position[2] += proj_matrix[3][2] * proj_matrix[2][2];
+	Position[0] += StaticHandle::proj_matrix[3][0] * StaticHandle::proj_matrix[0][0];
+	Position[1] += StaticHandle::proj_matrix[3][1] * StaticHandle::proj_matrix[1][1];
+	Position[2] += StaticHandle::proj_matrix[3][2] * StaticHandle::proj_matrix[2][2];
 
 	return Position;
 }
@@ -86,13 +81,13 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw)
 			{
 				Final_PlayerPosition = Set_Player_Position(Position);
-				mv_matrix = translate(Final_PlayerPosition);
-				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
+				StaticHandle::mv_matrix = translate(Final_PlayerPosition);
+				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,StaticHandle::mv_matrix,mv_location,Load_Image::Type_Image::Leaf,rendering_program); 
 
 				Initial_TilePosition = Get_Initial_TilePosition(i,j);
 				Final_TilePosition = Set_Tile_Position(Initial_TilePosition);
 				
-				mv_matrix = translate(Final_TilePosition) * scale(BaseScale);
+				StaticHandle::mv_matrix = translate(Final_TilePosition) * scale(BaseScale);
 
 				if(IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
 				{
@@ -100,7 +95,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 					return true;
 				}
 
-				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program); 
+				//Models_factory.Draw_Models(Models_factory.ModelType::Cube,StaticHandle::mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program); 
 			}
 			j++;
 		}
@@ -115,12 +110,12 @@ void Map_Creator::SetTexture(int i, int j, int Index)
 {
 	vec3 Initial_TilePosition = Get_Initial_TilePosition(i,j);
 
-	mv_matrix = translate(Initial_TilePosition); 
+	StaticHandle::mv_matrix = translate(Initial_TilePosition); 
 	
-	mv_matrix *= Base_mv_matrix;
+	StaticHandle::mv_matrix *= Base_mv_matrix;
 	
 	if(Content[Index] != 0)
-		glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, mv_matrix);
+		glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, StaticHandle::mv_matrix);
 
 	switch(Content[Index])
 	{
@@ -176,7 +171,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 			SetTexture(i,j,Index);
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index] != TypeContent::T_Saw) 
 			{
-				Models_factory.Draw_Models(Models_factory.ModelType::Cube,mv_matrix,Load_Image::Type_Image::Leaf); 
+				Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
 			}
 		}
 	}

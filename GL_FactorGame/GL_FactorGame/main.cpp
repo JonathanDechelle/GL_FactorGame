@@ -103,7 +103,6 @@ void Initialize_ALL()
 	player = Player();
 	Map = Map_Creator();
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
-	Map.Get_proj_Matrix(proj_matrix);
 	Map.Load("Map1.png");
 	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
 	Drawing_manager = Drawing_Manager(Models_factory);

@@ -27,7 +27,7 @@ public:
 	int NbModels;
 
 	void Load_Models();
-	void Draw_Models(ModelType Type, mat4 mv_matrix, int Texture);
-	void Draw_Models(ModelType Type, mat4 mv_matrix, int Texture, float Percent);
+	void Draw_Models(ModelType Type, int Texture);
+	void Draw_Models(ModelType Type, int Texture, float Percent);
 };
 

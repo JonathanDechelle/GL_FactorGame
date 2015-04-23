@@ -36,9 +36,9 @@ void Model_Factory::Load_Models()
 	NbModels = 5;
 }
 
-void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture)
+void Model_Factory::Draw_Models(ModelType Type, int Texture)
 {
-	glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, mv_matrix);
+	glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, StaticHandle::mv_matrix);
 	glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), Texture);
 	
 	if((int)Type != 0)
@@ -47,9 +47,9 @@ void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture)
 		glDrawArrays( GL_TRIANGLES, 0, Models[0].NbVertex);	
 }
 
-void Model_Factory::Draw_Models(ModelType Type, mat4 mv_matrix, int Texture, float Percent)
+void Model_Factory::Draw_Models(ModelType Type, int Texture, float Percent)
 {
-	glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, mv_matrix);
+	glUniformMatrix4fv(StaticHandle::mv_location, 1, GL_FALSE, StaticHandle::mv_matrix);
 	glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, "textureSelect"), Texture);
 
 	if((int)Type != 0)
