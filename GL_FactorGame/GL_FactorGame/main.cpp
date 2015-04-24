@@ -125,7 +125,7 @@ void render(float CurrentTime)
 
 	Set_Uniform(); 
 
-	Map.UpdateAndDraw(Drawing_manager,Models_factory,StaticHandle::GameSpeed);
+	Map.UpdateAndDraw(Drawing_manager,Models_factory);
 
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;

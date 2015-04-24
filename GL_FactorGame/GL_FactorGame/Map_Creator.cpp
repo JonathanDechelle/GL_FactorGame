@@ -126,7 +126,7 @@ void Map_Creator::Load(string FileName)
 	TabSaw[2] = Saw(vec3( 3.50 , -81   , -19.80), vec2(1,0));
 }
 
-void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory,float GameSpeed)
+void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory)
 { 
 	int Index = 0;
 	for(int i = 0; i < 20; i++)
