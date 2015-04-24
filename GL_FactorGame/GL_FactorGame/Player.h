@@ -19,6 +19,7 @@ public:
 	void Manage_Keyboard(Keyboard keyboard);
 	void Udpate(Keyboard keyboard,Map_Creator Map, Model_Factory Models_factory);
 	void SetBase_Position(vec3 Position);
+	void Reset();
 	void Jump();
 	void ApplyGravity(float gravity);
 	vec3 GetNextPosition();
