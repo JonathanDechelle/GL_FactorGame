@@ -21,6 +21,7 @@ public:
 	void SetBase_Position(vec3 Position);
 	void Jump();
 	void ApplyGravity(float gravity);
+	vec3 GetNextPosition();
 
 	vec3 Position;
 	vec3 Next_Position;

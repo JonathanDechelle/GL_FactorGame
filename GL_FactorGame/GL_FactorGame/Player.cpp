@@ -56,6 +56,21 @@ void Player::ApplyGravity(float gravity)
 	Position[1] -= Falling;
 }
 
+vec3 Player::GetNextPosition()
+{
+	for (int Axe = 0; Axe < Z + 1; Axe++) 
+	{
+		Distance[Axe] = abs(Next_Position[Axe]);
+
+		if(Axe != Y)	ApplyFriction(Distance[Axe],Friction * StaticHandle::GameSpeed);
+		else			ApplyFriction(Distance[1],Friction * 3 *  StaticHandle::GameSpeed);
+
+		Check_Limit(Next_Position[Axe],Distance[Axe]);
+	}
+
+	return Next_Position;
+}
+
 void Player::Manage_Keyboard(Keyboard keyboard)
 {
 	this->keyboard = keyboard;
@@ -67,22 +82,10 @@ void Player::Manage_Keyboard(Keyboard keyboard)
 
 void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_factory)
 {
-	IsCollide = false;
 	Manage_Keyboard(keyboard);
-	
-
-	for (int Axe = 0; Axe < Z + 1; Axe++) 
-	{
-		Distance[Axe] = abs(Next_Position[Axe]);
-
-		if(Axe != Y)	ApplyFriction(Distance[Axe],Friction * StaticHandle::GameSpeed);
-		else			ApplyFriction(Distance[1],Friction * 3 *  StaticHandle::GameSpeed);
-
-		Check_Limit(Next_Position[Axe],Distance[Axe]);
-	}
+	Next_Position = GetNextPosition();	
 	
 	Futur_Position = Position  + Next_Position;
-	
 	StaticHandle::PlayerPosition = Futur_Position;
 
 	IsCollide = Map.CollideWithBlock(Models_factory);
