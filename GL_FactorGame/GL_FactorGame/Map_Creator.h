@@ -10,7 +10,6 @@ class Map_Creator
 public:
 	Map_Creator(void);
 	~Map_Creator(void);
-	Map_Creator(int mv_location, int rendering_program);
 	void Load(string FileName);
 	void SetTexture(int i, int j, int Index);
 	void SetBase_Position(vec3 Position);
