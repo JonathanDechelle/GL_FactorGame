@@ -18,5 +18,6 @@ public:
 	static mat4 MapBase_matrix;
 	static vec3 PlayerPosition;
 	static bool PlayerIsHurt;
+	vec3 PlayerDirectionDamage;
 };
 

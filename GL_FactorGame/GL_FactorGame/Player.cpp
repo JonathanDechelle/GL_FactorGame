@@ -23,7 +23,7 @@ Player::Player()
 	BasePosition = Position;
 	gravity = 0.000015f;
 	//BaseJump = 1.05f; //off sector
-	BaseJump = 0.85f; //on sector
+	BaseJump = 0.65f; //on sector
 }
 
 void Player::SetBase_Position(vec3 Position)
@@ -87,6 +87,7 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 
 	IsCollide = Map.CollideWithBlock(Models_factory);
 	OnTopOf = Collision_Helper::OnTopOf;
+	IsHurt = StaticHandle::PlayerIsHurt;
 
 	if(!OnTopOf)
 	{
@@ -104,6 +105,11 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 		//Falling = 0;
 		Position[Y] = Last_Position[1];
 		if(keyboard.IsPressed(' ')) Jump();
+	}
+
+	if(IsHurt)
+	{
+		Jump();
 	}
 
 	

@@ -43,6 +43,13 @@ void Saw::Update()
 		StartPosition = Position;
 		Sens *= -1;
 	}
+
+	if(Collision_Helper::IsCollide(Position,StaticHandle::PlayerPosition,vec3(3)))
+	{
+		StaticHandle::PlayerIsHurt = true;
+		StaticHandle::PlayerDirectionDamage = Direction * Sens;
+		//StaticHandle::PlayerDamage = (1 - length(StaticHandle::PlayerPosition - Position)) * Damage;
+	}
 }
 
 void Saw::Draw(Drawing_Manager drawing_Manager)

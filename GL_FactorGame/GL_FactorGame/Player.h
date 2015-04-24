@@ -43,5 +43,6 @@ public:
 	float Fake_Floor; //will change in futur
 
 	bool IsCollide; //Test only
+	bool IsHurt;
 };
 
