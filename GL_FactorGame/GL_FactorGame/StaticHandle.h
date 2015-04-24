@@ -16,5 +16,7 @@ public:
 	static mat4 mv_matrix;
 	static mat4 proj_matrix;
 	static mat4 MapBase_matrix;
+	static vec3 PlayerPosition;
+	static bool PlayerIsHurt;
 };
 

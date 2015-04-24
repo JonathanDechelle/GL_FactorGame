@@ -118,7 +118,7 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	player.Udpate(keyboard,StaticHandle::GameSpeed,Map,Models_factory);
+	player.Udpate(keyboard,Map,Models_factory);
 	camera.Update(player);
 
 	keyUpdate();

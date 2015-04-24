@@ -56,27 +56,36 @@ void Player::ApplyGravity(float gravity)
 	Position[1] -= Falling;
 }
 
-void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_Factory Models_factory)
+void Player::Manage_Keyboard(Keyboard keyboard)
+{
+	this->keyboard = keyboard;
+	if(keyboard.IsHold('W')) Next_Position[Z]-= Speed * StaticHandle::GameSpeed;
+	if(keyboard.IsHold('S')) Next_Position[Z]+= Speed * StaticHandle::GameSpeed;
+	if(keyboard.IsHold('A')) Next_Position[X]-= Speed * StaticHandle::GameSpeed;
+	if(keyboard.IsHold('D')) Next_Position[X]+= Speed * StaticHandle::GameSpeed;
+}
+
+void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_factory)
 {
 	IsCollide = false;
+	Manage_Keyboard(keyboard);
 	
-	this->keyboard = keyboard;
-	if(keyboard.IsHold('W')) Next_Position[Z]-= Speed * GameSpeed;
-	if(keyboard.IsHold('S')) Next_Position[Z]+= Speed * GameSpeed;
-	if(keyboard.IsHold('A')) Next_Position[X]-= Speed * GameSpeed;
-	if(keyboard.IsHold('D')) Next_Position[X]+= Speed * GameSpeed;
 
 	for (int Axe = 0; Axe < Z + 1; Axe++) 
 	{
 		Distance[Axe] = abs(Next_Position[Axe]);
 
-		if(Axe != Y)	ApplyFriction(Distance[Axe],Friction * GameSpeed);
-		else			ApplyFriction(Distance[1],Friction * 3 *  GameSpeed);
+		if(Axe != Y)	ApplyFriction(Distance[Axe],Friction * StaticHandle::GameSpeed);
+		else			ApplyFriction(Distance[1],Friction * 3 *  StaticHandle::GameSpeed);
 
 		Check_Limit(Next_Position[Axe],Distance[Axe]);
 	}
 	
-	IsCollide = Map.CollideWithBlock(Position  + Next_Position,Models_factory);
+	Futur_Position = Position  + Next_Position;
+	
+	StaticHandle::PlayerPosition = Futur_Position;
+
+	IsCollide = Map.CollideWithBlock(Models_factory);
 	OnTopOf = Collision_Helper::OnTopOf;
 
 	if(!OnTopOf)
@@ -103,6 +112,7 @@ void Player::Udpate(Keyboard keyboard, float GameSpeed, Map_Creator Map, Model_F
 	Last_Position = Position;
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 	
-	ApplyGravity(gravity * GameSpeed);
+	ApplyGravity(gravity * StaticHandle::GameSpeed);
+	StaticHandle::PlayerIsHurt = false;
 }
 
