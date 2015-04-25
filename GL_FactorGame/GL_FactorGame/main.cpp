@@ -103,7 +103,7 @@ void Initialize_ALL()
 	Map = Map_Creator();
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
 	Map.Load("Map1.png");
-	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
+	player.SetBase_Position(StaticHandle::PlayerStartPosition);
 	Drawing_manager = Drawing_Manager(Models_factory);
 }
 
@@ -118,14 +118,14 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	player.Udpate(keyboard,StaticHandle::GameSpeed,Map,Models_factory);
+	player.Udpate(keyboard,Map,Models_factory);
 	camera.Update(player);
 
 	keyUpdate();
 
 	Set_Uniform(); 
 
-	Map.UpdateAndDraw(Drawing_manager,Models_factory,StaticHandle::GameSpeed);
+	Map.UpdateAndDraw(Drawing_manager,Models_factory);
 
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;

@@ -34,7 +34,7 @@ vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 	return Collision_Helper::Get_projected_Position(Initial_TilePosition);
 }
 
-bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
+bool Map_Creator::CollideWithBlock(Model_Factory Models_factory)
 {
 	int Index = 0;
 	int i = 0, j = 0;
@@ -49,7 +49,7 @@ bool Map_Creator::CollideWithBlock(vec3 Position, Model_Factory Models_factory)
 			Index += 3;
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw)
 			{
-				Final_PlayerPosition = Collision_Helper::Get_projected_Position(Position);
+				Final_PlayerPosition = Collision_Helper::Get_projected_Position(StaticHandle::PlayerPosition);
 				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
 
 				Initial_TilePosition = Get_Initial_TilePosition(i,j);
@@ -126,7 +126,7 @@ void Map_Creator::Load(string FileName)
 	TabSaw[2] = Saw(vec3( 3.50 , -81   , -19.80), vec2(1,0));
 }
 
-void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory,float GameSpeed)
+void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory)
 { 
 	int Index = 0;
 	for(int i = 0; i < 20; i++)
