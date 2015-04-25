@@ -4,7 +4,7 @@ Player::~Player(void)
 {
 }
 
-Player::Player()
+void Player::Reset()
 {
 	Speed = 0.000005f;
 	Friction = 0.0000005f;
@@ -16,7 +16,7 @@ Player::Player()
 		Next_Position[i] = 0;
 		Distance[i] = 0;
 	}
-	
+
 	BaseFactor = 10000;
 	Fake_Floor = -20;
 	Falling = 0;
@@ -24,6 +24,11 @@ Player::Player()
 	gravity = 0.000015f;
 	//BaseJump = 1.05f; //off sector
 	BaseJump = 0.65f; //on sector
+}
+
+Player::Player()
+{
+	Reset();
 }
 
 void Player::SetBase_Position(vec3 Position)
