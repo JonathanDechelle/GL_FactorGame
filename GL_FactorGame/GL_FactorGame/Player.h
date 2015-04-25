@@ -16,14 +16,17 @@ public:
 	~Player(void);
 	Player();
 	Player(vec3 Position);
-	void Udpate(Keyboard keyboard,float GameSpeed,Map_Creator Map, Model_Factory Models_factory);
+	void Manage_Keyboard(Keyboard keyboard);
+	void Udpate(Keyboard keyboard,Map_Creator Map, Model_Factory Models_factory);
 	void SetBase_Position(vec3 Position);
 	void Jump();
 	void ApplyGravity(float gravity);
+	vec3 GetNextPosition();
 
 	vec3 Position;
 	vec3 Next_Position;
 	vec3 Last_Position;
+	vec3 Futur_Position;
 	vec3 Rotation;
 	vec3 Distance;
 	vec3 BasePosition;
@@ -41,5 +44,6 @@ public:
 	float Fake_Floor; //will change in futur
 
 	bool IsCollide; //Test only
+	bool IsHurt;
 };
 

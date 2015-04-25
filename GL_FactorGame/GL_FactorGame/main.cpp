@@ -118,14 +118,14 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	player.Udpate(keyboard,StaticHandle::GameSpeed,Map,Models_factory);
+	player.Udpate(keyboard,Map,Models_factory);
 	camera.Update(player);
 
 	keyUpdate();
 
 	Set_Uniform(); 
 
-	Map.UpdateAndDraw(Drawing_manager,Models_factory,StaticHandle::GameSpeed);
+	Map.UpdateAndDraw(Drawing_manager,Models_factory);
 
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;
