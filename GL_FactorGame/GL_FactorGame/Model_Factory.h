@@ -3,6 +3,7 @@
 #include "objloader.h"
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
+#include "StaticHandle.h"
 
 class Model_Factory
 {
@@ -13,15 +14,20 @@ public:
 	{
 		Torus,
 		Ball,
-		Saw
+		Saw,
+		HalfBall,
+		Cube
 	};
 	TabVertex Torus_Model;
 	TabVertex Ball_Model;
 	TabVertex Saw_Model;
-	TabVertex Models[3];
+	TabVertex Half_Ball_Model;
+	TabVertex Cube_Model;
+	TabVertex Models[5];
 	int NbModels;
 
 	void Load_Models();
-	void Draw_Models(ModelType Type, mat4 mv_matrix, int mv_location, int Texture,  int rendering_program);
+	void Draw_Models(ModelType Type, int Texture);
+	void Draw_Models(ModelType Type, int Texture, float Percent);
 };
 

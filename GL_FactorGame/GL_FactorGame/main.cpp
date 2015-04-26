@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
 #include "Shader_Compiler.h"
@@ -10,23 +11,26 @@
 #include "Keyboard.h"
 #include "Camera.h"
 #include "Model_Factory.h"
+#include "Player.h"
+#include "Map_Creator.h"
+#include "Drawing_Manager.h"
+#include "Saw.h"
+#include "StaticHandle.h"
 
-float CurrentTime = 0;
-float Speed = 0.0005f;
-float SpeedChange = 0.001f;
-GLuint rendering_program;
+
 GLuint vertex_array_object,buffer;
-GLuint textures[4];
-GLint mv_location, proj_location, lookAtMatrix_Location;
-mat4 mv_matrix, proj_matrix;
+GLuint textures[10];
 vec2 WindowSize(800,600);
-unsigned int* Map;
 
 
 DATA data = DATA();
 Keyboard keyboard = Keyboard();
 Camera camera = Camera();
-Model_Factory Models_factory = Model_Factory();
+Model_Factory Models_factory;
+Map_Creator Map;
+Player player;
+Drawing_Manager Drawing_manager;
+
 
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
@@ -37,27 +41,7 @@ void MouseMove(int x, int y)
 
 void keyUpdate()
 {
-	//Camera Position X
-	if(keyboard.IsHold('W')) camera.Position += SpeedChange * camera.center;
-	if(keyboard.IsHold('S')) camera.Position -= SpeedChange * camera.center;
-	if(keyboard.IsHold('A')) camera.Position -= normalize(cross(camera.center, camera.Up)) * SpeedChange * 2;
-	if(keyboard.IsHold('D')) camera.Position += normalize(cross(camera.center, camera.Up)) * SpeedChange * 2; 
-	
-	//Camera Position Z
-	if(keyboard.IsHold('Q')) camera.Position[1] += SpeedChange;
-	else if(keyboard.IsHold('E')) camera.Position[1] -= SpeedChange;
-
-	//Camera Rotation
-	if(keyboard.IsHold('J')) camera.center[0] += SpeedChange;
-	else if(keyboard.IsHold('L')) camera.center[0] -= SpeedChange;
-
-	if(keyboard.IsHold('I')) camera.center[1] += SpeedChange;
-	else if(keyboard.IsHold('K')) camera.center[1] -= SpeedChange;
-
-	if(keyboard.IsHold('U')) camera.center[2] += SpeedChange;
-	else if(keyboard.IsHold('O')) camera.center[2] -= SpeedChange;
-
-	//camera.Position[1] = 0.0f;
+	camera.Keyboard_Update(keyboard);
 }
 
 void Set_VertexArray()
@@ -65,6 +49,7 @@ void Set_VertexArray()
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
+	Models_factory = Model_Factory();
 	Models_factory.Load_Models();
 	for (int i =0; i < Models_factory.NbModels; i++)
 	{
@@ -82,50 +67,50 @@ void Set_VertexArray()
 
 void Initialize_ALL()
 {
-	proj_matrix = perspective(50.0f, (float)(WindowSize[0]/WindowSize[1]),	0.1f,	1000.0f);			//Initialize Matrix
+	StaticHandle::proj_matrix = perspective(50.0f, (float)(WindowSize[0]/WindowSize[1]),	0.1f,	1000.0f);			//Initialize Matrix
+	
+	StaticHandle::mv_location = glGetUniformLocation(StaticHandle::rendering_program, "mv_matrix");
+	StaticHandle::proj_location = glGetUniformLocation(StaticHandle::rendering_program, "proj_matrix");
+	StaticHandle::lookAtMatrix_Location = glGetUniformLocation(StaticHandle::rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
 	
 
-	mv_location = glGetUniformLocation(rendering_program, "mv_matrix");
-	proj_location = glGetUniformLocation(rendering_program, "proj_matrix");
-	lookAtMatrix_Location = glGetUniformLocation(rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
-	
-
-	glGenTextures(3, textures);
+	glGenTextures(10, textures);
 	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
 	Load_Image::generate_texture("Or.jpg",textures, Load_Image::Type_Image::Or);
 	Load_Image::generate_texture("Metal.jpg",textures, Load_Image::Type_Image::Metal);
-
+	Load_Image::generate_texture("GreenEye.jpg",textures, Load_Image::Type_Image::GreenEye);
+	Load_Image::generate_texture("RedEye.jpg",textures, Load_Image::Type_Image::RedEye);
+	Load_Image::generate_texture("Leaf.png",textures, Load_Image::Type_Image::Leaf);
+	Load_Image::generate_texture("Sand.png",textures, Load_Image::Type_Image::Sand);
+	Load_Image::generate_texture("Woodbox.png",textures, Load_Image::Type_Image::WoodBox);
 	Set_VertexArray();																					//initialize DataVertex and Model
 
-	glUseProgram(rendering_program);
-	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit, rendering_program);
-	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or, rendering_program);
-	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal, rendering_program);
+	glUseProgram(StaticHandle::rendering_program);
+	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit);
+	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or);
+	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal);
+	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye);
+	Load_Image::set_UniformTexture("RedEye.jpg",Load_Image::Type_Image::RedEye);
+	Load_Image::set_UniformTexture("Leaf.png",Load_Image::Type_Image::Leaf);
+	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand);
+	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
 	glutPassiveMotionFunc(MouseMove);	
+
+	player = Player();
+	Map = Map_Creator();
+	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
+	Map.Load("Map1.png");
+	player.SetBase_Position(vec3(0.0f,-22.0f,-19.0f));
+	Drawing_manager = Drawing_Manager(Models_factory);
 }
 
-void Set_Model()
+void Set_Uniform()
 {
-	mv_matrix = translate(0.0f,0.0f,-15.0f) *
-		rotate(CurrentTime * 50, 0.0f, 1.0f, 0.0f) *
-		rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,mv_matrix,mv_location,Load_Image::Type_Image::Circuit,rendering_program);
-
-	mv_matrix = translate(0.0f,0.0f,-15.0f) *
-	rotate(CurrentTime * 50, 1.0f, 0.0f, 0.0f) *
-	rotate(CurrentTime * 50, 0.0f, 0.0f, 1.0f);
-	
-	Models_factory.Draw_Models(Models_factory.ModelType::Ball,mv_matrix,mv_location,Load_Image::Type_Image::Or,rendering_program);
-
-	mv_matrix = translate(7.0f,0.0f,-15.0f) *
-		rotate(90.0f, 1.0f, 0.0f, 0.0f) * 
-		rotate(CurrentTime * 250, 0.0f, 1.0f, 0.0f);
-
-	Models_factory.Draw_Models(Models_factory.ModelType::Saw,mv_matrix,mv_location,Load_Image::Type_Image::Metal,rendering_program);
+	glUniformMatrix4fv(StaticHandle::proj_location, 1, GL_FALSE, StaticHandle::proj_matrix);
+	glUniformMatrix4fv(StaticHandle::lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
 }
 
 void render(float CurrentTime) 
@@ -133,26 +118,31 @@ void render(float CurrentTime)
 	glClearColor(1,1,1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	camera.Update();
+	player.Udpate(keyboard,StaticHandle::GameSpeed,Map,Models_factory);
+	camera.Update(player);
+
 	keyUpdate();
 
-	glUniformMatrix4fv(proj_location, 1, GL_FALSE, proj_matrix);
-	glUniformMatrix4fv(lookAtMatrix_Location,1, GL_FALSE, camera.lookAtMatrix_matrix);
+	Set_Uniform(); 
 
-	Set_Model(); 
+	Map.UpdateAndDraw(Drawing_manager,Models_factory,StaticHandle::GameSpeed);
+
+	Drawing_manager.PlayerPosition = player.Position;
+	Drawing_manager.PlayerRotation = player.Rotation;
+	Drawing_manager.Draw(CurrentTime,StaticHandle::GameSpeed);
 }
 
 void display() 
 {   
-	CurrentTime += Speed;
-	render(CurrentTime);
+	StaticHandle::CurrentTime += StaticHandle::Speed;
+	render(StaticHandle::CurrentTime);
 	glutSwapBuffers(); 
 	glutPostRedisplay(); // Permet de faire une vraie loop
 }
 
 void startup()
 {
-	rendering_program = Shader_Compiler::Compile_Shader("Vertex_Shader.txt",
+	StaticHandle::rendering_program = Shader_Compiler::Compile_Shader("Vertex_Shader.txt",
 														"Fragment_Shader.txt",
 														"TesselationControl_Shader.txt",
 														"TesselationEvaluation_Shader.txt",
@@ -175,7 +165,7 @@ void shutdown()
 	glDeleteBuffers(1,&vertex_array_object);
 	glDeleteBuffers(1, &buffer);
 	glDeleteTextures(3, textures);
-	glDeleteProgram(rendering_program);
+	glDeleteProgram(StaticHandle::rendering_program);
 }
 
 int main(int argc, char *argv[])

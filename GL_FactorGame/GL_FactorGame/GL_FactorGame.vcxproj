@@ -71,13 +71,19 @@
     <ClInclude Include="..\Include\stb_image_aug.h" />
     <ClInclude Include="..\Include\wglew.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collision_Helper.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="Drawing_Manager.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Load_Image.h" />
+    <ClInclude Include="Map_Creator.h" />
     <ClInclude Include="Model_Factory.h" />
     <ClInclude Include="objloader.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Saw.h" />
     <ClInclude Include="Shader_Compiler.h" />
     <ClInclude Include="Shader_Stream.h" />
+    <ClInclude Include="StaticHandle.h" />
     <ClInclude Include="vertex.h" />
     <ClInclude Include="vmath.h" />
   </ItemGroup>
@@ -97,14 +103,20 @@
     <ClCompile Include="..\Src\SOIL.c" />
     <ClCompile Include="..\Src\stb_image_aug.c" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collision_Helper.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="Drawing_Manager.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Load_Image.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map_Creator.cpp" />
     <ClCompile Include="Model_Factory.cpp" />
     <ClCompile Include="objloader.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Saw.cpp" />
     <ClCompile Include="Shader_Compiler.cpp" />
     <ClCompile Include="Shader_Stream.cpp" />
+    <ClCompile Include="StaticHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\Lib\glew32.lib" />

@@ -24,10 +24,10 @@ void Load_Image::generate_Map(string FileName, unsigned int* &Map_TileType)
 		Map_TileType[Index] = image[Index];
 		if(Index % Width == 0)	cout << endl;
 		
-		cout << Map_TileType[Index];
+		//cout << Map_TileType[Index];
 	}
 
-	cout << endl << endl;
+	//cout << endl << endl;
 	for (Index = 1; Index < Width * Height * 3; Index++)
 	{
 		if(Index  % Width == 0)	
@@ -45,7 +45,14 @@ void Load_Image::generate_Map(string FileName, unsigned int* &Map_TileType)
 				TrueColor /= 3;
 
 				if(TrueColor == RED)
-					Map_TileType[Index] = 1;
+				{
+					if(image[Index - 3] > 0)
+					{
+						Map_TileType[Index] = 4;
+					}
+					else
+						Map_TileType[Index] = 1;
+				}
 				else if(TrueColor == BLACK)
 					Map_TileType[Index] = 2;
 				else
@@ -82,11 +89,11 @@ void Load_Image::generate_texture(string FileName,GLuint* textures, int Index)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void Load_Image::set_UniformTexture(string FileName, int Index, GLuint &program)
+void Load_Image::set_UniformTexture(string FileName, int Index)
 {
 	//Take file name and substract type of file and name Uniform tex + FileName;
 	FileName.erase(FileName.length() - 4,4);
 	string UniformName = "tex";
 	UniformName.append(FileName);
-	glUniform1i(glGetUniformLocation(program, UniformName.c_str()), Index);
+	glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, UniformName.c_str()), Index);
 }
