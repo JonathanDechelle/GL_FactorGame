@@ -16,14 +16,18 @@ public:
 		Ball,
 		Saw,
 		HalfBall,
-		Cube
+		Cube,
+		LifeBar_Content,
+		LifeBar_Frame
 	};
 	TabVertex Torus_Model;
 	TabVertex Ball_Model;
 	TabVertex Saw_Model;
 	TabVertex Half_Ball_Model;
 	TabVertex Cube_Model;
-	TabVertex Models[5];
+	TabVertex LifeBar_Content_Model;
+	TabVertex LifeBar_Frame_Model;
+	TabVertex Models[7];
 	int NbModels;
 
 	void Load_Models();

@@ -15,3 +15,5 @@ mat4 StaticHandle::MapBase_matrix = 0;
 vec3 StaticHandle::PlayerPosition = 0;
 vec3 StaticHandle::PlayerStartPosition = vec3(0.0f,-22.0f,-19.0f);
 bool StaticHandle::PlayerIsHurt = false;
+float StaticHandle::PlayerLife = 100;
+float StaticHandle::PlayerMaxLife = 100;
