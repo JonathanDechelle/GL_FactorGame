@@ -9,6 +9,7 @@ public:
 	~Drawing_Manager(void);
 	Drawing_Manager(Model_Factory Models_factory);
 	void DrawPlayer();
+	void DrawLifeBar();
 	void DrawSaw(vec3 Position);
 	void Draw_Torus(float AngleStart);
 	void Draw_AllTorus(int nb);

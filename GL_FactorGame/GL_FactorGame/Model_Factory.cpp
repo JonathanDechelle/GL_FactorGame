@@ -27,13 +27,19 @@ void Model_Factory::Load_Models()
 	Half_Ball_Model = TabVertex(vertices,uvs);
 	objloader::LoadObj("Cube.obj",vertices,uvs,normals); 	
 	Cube_Model = TabVertex(vertices,uvs);
+	objloader::LoadObj("LifeBarContent.obj",vertices,uvs,normals); 	
+	LifeBar_Content_Model = TabVertex(vertices,uvs);
+	objloader::LoadObj("LifeBarFrame.obj",vertices,uvs,normals); 	
+	LifeBar_Frame_Model = TabVertex(vertices,uvs);
 
 	Models[Torus] = Torus_Model;
 	Models[Ball] = Ball_Model;
 	Models[Saw] = Saw_Model;
 	Models[HalfBall] = Half_Ball_Model;
  	Models[Cube] = Cube_Model;
-	NbModels = 5;
+	Models[LifeBar_Frame] = LifeBar_Frame_Model;
+	Models[LifeBar_Content] = LifeBar_Content_Model;
+	NbModels = 7;
 }
 
 void Model_Factory::Draw_Models(ModelType Type, int Texture)

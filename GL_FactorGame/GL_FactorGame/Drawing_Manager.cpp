@@ -88,11 +88,23 @@ void Drawing_Manager::DrawSaw(vec3 Position)
 	Models_factory.Draw_Models(Models_factory.ModelType::Saw,Load_Image::Metal);
 }
 
+void Drawing_Manager::DrawLifeBar()
+{
+	StaticHandle::mv_matrix = translate(StaticHandle::PlayerPosition + vec3(0.0f,14.0f,5.0f)) * 
+		//rotate(90.0f, 1.0f, 0.0f, 0.0f) * content
+		rotate(0.0f,1.0f,0.0f,0.0f) * 
+		scale(14.0f,7.0f,10.0f);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Frame,Load_Image::Metal);
+	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Content,Load_Image::Leaf);
+}
+
 void Drawing_Manager::Draw(float CurrentTime,float GameSpeed)
 {
 	this->CurrentTime = CurrentTime;
 	this->GameSpeed = GameSpeed;
 
 	DrawPlayer();
+	DrawLifeBar();
 }
 
