@@ -8,8 +8,7 @@ void Player::Reset()
 {
 	Speed = 0.000005f;
 	Friction = 0.0000005f;
-	OnTopOf = false;
-
+	
 	for(int i = 0; i < 3; i++)
 	{
 		Position[i] = 0;
@@ -94,28 +93,24 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 	StaticHandle::PlayerPosition = Futur_Position;
 
 	IsCollide = Map.CollideWithBlock(Models_factory);
-	OnTopOf = Collision_Helper::OnTopOf;
-	IsHurt = StaticHandle::PlayerIsHurt;
 
-	if(!OnTopOf)
+	if(!Collision_Helper::OnTopOf)
 	{
 		if(IsCollide)
 		{
 			Falling *= -0.50f;
 			Next_Position *= -0.75f;
-			//if(keyboard.IsPressed(' ')) Jump();
 		}
 	}
 	else
 	{
 		Next_Position[Y] = 0;
 		Falling *= -0.50f;
-		//Falling = 0;
 		Position[Y] = Last_Position[1];
 		if(keyboard.IsPressed(' ')) Jump();
 	}
 
-	if(IsHurt)
+	if(StaticHandle::PlayerIsHurt)
 	{
 		Jump();
 	}

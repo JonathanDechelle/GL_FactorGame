@@ -37,7 +37,6 @@ public:
 	float BaseFactor;
 	Keyboard keyboard;
 	float JumpHeight;
-	bool OnTopOf;
 
 	//Gravity Section
 	float gravity;
@@ -45,6 +44,5 @@ public:
 	float Fake_Floor; //will change in futur
 
 	bool IsCollide; //Test only
-	bool IsHurt;
 };
 
