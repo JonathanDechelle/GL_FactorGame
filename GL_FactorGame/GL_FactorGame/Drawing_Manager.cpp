@@ -90,7 +90,7 @@ void Drawing_Manager::DrawSaw(vec3 Position)
 
 void Drawing_Manager::DrawLifeBar()
 {
-	StaticHandle::mv_matrix = translate(PlayerPosition + vec3(0.0f,14.0f,5.0f)) * 
+	StaticHandle::mv_matrix = translate(vec3(PlayerPosition[0],PlayerPosition[1],-19.0f) + vec3(0.0f,14.0f,5.0f)) * 
 		//rotate(90.0f, 1.0f, 0.0f, 0.0f) * content
 		rotate(0.0f,1.0f,0.0f,0.0f) * 
 		scale(14.0f,7.0f,10.0f);
