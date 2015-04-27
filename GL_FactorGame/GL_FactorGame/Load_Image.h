@@ -21,7 +21,8 @@ public:
 		RedEye,
 		Leaf,
 		Sand,
-		WoodBox
+		WoodBox,
+		LifeBarContent,
 	};
 };
 

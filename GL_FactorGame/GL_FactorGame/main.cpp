@@ -83,6 +83,7 @@ void Initialize_ALL()
 	Load_Image::generate_texture("Leaf.png",textures, Load_Image::Type_Image::Leaf);
 	Load_Image::generate_texture("Sand.png",textures, Load_Image::Type_Image::Sand);
 	Load_Image::generate_texture("Woodbox.png",textures, Load_Image::Type_Image::WoodBox);
+	Load_Image::generate_texture("LifeBarContent.png",textures,Load_Image::Type_Image::LifeBarContent);
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(StaticHandle::rendering_program);
@@ -94,6 +95,7 @@ void Initialize_ALL()
 	Load_Image::set_UniformTexture("Leaf.png",Load_Image::Type_Image::Leaf);
 	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand);
 	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox);
+	Load_Image::set_UniformTexture("LifeBarContent.png",Load_Image::Type_Image::LifeBarContent);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);
