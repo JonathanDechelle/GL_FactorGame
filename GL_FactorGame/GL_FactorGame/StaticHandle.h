@@ -1,7 +1,5 @@
 #pragma once
-#include "..\Include\glew.h"
-#include "..\Include\glut.h"
-#include "vmath.h"
+#include "Light.h"
 
 class StaticHandle
 {
@@ -22,5 +20,6 @@ public:
 	static float PlayerLife;
 	static float PlayerMaxLife;
 	vec3 PlayerDirectionDamage;
+	static Light light;
 };
 

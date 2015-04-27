@@ -32,6 +32,7 @@ Player player;
 Drawing_Manager Drawing_manager;
 
 
+
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
 void MouseMove(int x, int y)
@@ -42,6 +43,25 @@ void MouseMove(int x, int y)
 void keyUpdate()
 {
 	camera.Keyboard_Update(keyboard);
+
+	//Light Direction
+	//if(keyboard.IsHold('u')) Light_Direction[0] += StaticHandle::GameSpeed;
+	//else if(keyboard.IsHold('j')) Light_Direction[0] -= StaticHandle::GameSpeed;
+
+	//if(keyboard.IsHold('y')) Light_Direction[1] += StaticHandle::GameSpeed;
+	//else if(keyboard.IsHold('h')) Light_Direction[1] -= StaticHandle::GameSpeed;
+
+	//if(keyboard.IsHold('o')) Light_Direction[2] += StaticHandle::GameSpeed;
+	//else if(keyboard.IsHold('l')) Light_Direction[2] -= StaticHandle::GameSpeed;
+
+	////Light Brightness 
+	//if(keyboard.IsHold('R')) Light_Brightness += StaticHandle::GameSpeed * 3;
+	//else if(keyboard.IsHold('F')) Light_Brightness -= StaticHandle::GameSpeed * 3; 
+
+	////Light Radius
+	//if(keyboard.IsHold('Z')) Light_Radius += StaticHandle::GameSpeed/2;
+	//else if(keyboard.IsHold('X')) Light_Radius -= StaticHandle::GameSpeed/2;
+	//if(Light_Radius < 0) Light_Radius = 0;
 }
 
 void Set_VertexArray()
@@ -72,7 +92,8 @@ void Initialize_ALL()
 	StaticHandle::mv_location = glGetUniformLocation(StaticHandle::rendering_program, "mv_matrix");
 	StaticHandle::proj_location = glGetUniformLocation(StaticHandle::rendering_program, "proj_matrix");
 	StaticHandle::lookAtMatrix_Location = glGetUniformLocation(StaticHandle::rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
-	
+
+	StaticHandle::light.Initialize(StaticHandle::rendering_program);
 
 	glGenTextures(10, textures);
 	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
@@ -117,8 +138,10 @@ void Set_Uniform()
 
 void render(float CurrentTime) 
 {
-	glClearColor(1,1,1, 0);
+	glClearColor(0,0,0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	StaticHandle::light.Update(StaticHandle::CurrentTime);
 
 	player.Udpate(keyboard,Map,Models_factory);
 	camera.Update(player);
