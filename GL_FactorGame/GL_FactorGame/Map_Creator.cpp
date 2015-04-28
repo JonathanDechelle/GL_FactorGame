@@ -114,16 +114,17 @@ void Map_Creator::Load(string FileName)
 			Index+= 3;
 			if(Content[Index] == TypeContent::T_Saw)
 			{
-				cout << endl << "Saw at " << i << " , " << j;
 				SawPosition = Set_Tile_Position(Get_Initial_TilePosition(i,j));
-				//-1 -22.5 -19.80/ 17 -40.50 -19.80/ 3.50 -81 -19.80
+				cout << endl << "Saw at " << SawPosition[0] << " , " << SawPosition[1] << " ";
 			}
 		}
 	}
 
-	TabSaw[0] = Saw(vec3(-1    , -22.5 , -19.80), vec2(1,0));
-	TabSaw[1] = Saw(vec3( 17   , -40.50, -19.80), vec2(0,1));
-	TabSaw[2] = Saw(vec3( 3.50 , -81   , -19.80), vec2(1,0));
+	TabSaw[0] = Saw(vec3( 48.50  , -31.5 , -19.80), vec2(0,1));
+	TabSaw[1] = Saw(vec3( 30.50  , -36   , -19.80), vec2(0,1));
+	TabSaw[2] = Saw(vec3( 17     , -40.5 , -19.80), vec2(0,1));
+	TabSaw[3] = Saw(vec3( 71     , -63   , -19.80), vec2(0,1));
+	TabSaw[4] = Saw(vec3( 3.50   , -81   , -19.80), vec2(1,0));
 }
 
 void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory)
@@ -142,7 +143,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 		}
 	}
 
-	for(int i = 0; i < 3; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		TabSaw[i].Update();
 		TabSaw[i].Draw(drawing_manager);
