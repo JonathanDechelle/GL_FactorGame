@@ -95,8 +95,10 @@ void Drawing_Manager::DrawLifeBar()
 		rotate(0.0f,1.0f,0.0f,0.0f) * 
 		scale(14.0f,7.0f,10.0f);
 
+	float LifeRatio = StaticHandle::PlayerLife/StaticHandle::PlayerMaxLife;
+
 	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Frame,Load_Image::WoodBox);
-	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Content,Load_Image::LifeBarContent);
+	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Content,Load_Image::LifeBarContent,LifeRatio);
 }
 
 void Drawing_Manager::Draw(float CurrentTime,float GameSpeed)

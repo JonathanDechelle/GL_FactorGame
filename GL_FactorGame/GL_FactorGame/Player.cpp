@@ -113,6 +113,7 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 	if(StaticHandle::PlayerIsHurt)
 	{
 		Jump();
+		StaticHandle::PlayerLife -= 2;
 	}
 
 	

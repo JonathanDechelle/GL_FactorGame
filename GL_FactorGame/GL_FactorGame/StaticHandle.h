@@ -19,6 +19,8 @@ public:
 	static vec3 PlayerPosition;
 	static vec3 PlayerStartPosition;
 	static bool PlayerIsHurt;
+	static float PlayerLife;
+	static float PlayerMaxLife;
 	vec3 PlayerDirectionDamage;
 };
 

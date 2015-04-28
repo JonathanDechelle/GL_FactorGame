@@ -61,5 +61,5 @@ void Model_Factory::Draw_Models(ModelType Type, int Texture, float Percent)
 	if((int)Type != 0)
 		glDrawArrays( GL_TRIANGLES, Models[Type - 1].NbVertex, (Models[Type].NbVertex - Models[Type - 1].NbVertex) * Percent);	
 	else
-		glDrawArrays( GL_TRIANGLES, 0, Models[0].NbVertex);	
+		glDrawArrays( GL_TRIANGLES, 0, Models[0].NbVertex * Percent);	
 }
