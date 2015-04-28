@@ -32,6 +32,11 @@ Player player;
 Drawing_Manager Drawing_manager;
 
 
+vec4 Light_Direction;
+float Light_Brightness;
+float Light_Radius;
+GLint lightDir_location, lightBrightness_location, lightRadius_location;
+
 void keyPressed (unsigned char key, int x, int y) {keyboard.keyPressed(key);}
 void keyUp (unsigned char key, int x, int y){keyboard.keyUp(key);};
 void MouseMove(int x, int y)
@@ -42,6 +47,25 @@ void MouseMove(int x, int y)
 void keyUpdate()
 {
 	camera.Keyboard_Update(keyboard);
+
+	//Light Direction
+	if(keyboard.IsHold('u')) Light_Direction[0] += StaticHandle::GameSpeed;
+	else if(keyboard.IsHold('j')) Light_Direction[0] -= StaticHandle::GameSpeed;
+
+	if(keyboard.IsHold('y')) Light_Direction[1] += StaticHandle::GameSpeed;
+	else if(keyboard.IsHold('h')) Light_Direction[1] -= StaticHandle::GameSpeed;
+
+	if(keyboard.IsHold('o')) Light_Direction[2] += StaticHandle::GameSpeed;
+	else if(keyboard.IsHold('l')) Light_Direction[2] -= StaticHandle::GameSpeed;
+
+	//Light Brightness 
+	if(keyboard.IsHold('R')) Light_Brightness += StaticHandle::GameSpeed * 3;
+	else if(keyboard.IsHold('F')) Light_Brightness -= StaticHandle::GameSpeed * 3; 
+
+	//Light Radius
+	if(keyboard.IsHold('Z')) Light_Radius += StaticHandle::GameSpeed/2;
+	else if(keyboard.IsHold('X')) Light_Radius -= StaticHandle::GameSpeed/2;
+	if(Light_Radius < 0) Light_Radius = 0;
 }
 
 void Set_VertexArray()
@@ -73,6 +97,13 @@ void Initialize_ALL()
 	StaticHandle::proj_location = glGetUniformLocation(StaticHandle::rendering_program, "proj_matrix");
 	StaticHandle::lookAtMatrix_Location = glGetUniformLocation(StaticHandle::rendering_program, "lookAtMatrix_matrix");				//Initialize Uniform
 	
+	//Initialize Uniform
+	StaticHandle::mv_location = glGetUniformLocation(StaticHandle::rendering_program, "mv_matrix");
+	StaticHandle::proj_location = glGetUniformLocation(StaticHandle::rendering_program, "proj_matrix");
+	lightDir_location = glGetUniformLocation(StaticHandle::rendering_program,"Light_Direction");
+	lightBrightness_location = glGetUniformLocation(StaticHandle::rendering_program,"Light_Brightness");
+	lightRadius_location = glGetUniformLocation(StaticHandle::rendering_program, "Light_Radius");
+
 
 	glGenTextures(10, textures);
 	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
@@ -107,6 +138,12 @@ void Initialize_ALL()
 	Map.Load("Map1.png");
 	player.SetBase_Position(StaticHandle::PlayerStartPosition);
 	Drawing_manager = Drawing_Manager(Models_factory);
+
+
+	//Light Direction
+	Light_Direction = vec4(0.0, 0.0, 0.0, 0.0);
+	Light_Brightness = 1;
+	Light_Radius = 0.75f;
 }
 
 void Set_Uniform()
@@ -117,14 +154,19 @@ void Set_Uniform()
 
 void render(float CurrentTime) 
 {
-	glClearColor(1,1,1, 0);
+	glClearColor(0,0,0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glUniform4f(lightDir_location,Light_Direction[0],Light_Direction[1],Light_Direction[2],Light_Direction[3]);
+	glUniform1f(lightBrightness_location, Light_Brightness);
+	glUniform1f(lightRadius_location, Light_Radius);
 
 	player.Udpate(keyboard,Map,Models_factory);
 	camera.Update(player);
 
 	keyUpdate();
 
+	//Light_Brightness = sinf(20 * CurrentTime);
 	Set_Uniform(); 
 
 	Map.UpdateAndDraw(Drawing_manager,Models_factory);

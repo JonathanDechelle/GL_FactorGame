@@ -6,6 +6,9 @@ layout (location = 1) in vec2 TextCoord;
 uniform mat4 mv_matrix;
 uniform mat4 proj_matrix;
 uniform mat4 lookAtMatrix_matrix;
+uniform vec4 Light_Direction;
+uniform float Light_Brightness;
+uniform float Light_Radius;
 
 out VS_OUT
 {
@@ -16,8 +19,34 @@ out VS_OUT
 
 void main(void) 
 { 
-	//gl_Position = proj_matrix * mv_matrix * position;
 	gl_Position = proj_matrix * (lookAtMatrix_matrix * (mv_matrix *  position));
-	vs_out.Intensity = 1;
+	vec4 PositionNormalized = normalize(gl_Position);
+	vec4 Light_DirectionOriented  = proj_matrix * Light_Direction;
+	
+	//DOT PRODUCT
+	vs_out.Intensity = acos(PositionNormalized.x * Light_DirectionOriented.x +
+							PositionNormalized.y * Light_DirectionOriented.y +
+							PositionNormalized.z * Light_DirectionOriented.z );
+
+	float DistanceBetween_Light_Object = 
+			sqrt(
+				  (PositionNormalized.y - Light_DirectionOriented.y) * 
+		          (PositionNormalized.y - Light_DirectionOriented.y)
+				+ (PositionNormalized.x - Light_DirectionOriented.x) * 
+		          (PositionNormalized.x - Light_DirectionOriented.x) 
+				+ (PositionNormalized.x - Light_DirectionOriented.z) *
+				  (PositionNormalized.x - Light_DirectionOriented.z) 
+				);
+
+	if(DistanceBetween_Light_Object > Light_Radius) 
+	{
+		vs_out.Intensity = 0;   /* it's just so far for the light radius*/
+	}
+	else
+	{
+		float LightRatio = 1 - (DistanceBetween_Light_Object / Light_Radius);
+		vs_out.Intensity *= Light_Brightness * LightRatio;
+	}
+
 	vs_out.TexCoord = TextCoord;
 }
