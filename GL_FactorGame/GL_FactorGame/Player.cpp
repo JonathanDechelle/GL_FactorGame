@@ -116,6 +116,13 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 		StaticHandle::PlayerLife -= 2;
 	}
 
+	if(StaticHandle::PlayerLife < 0)
+	{
+		Reset();
+		SetBase_Position(StaticHandle::PlayerStartPosition);
+		StaticHandle::PlayerLife = StaticHandle::PlayerMaxLife;
+	}
+
 	
 	Position += Next_Position;
 
