@@ -1,8 +1,5 @@
 #pragma once
-#include "..\Include\glew.h"
-#include "..\Include\glut.h"
 #include "Light.h"
-#include "vmath.h"
 
 class StaticHandle
 {
