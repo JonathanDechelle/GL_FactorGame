@@ -11,6 +11,7 @@ public:
 	void DrawPlayer();
 	void DrawLifeBar();
 	void DrawSaw(vec3 Position);
+	void DrawTrampoline(vec3 Position);
 	void Draw_Torus(float AngleStart);
 	void Draw_AllTorus(int nb);
 	void Draw_Eye(float AngleStart,int NoEye);

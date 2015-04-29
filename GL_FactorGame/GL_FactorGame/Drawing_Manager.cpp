@@ -88,6 +88,13 @@ void Drawing_Manager::DrawSaw(vec3 Position)
 	Models_factory.Draw_Models(Models_factory.ModelType::Saw,Load_Image::Metal);
 }
 
+void Drawing_Manager::DrawTrampoline(vec3 Position)
+{
+	StaticHandle::mv_matrix = translate(Position);
+
+	Models_factory.Draw_Models(Models_factory.ModelType::Trampoline,Load_Image::Metal);
+}
+
 void Drawing_Manager::DrawLifeBar()
 {
 	StaticHandle::mv_matrix = translate(vec3(PlayerPosition[0],PlayerPosition[1],-19.0f) + vec3(0.0f,14.0f,5.0f)) * 

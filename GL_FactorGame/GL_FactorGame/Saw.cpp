@@ -47,8 +47,6 @@ void Saw::Update()
 	if(Collision_Helper::IsCollide(Position,StaticHandle::PlayerPosition,vec3(3)))
 	{
 		StaticHandle::PlayerIsHurt = true;
-		//StaticHandle::PlayerDirectionDamage = Direction * Sens;
-		//StaticHandle::PlayerDamage = (1 - length(StaticHandle::PlayerPosition - Position)) * Damage;
 	}
 }
 
