@@ -17,7 +17,7 @@ Trampoline::Trampoline(vec3 Position)
 
 void Trampoline::Update()
 {
-	if(Collision_Helper::IsCollide(Position,StaticHandle::PlayerPosition,vec3(3)))
+	if(Collision_Helper::IsCollide(Position,StaticHandle::PlayerPosition,vec3(3,3,4)))
 	{
 		StaticHandle::PlayerRebound = true;
 	}

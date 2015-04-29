@@ -126,9 +126,9 @@ void Map_Creator::Load(string FileName)
 	TabSaw[2] = Saw(vec3( 17     , -40.5 , -19.80), vec2(0,1));
 	TabSaw[3] = Saw(vec3( 71     , -63   , -19.80), vec2(0,1));
 	TabSaw[4] = Saw(vec3( 3.50   , -81   , -19.80), vec2(1,0));
-	TabTrampo[0] = Trampoline(vec3(53.00, -45.00, -21.80));
-	TabTrampo[1] = Trampoline(vec3(62.00, -76.50, -21.80));
-	TabTrampo[2] = Trampoline(vec3(26.00, -27.00, -21.80));
+	TabTrampo[0] = Trampoline(vec3(53.00, -45.00, -19.80));
+	TabTrampo[1] = Trampoline(vec3(62.00, -76.50, -19.80));
+	TabTrampo[2] = Trampoline(vec3(26.00, -27.00, -19.80));
 }
 
 void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory)
