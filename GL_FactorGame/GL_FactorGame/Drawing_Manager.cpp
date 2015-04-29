@@ -88,9 +88,9 @@ void Drawing_Manager::DrawSaw(vec3 Position)
 	Models_factory.Draw_Models(Models_factory.ModelType::Saw,Load_Image::Metal);
 }
 
-void Drawing_Manager::DrawTrampoline(vec3 Position)
+void Drawing_Manager::DrawTrampoline(vec3 Position,float size)
 {
-	StaticHandle::mv_matrix = translate(Position);
+	StaticHandle::mv_matrix = translate(Position) * scale(size,size,size);
 
 	Models_factory.Draw_Models(Models_factory.ModelType::Trampoline,Load_Image::RedCircuit);
 }

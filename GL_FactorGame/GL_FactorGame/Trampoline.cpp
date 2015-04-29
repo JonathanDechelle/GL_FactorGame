@@ -25,7 +25,7 @@ void Trampoline::Update()
 
 void Trampoline::Draw(Drawing_Manager drawing_Manager)
 {
-	drawing_Manager.DrawTrampoline(Position);
+	drawing_Manager.DrawTrampoline(Position,0.5f);
 }
 
 
