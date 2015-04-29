@@ -14,7 +14,7 @@ public:
 	static void generate_texture(string FileName,GLuint* textures, int Index);
 	static void set_UniformTexture(string FileName, int Index);
 	static enum Type_Image{
-		Circuit,
+		BlueCircuit,
 		Or,
 		Metal,
 		GreenEye,
@@ -23,6 +23,7 @@ public:
 		Sand,
 		WoodBox,
 		LifeBarContent,
+		RedCircuit,
 	};
 };
 

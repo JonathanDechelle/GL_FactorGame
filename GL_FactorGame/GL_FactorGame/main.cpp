@@ -96,7 +96,7 @@ void Initialize_ALL()
 	StaticHandle::light.Initialize(StaticHandle::rendering_program);
 
 	glGenTextures(10, textures);
-	Load_Image::generate_texture("Circuit.jpg",textures, Load_Image::Type_Image::Circuit);
+	Load_Image::generate_texture("BlueCircuit.jpg",textures, Load_Image::Type_Image::BlueCircuit);
 	Load_Image::generate_texture("Or.jpg",textures, Load_Image::Type_Image::Or);
 	Load_Image::generate_texture("Metal.jpg",textures, Load_Image::Type_Image::Metal);
 	Load_Image::generate_texture("GreenEye.jpg",textures, Load_Image::Type_Image::GreenEye);
@@ -105,10 +105,11 @@ void Initialize_ALL()
 	Load_Image::generate_texture("Sand.png",textures, Load_Image::Type_Image::Sand);
 	Load_Image::generate_texture("Woodbox.png",textures, Load_Image::Type_Image::WoodBox);
 	Load_Image::generate_texture("LifeBarContent.png",textures,Load_Image::Type_Image::LifeBarContent);
+	Load_Image::generate_texture("RedCircuit.jpg",textures,Load_Image::Type_Image::RedCircuit);
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(StaticHandle::rendering_program);
-	Load_Image::set_UniformTexture("Circuit.jpg", Load_Image::Type_Image::Circuit);
+	Load_Image::set_UniformTexture("BlueCircuit.jpg", Load_Image::Type_Image::BlueCircuit);
 	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or);
 	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal);
 	Load_Image::set_UniformTexture("GreenEye.jpg",Load_Image::Type_Image::GreenEye);
@@ -117,6 +118,7 @@ void Initialize_ALL()
 	Load_Image::set_UniformTexture("Sand.png",Load_Image::Type_Image::Sand);
 	Load_Image::set_UniformTexture("Woodbox.png",Load_Image::Type_Image::WoodBox);
 	Load_Image::set_UniformTexture("LifeBarContent.png",Load_Image::Type_Image::LifeBarContent);
+	Load_Image::set_UniformTexture("RedCircuit.jpg",Load_Image::Type_Image::RedCircuit);
 
 	glutKeyboardFunc(keyPressed);																	//Set KeyboardFunc and Mouse Move
 	glutKeyboardUpFunc(keyUp);

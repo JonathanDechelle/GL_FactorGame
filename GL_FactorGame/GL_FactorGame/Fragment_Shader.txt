@@ -1,7 +1,7 @@
 #version 430 core 
 
 uniform int textureSelect;
-uniform sampler2D texCircuit;
+uniform sampler2D texBlueCircuit;
 uniform sampler2D texOr;
 uniform sampler2D texMetal;
 uniform sampler2D texGreenEye;
@@ -10,6 +10,7 @@ uniform sampler2D texLeaf;
 uniform sampler2D texSand;
 uniform sampler2D texWoodbox;
 uniform sampler2D texLifeBarContent;
+uniform sampler2D texRedCircuit;
 
 in VS_OUT
 {
@@ -22,7 +23,7 @@ out vec4 color;
 void main(void) 
 {
 	
-	if	   (textureSelect == 0)		color = texture2D(texCircuit,		   fs_in.TexCoord.st) * fs_in.Intensity;
+	if	   (textureSelect == 0)		color = texture2D(texBlueCircuit,	   fs_in.TexCoord.st) * fs_in.Intensity;
 	else if(textureSelect == 1)		color = texture2D(texOr,			   fs_in.TexCoord.st) * fs_in.Intensity;
 	else if(textureSelect == 2)		color = texture2D(texMetal,			   fs_in.TexCoord.st) * fs_in.Intensity;
 	else if(textureSelect == 3)		color = texture2D(texGreenEye,		   fs_in.TexCoord.st) * fs_in.Intensity;
@@ -30,5 +31,6 @@ void main(void)
 	else if(textureSelect == 5)		color = texture2D(texLeaf,			   fs_in.TexCoord.st) * fs_in.Intensity;
 	else if(textureSelect == 6)		color = texture2D(texSand,			   fs_in.TexCoord.st) * fs_in.Intensity;
 	else if(textureSelect == 7)		color = texture2D(texWoodbox,		   fs_in.TexCoord.st) * fs_in.Intensity;
-	else							color = texture2D(texLifeBarContent,   fs_in.TexCoord.st) * fs_in.Intensity;
+	else if(textureSelect == 8)		color = texture2D(texLifeBarContent,   fs_in.TexCoord.st) * fs_in.Intensity;
+	else							color = texture2D(texRedCircuit,	   fs_in.TexCoord.st) * fs_in.Intensity;
 }

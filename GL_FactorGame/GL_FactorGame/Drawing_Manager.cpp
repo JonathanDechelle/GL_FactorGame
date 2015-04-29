@@ -27,7 +27,7 @@ void Drawing_Manager::Draw_Torus(float AngleStart)
 		rotate(CurrentTime * GameSpeed/25 * (BaseFactor/100), 0.0f, 1.0f, 0.0f) * 
 		scale(0.85f,0.85f,0.85f);
 
-	Models_factory.Draw_Models(Models_factory.ModelType::Torus,Load_Image::Type_Image::Circuit);
+	Models_factory.Draw_Models(Models_factory.ModelType::Torus,Load_Image::Type_Image::BlueCircuit);
 }
 
 void Drawing_Manager::Draw_AllTorus(int nb)
@@ -92,7 +92,7 @@ void Drawing_Manager::DrawTrampoline(vec3 Position)
 {
 	StaticHandle::mv_matrix = translate(Position);
 
-	Models_factory.Draw_Models(Models_factory.ModelType::Trampoline,Load_Image::Metal);
+	Models_factory.Draw_Models(Models_factory.ModelType::Trampoline,Load_Image::RedCircuit);
 }
 
 void Drawing_Manager::DrawLifeBar()
