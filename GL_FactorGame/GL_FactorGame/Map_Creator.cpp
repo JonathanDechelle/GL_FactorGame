@@ -47,7 +47,7 @@ bool Map_Creator::CollideWithBlock(Model_Factory Models_factory)
 		while(j < 20)
 		{
 			Index += 3;
-			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw)
+			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw && Content[Index] != TypeContent::T_Trampoline)
 			{
 				Final_PlayerPosition = Collision_Helper::Get_projected_Position(StaticHandle::PlayerPosition);
 				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
@@ -106,17 +106,18 @@ void Map_Creator::Load(string FileName)
 	int Index = 0;
 	StaticHandle::MapBase_matrix = translate(BaseOffset) * scale(BaseScale);
 
-	vec3 SawPosition;
+	vec3 PositionObject;
 	for(int i = 0; i < 20; i++)
 	{
 		for(int j = 0; j < 20; j++)
 		{
 			Index+= 3;
-			if(Content[Index] == TypeContent::T_Saw)
-			{
-				SawPosition = Set_Tile_Position(Get_Initial_TilePosition(i,j));
-				cout << endl << "Saw at " << SawPosition[0] << " , " << SawPosition[1] << " ";
-			}
+			if(Content[Index] == TypeContent::T_Saw)				
+				cout << endl << "Saw at " << PositionObject[0] << " , " << PositionObject[1] << " ";
+			else if(Content[Index] == TypeContent::T_Trampoline)	
+				cout << endl << "Trampoline at " << PositionObject[0] << " , " << PositionObject[1] << " ";
+			
+			PositionObject = Set_Tile_Position(Get_Initial_TilePosition(i,j));
 		}
 	}
 
@@ -136,7 +137,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 		{
 			Index+= 3;
 			SetTexture(i,j,Index);
-			if(Content[Index] != TypeContent::T_Nothing && Content[Index] != TypeContent::T_Saw) 
+			if(Content[Index] != TypeContent::T_Nothing && Content[Index] != TypeContent::T_Saw && Content[Index] != TypeContent::T_Trampoline) 
 			{
 				Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
 			}

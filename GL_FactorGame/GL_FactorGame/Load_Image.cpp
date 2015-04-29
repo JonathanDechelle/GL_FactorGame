@@ -2,6 +2,12 @@
 #define  RED 85
 #define BLACK 0
 
+#define LEAF_FLOOR 1
+#define SAND_FLOOR 2
+#define WOODBOX_FLOOR 3
+#define SAW 4
+#define TRAMPOLINE 5
+
 void Load_Image::generate_texture(string FileName)
 {
 	int Width, Height, channel;
@@ -48,15 +54,17 @@ void Load_Image::generate_Map(string FileName, unsigned int* &Map_TileType)
 				{
 					if(image[Index - 3] > 0)
 					{
-						Map_TileType[Index] = 4;
+						Map_TileType[Index] = SAW;
 					}
-					else
-						Map_TileType[Index] = 1;
+					else if(image[Index - 2] > 0)
+					{
+						Map_TileType[Index] = TRAMPOLINE;
+					}
 				}
 				else if(TrueColor == BLACK)
-					Map_TileType[Index] = 2;
+					Map_TileType[Index] = SAND_FLOOR;
 				else
-					Map_TileType[Index] = 3;
+					Map_TileType[Index] = LEAF_FLOOR;
 			}
 			
 			IndexChannel = 0;

@@ -31,7 +31,8 @@ public:
 		T_Leaf,
 		T_Sand,
 		T_WoodBox,
-		T_Saw
+		T_Saw,
+		T_Trampoline
 	};
 };
 
