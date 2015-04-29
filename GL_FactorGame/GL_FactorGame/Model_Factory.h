@@ -18,7 +18,8 @@ public:
 		HalfBall,
 		Cube,
 		LifeBar_Content,
-		LifeBar_Frame
+		LifeBar_Frame,
+		Trampoline
 	};
 	TabVertex Torus_Model;
 	TabVertex Ball_Model;
@@ -27,7 +28,8 @@ public:
 	TabVertex Cube_Model;
 	TabVertex LifeBar_Content_Model;
 	TabVertex LifeBar_Frame_Model;
-	TabVertex Models[7];
+	TabVertex Trampoline_Model;
+	TabVertex Models[8];
 	int NbModels;
 
 	void Load_Models();

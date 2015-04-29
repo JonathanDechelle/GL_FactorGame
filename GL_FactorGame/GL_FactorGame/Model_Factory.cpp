@@ -31,6 +31,8 @@ void Model_Factory::Load_Models()
 	LifeBar_Content_Model = TabVertex(vertices,uvs);
 	objloader::LoadObj("LifeBarFrame.obj",vertices,uvs,normals); 	
 	LifeBar_Frame_Model = TabVertex(vertices,uvs);
+	objloader::LoadObj("Trampoline.obj",vertices,uvs,normals); 	
+	Trampoline_Model = TabVertex(vertices,uvs);
 
 	Models[Torus] = Torus_Model;
 	Models[Ball] = Ball_Model;
@@ -39,7 +41,8 @@ void Model_Factory::Load_Models()
  	Models[Cube] = Cube_Model;
 	Models[LifeBar_Frame] = LifeBar_Frame_Model;
 	Models[LifeBar_Content] = LifeBar_Content_Model;
-	NbModels = 7;
+	Models[Trampoline] = Trampoline_Model;
+	NbModels = 8;
 }
 
 void Model_Factory::Draw_Models(ModelType Type, int Texture)
