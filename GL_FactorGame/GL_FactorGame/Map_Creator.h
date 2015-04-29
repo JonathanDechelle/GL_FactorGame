@@ -2,6 +2,7 @@
 #include "Load_Image.h"
 #include "Model_Factory.h"
 #include "Saw.h"
+#include "Trampoline.h"
 #include "StaticHandle.h"
 #include "Collision_Helper.h"
 
@@ -24,6 +25,7 @@ public:
 	float Base_FactorDistance_BetweenTile;
 	float BaseScale;
 	Saw TabSaw[10];
+	Trampoline TabTrampo[10];
 
 	enum TypeContent
 	{
