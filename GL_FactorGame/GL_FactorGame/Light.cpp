@@ -20,8 +20,10 @@ void Light::Initialize(int rendering_program)
 	lightRadius_location = glGetUniformLocation(rendering_program, "Light_Radius");
 }
 
-void Light::Update()
+void Light::Update(float CurrentTime)
 {
+	Light_Brightness = sin(CurrentTime * 30) * 0.5f + 0.5f;
+
 	glUniform4f(lightDir_location,Light_Direction[0],Light_Direction[1],Light_Direction[2],Light_Direction[3]);
 	glUniform1f(lightBrightness_location, Light_Brightness);
 	glUniform1f(lightRadius_location, Light_Radius);

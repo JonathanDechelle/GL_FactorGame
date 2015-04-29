@@ -141,14 +141,13 @@ void render(float CurrentTime)
 	glClearColor(0,0,0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	StaticHandle::light.Update();
+	StaticHandle::light.Update(StaticHandle::CurrentTime);
 
 	player.Udpate(keyboard,Map,Models_factory);
 	camera.Update(player);
 
 	keyUpdate();
 
-	//Light_Brightness = sinf(20 * CurrentTime);
 	Set_Uniform(); 
 
 	Map.UpdateAndDraw(Drawing_manager,Models_factory);

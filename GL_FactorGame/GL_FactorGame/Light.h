@@ -16,6 +16,6 @@ public:
 	GLint lightRadius_location;
 
 	void Initialize(int renderingProgram);
-	void Update();
+	void Update(float CurrentTime);
 };
 
