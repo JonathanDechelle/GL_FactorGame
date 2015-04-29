@@ -116,6 +116,11 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 		StaticHandle::PlayerLife -= 2;
 	}
 
+	if (StaticHandle::PlayerRebound)
+	{
+		Jump();
+	}
+
 	if(StaticHandle::PlayerLife < 0)
 	{
 		Reset();
@@ -131,5 +136,6 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 	
 	ApplyGravity(gravity * StaticHandle::GameSpeed);
 	StaticHandle::PlayerIsHurt = false;
+	StaticHandle::PlayerRebound = false;
 }
 

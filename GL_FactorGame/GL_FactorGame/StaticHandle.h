@@ -16,6 +16,7 @@ public:
 	static mat4 MapBase_matrix;
 	static vec3 PlayerPosition;
 	static vec3 PlayerStartPosition;
+	static bool PlayerRebound;
 	static bool PlayerIsHurt;
 	static float PlayerLife;
 	static float PlayerMaxLife;
