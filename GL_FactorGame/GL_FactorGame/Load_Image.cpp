@@ -8,6 +8,12 @@
 #define SAW 4
 #define TRAMPOLINE 5
 
+int Load_Image::rendering_program;
+void Load_Image::Initialize(int new_rendering_program)
+{
+	rendering_program = new_rendering_program;
+}
+
 void Load_Image::generate_texture(string FileName)
 {
 	int Width, Height, channel;
@@ -103,5 +109,5 @@ void Load_Image::set_UniformTexture(string FileName, int Index)
 	FileName.erase(FileName.length() - 4,4);
 	string UniformName = "tex";
 	UniformName.append(FileName);
-	glUniform1i(glGetUniformLocation(StaticHandle::rendering_program, UniformName.c_str()), Index);
+	glUniform1i(glGetUniformLocation(rendering_program, UniformName.c_str()), Index);
 }

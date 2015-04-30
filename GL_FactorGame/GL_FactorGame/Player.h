@@ -2,7 +2,6 @@
 #include "Keyboard.h"
 #include "vmath.h"
 #include "Model_Factory.h"
-#include "Load_Image.h"
 #include "Map_Creator.h"
 #include "Collision_Helper.h"
 

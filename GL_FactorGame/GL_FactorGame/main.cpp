@@ -109,6 +109,7 @@ void Initialize_ALL()
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(StaticHandle::rendering_program);
+	Load_Image::Initialize(StaticHandle::rendering_program);
 	Load_Image::set_UniformTexture("BlueCircuit.jpg", Load_Image::Type_Image::BlueCircuit);
 	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or);
 	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal);
