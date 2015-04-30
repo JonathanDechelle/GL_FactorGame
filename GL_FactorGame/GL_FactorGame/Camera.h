@@ -1,6 +1,5 @@
 #pragma once
 #include "vmath.h"
-#include "Player.h"
 #include "..\Include\glut.h"
 #include "Keyboard.h"
 
@@ -13,7 +12,7 @@ public:
 	vec3 center;
 	vec3 Up;
 	mat4 lookAt(vec3 eye, vec3 center, vec3 up);
-	void Update(Player player);
+	void Update(vec3 PlayerPosition);
 	void Keyboard_Update(Keyboard keyboard);
 	void MouseMove(int x, int y);
 	void SetBasePosition(vec3 Position);

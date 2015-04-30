@@ -80,11 +80,11 @@ void Camera::MouseMove(int x, int y)
 	center = normalize(center);
 }
 
-void Camera::Update(Player player)
+void Camera::Update(vec3 PlayerPosition)
 {
-	Position[2] = abs(player.Position[2]) + BaseOffset[2];
-	Position[1] = player.Position[1];
-	Position[0] = player.Position[0];
+	Position[2] = abs(PlayerPosition[2]) + BaseOffset[2];
+	Position[1] = PlayerPosition[1];
+	Position[0] = PlayerPosition[0];
 	lookAtMatrix_matrix = lookAt(Position,Position + center, Up);
 }
 

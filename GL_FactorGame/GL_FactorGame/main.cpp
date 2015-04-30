@@ -146,7 +146,7 @@ void render(float CurrentTime)
 	StaticHandle::light.Update(StaticHandle::CurrentTime);
 
 	player.Udpate(keyboard,Map,Models_factory);
-	camera.Update(player);
+	camera.Update(player.Position);
 
 	keyUpdate();
 
