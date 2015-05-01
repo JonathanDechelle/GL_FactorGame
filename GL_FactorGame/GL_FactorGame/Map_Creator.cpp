@@ -34,7 +34,7 @@ vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 	return Collision_Helper::Get_projected_Position(Initial_TilePosition);
 }
 
-bool Map_Creator::CollideWithBlock(Model_Factory Models_factory)
+bool Map_Creator::CollideWithBlock(Model_Factory Models_factory,vec3 PlayerPosition)
 {
 	int Index = 0;
 	int i = 0, j = 0;
@@ -49,7 +49,7 @@ bool Map_Creator::CollideWithBlock(Model_Factory Models_factory)
 			Index += 3;
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw && Content[Index] != TypeContent::T_Trampoline)
 			{
-				Final_PlayerPosition = Collision_Helper::Get_projected_Position(StaticHandle::PlayerPosition);
+				Final_PlayerPosition = Collision_Helper::Get_projected_Position(PlayerPosition);
 				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
 
 				Initial_TilePosition = Get_Initial_TilePosition(i,j);
@@ -131,7 +131,7 @@ void Map_Creator::Load(string FileName)
 	TabTrampo[2] = Trampoline(vec3(26.00, -27.00, -19.80));
 }
 
-void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory)
+void Map_Creator::UpdateAndDraw(Player player, Drawing_Manager drawing_manager,Model_Factory Models_factory)
 { 
 	int Index = 0;
 	for(int i = 0; i < 20; i++)
@@ -149,13 +149,13 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 
 	for(int i = 0; i < 5; i++)
 	{
-		TabSaw[i].Update();
+		TabSaw[i].Update(player);
 		TabSaw[i].Draw(drawing_manager);
 	}
 
 	for(int i = 0; i < 3; i++)
 	{
-		TabTrampo[i].Update();
+		TabTrampo[i].Update(player);
 		TabTrampo[i].Draw(drawing_manager);
 	}
 }

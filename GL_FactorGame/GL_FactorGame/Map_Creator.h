@@ -14,8 +14,8 @@ public:
 	void Load(string FileName);
 	void SetTexture(int i, int j, int Index);
 	void SetBase_Position(vec3 Position);
-	void UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory);
-	bool CollideWithBlock(Model_Factory Models_factory);
+	void UpdateAndDraw(Player player, Drawing_Manager drawing_manager,Model_Factory Models_factory);
+	bool CollideWithBlock(Model_Factory Models_factory,vec3 PlayerPosition);
 	vec3 Set_Tile_Position(vec3 Initial_TilePosition);
 	vec3 Get_Initial_TilePosition(int i, int j);
 

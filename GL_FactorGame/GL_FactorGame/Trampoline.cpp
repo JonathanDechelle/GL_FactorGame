@@ -15,11 +15,11 @@ Trampoline::Trampoline(vec3 Position)
 	this->Position = Position;
 }
 
-void Trampoline::Update()
+void Trampoline::Update(Player player)
 {
-	if(Collision_Helper::IsCollide(Position,StaticHandle::PlayerPosition,vec3(3,3,4)))
+	if(Collision_Helper::IsCollide(Position,player.Position,vec3(3,3,4)))
 	{
-		StaticHandle::PlayerRebound = true;
+		player.Rebound = true;
 	}
 }
 

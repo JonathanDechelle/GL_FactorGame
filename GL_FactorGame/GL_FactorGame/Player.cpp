@@ -23,6 +23,12 @@ void Player::Reset()
 	gravity = 0.000015f;
 	//BaseJump = 1.05f; //off sector
 	BaseJump = 0.65f; //on sector
+
+	StartPosition = vec3(0.0f,-22.0f,-19.0f);
+	IsHurt = false;
+	Rebound = false;
+	Life = 100;
+	MaxLife = 100;
 }
 
 Player::Player()
@@ -84,48 +90,48 @@ void Player::Manage_Keyboard(Keyboard keyboard)
 	if(keyboard.IsHold('D')) Next_Position[X]+= Speed * StaticHandle::GameSpeed;
 }
 
-void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_factory)
+void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 {
 	Manage_Keyboard(keyboard);
 	Next_Position = GetNextPosition();	
 	
 	Futur_Position = Position  + Next_Position;
-	StaticHandle::PlayerPosition = Futur_Position;
+	Position = Futur_Position;
 
-	IsCollide = Map.CollideWithBlock(Models_factory);
+	//IsCollide = Map.CollideWithBlock(Models_factory,Position);
 
-	if(!Collision_Helper::OnTopOf)
-	{
-		if(IsCollide)
-		{
-			Falling *= -0.50f;
-			Next_Position *= -0.75f;
-		}
-	}
-	else
-	{
-		Next_Position[Y] = 0;
-		Falling *= -0.50f;
-		Position[Y] = Last_Position[1];
-		if(keyboard.IsPressed(' ')) Jump();
-	}
+	//if(!Collision_Helper::OnTopOf)
+	//{
+	//	if(IsCollide)
+	//	{
+	//		Falling *= -0.50f;
+	//		Next_Position *= -0.75f;
+	//	}
+	//}
+	//else
+	//{
+	//	Next_Position[Y] = 0;
+	//	Falling *= -0.50f;
+	//	Position[Y] = Last_Position[1];
+	//	if(keyboard.IsPressed(' ')) Jump();
+	//}
 
-	if(StaticHandle::PlayerIsHurt)
-	{
-		Jump();
-		StaticHandle::PlayerLife -= 2;
-	}
-
-	if (StaticHandle::PlayerRebound)
+	if(IsHurt)
 	{
 		Jump();
+		Life -= 2;
 	}
 
-	if(StaticHandle::PlayerLife < 0)
+	if (Rebound)
+	{
+		Jump();
+	}
+
+	if(Life < 0)
 	{
 		Reset();
-		SetBase_Position(StaticHandle::PlayerStartPosition);
-		StaticHandle::PlayerLife = StaticHandle::PlayerMaxLife;
+		SetBase_Position(StartPosition);
+		Life = MaxLife;
 	}
 
 	
@@ -135,7 +141,7 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 	
 	ApplyGravity(gravity * StaticHandle::GameSpeed);
-	StaticHandle::PlayerIsHurt = false;
-	StaticHandle::PlayerRebound = false;
+	IsHurt = false;
+	Rebound = false;
 }
 

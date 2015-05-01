@@ -14,12 +14,6 @@ public:
 	static mat4 mv_matrix;
 	static mat4 proj_matrix;
 	static mat4 MapBase_matrix;
-	static vec3 PlayerPosition;
-	static vec3 PlayerStartPosition;
-	static bool PlayerRebound;
-	static bool PlayerIsHurt;
-	static float PlayerLife;
-	static float PlayerMaxLife;
 	vec3 PlayerDirectionDamage;
 	static Light light;
 };

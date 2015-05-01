@@ -2,8 +2,6 @@
 #include "Keyboard.h"
 #include "vmath.h"
 #include "Model_Factory.h"
-#include "Map_Creator.h"
-#include "Collision_Helper.h"
 
 #define X 0
 #define Y 1
@@ -16,7 +14,7 @@ public:
 	Player();
 	Player(vec3 Position);
 	void Manage_Keyboard(Keyboard keyboard);
-	void Udpate(Keyboard keyboard,Map_Creator Map, Model_Factory Models_factory);
+	void Udpate(Keyboard keyboard, Model_Factory Models_factory);
 	void SetBase_Position(vec3 Position);
 	void Reset();
 	void Jump();
@@ -29,13 +27,19 @@ public:
 	vec3 Futur_Position;
 	vec3 Rotation;
 	vec3 Distance;
-	vec3 BasePosition;
 	float Speed;
 	float Friction;
 	float BaseJump;
 	float BaseFactor;
 	Keyboard keyboard;
 	float JumpHeight;
+	vec3 BasePosition;
+	vec3 StartPosition;
+	bool IsHurt;
+	bool Rebound;
+	float Life;
+	float MaxLife;
+
 
 	//Gravity Section
 	float gravity;

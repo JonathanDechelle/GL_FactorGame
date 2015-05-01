@@ -9,7 +9,7 @@ public:
 	Saw(vec3 Position);
 	Saw(vec3 Position, vec2 Direction);
 	~Saw(void);
-	void Update();
+	void Update(Player player);
 	void Draw(Drawing_Manager drawing_Manager);
 	vec3 Position;
 	vec3 StartPosition;

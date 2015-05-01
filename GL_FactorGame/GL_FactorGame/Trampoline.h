@@ -8,7 +8,7 @@ public:
 	Trampoline(void);
 	~Trampoline(void);
 	Trampoline(vec3 Position);
-	void Update();
+	void Update(Player player);
 	void Draw(Drawing_Manager drawing_Manager);
 	vec3 Position;
 };

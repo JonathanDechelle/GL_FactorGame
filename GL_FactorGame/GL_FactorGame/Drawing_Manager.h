@@ -9,7 +9,7 @@ public:
 	~Drawing_Manager(void);
 	Drawing_Manager(Model_Factory Models_factory);
 	void DrawPlayer();
-	void DrawLifeBar();
+	//DrawLifeBar(Player player);
 	void DrawSaw(vec3 Position);
 	void DrawTrampoline(vec3 Position,float size);
 	void Draw_Torus(float AngleStart);
