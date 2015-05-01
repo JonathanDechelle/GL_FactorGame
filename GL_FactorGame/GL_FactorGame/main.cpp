@@ -146,7 +146,7 @@ void render(float CurrentTime)
 
 	Set_Uniform(); 
 
-	Map.UpdateAndDraw(player,Drawing_manager,Models_factory);
+	Map.UpdateAndDraw(Drawing_manager,Models_factory);
 
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;

@@ -1,6 +1,5 @@
 #pragma once
 #include "Drawing_Manager.h"
-#include "Collision_Helper.h"
 
 class Saw
 {
@@ -9,7 +8,7 @@ public:
 	Saw(vec3 Position);
 	Saw(vec3 Position, vec2 Direction);
 	~Saw(void);
-	void Update(Player player);
+	void Update();
 	void Draw(Drawing_Manager drawing_Manager);
 	vec3 Position;
 	vec3 StartPosition;

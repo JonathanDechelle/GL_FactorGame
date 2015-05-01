@@ -31,7 +31,7 @@ Saw::~Saw(void)
 
 }
 
-void Saw::Update(Player player)
+void Saw::Update()
 {
 	vec3 Vector_Distance = StartPosition - Position;
 	float Distance = length(Vector_Distance);
@@ -44,10 +44,11 @@ void Saw::Update(Player player)
 		Sens *= -1;
 	}
 
+	/*
 	if(Collision_Helper::IsCollide(Position,player.Position,vec3(3,3,4)))
 	{
 		player.IsHurt = true;
-	}
+	}*/
 }
 
 void Saw::Draw(Drawing_Manager drawing_Manager)

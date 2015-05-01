@@ -1,6 +1,7 @@
 #pragma once
 #include "vmath.h"
 #include "Player.h"
+#include "Map_Creator.h"
 
 class Collision_Helper
 {

@@ -15,12 +15,13 @@ Trampoline::Trampoline(vec3 Position)
 	this->Position = Position;
 }
 
-void Trampoline::Update(Player player)
+void Trampoline::Update()
 {
+	/*
 	if(Collision_Helper::IsCollide(Position,player.Position,vec3(3,3,4)))
 	{
 		player.Rebound = true;
-	}
+	}*/
 }
 
 void Trampoline::Draw(Drawing_Manager drawing_Manager)

@@ -26,14 +26,17 @@ vec3 Map_Creator::Get_Initial_TilePosition(int i, int j)
 				  0.0f);
 }
 
+/*
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 {
 	Initial_TilePosition[0] += StaticHandle::MapBase_matrix[3][0];
 	Initial_TilePosition[1] += StaticHandle::MapBase_matrix[3][1];
 	Initial_TilePosition[2] += StaticHandle::MapBase_matrix[3][2];
 	return Collision_Helper::Get_projected_Position(Initial_TilePosition);
-}
+}*/
 
+
+/*
 bool Map_Creator::CollideWithBlock(Model_Factory Models_factory,vec3 PlayerPosition)
 {
 	int Index = 0;
@@ -49,11 +52,12 @@ bool Map_Creator::CollideWithBlock(Model_Factory Models_factory,vec3 PlayerPosit
 			Index += 3;
 			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw && Content[Index] != TypeContent::T_Trampoline)
 			{
-				Final_PlayerPosition = Collision_Helper::Get_projected_Position(PlayerPosition);
+				//Final_PlayerPosition = Collision_Helper::Get_projected_Position(PlayerPosition);
 				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
 
 				Initial_TilePosition = Get_Initial_TilePosition(i,j);
 				Final_TilePosition = Set_Tile_Position(Initial_TilePosition);
+				
 				
 				if(Collision_Helper::IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
 				{
@@ -70,7 +74,7 @@ bool Map_Creator::CollideWithBlock(Model_Factory Models_factory,vec3 PlayerPosit
 	}
 	return false;
 }
-
+*/
 
 void Map_Creator::SetTexture(int i, int j, int Index)
 {
@@ -117,7 +121,7 @@ void Map_Creator::Load(string FileName)
 			else if(Content[Index] == TypeContent::T_Trampoline)	
 				cout << endl << "Trampoline at " << PositionObject[0] << " , " << PositionObject[1] << " ";
 			
-			PositionObject = Set_Tile_Position(Get_Initial_TilePosition(i,j));
+			//PositionObject = Set_Tile_Position(Get_Initial_TilePosition(i,j));
 		}
 	}
 
@@ -131,7 +135,7 @@ void Map_Creator::Load(string FileName)
 	TabTrampo[2] = Trampoline(vec3(26.00, -27.00, -19.80));
 }
 
-void Map_Creator::UpdateAndDraw(Player player, Drawing_Manager drawing_manager,Model_Factory Models_factory)
+void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory)
 { 
 	int Index = 0;
 	for(int i = 0; i < 20; i++)
@@ -149,13 +153,13 @@ void Map_Creator::UpdateAndDraw(Player player, Drawing_Manager drawing_manager,M
 
 	for(int i = 0; i < 5; i++)
 	{
-		TabSaw[i].Update(player);
+		TabSaw[i].Update();
 		TabSaw[i].Draw(drawing_manager);
 	}
 
 	for(int i = 0; i < 3; i++)
 	{
-		TabTrampo[i].Update(player);
+		TabTrampo[i].Update();
 		TabTrampo[i].Draw(drawing_manager);
 	}
 }
