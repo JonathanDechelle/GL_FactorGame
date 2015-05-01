@@ -17,6 +17,7 @@ public:
 	void Draw_Eye(float AngleStart,int NoEye);
 	void Draw_AllEyes(int nb);
 	void Draw(float CurrentTime,float GameSpeed);
+	void RenderCollision(vec3 Position);
 	float BaseFactor;
 	float GameSpeed;
 	float CurrentTime;

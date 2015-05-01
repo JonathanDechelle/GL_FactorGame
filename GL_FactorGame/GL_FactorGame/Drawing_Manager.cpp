@@ -108,6 +108,13 @@ void Drawing_Manager::DrawLifeBar(Player player)
 	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Content,Load_Image::LifeBarContent,LifeRatio);
 }
 */
+
+void Drawing_Manager::RenderCollision(vec3 Position)
+{
+	StaticHandle::mv_matrix = translate(Position) * scale(2.0f);
+	Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
+}
+
 void Drawing_Manager::Draw(float CurrentTime,float GameSpeed)
 {
 	this->CurrentTime = CurrentTime;

@@ -19,7 +19,7 @@ bool Collision_Helper::IsCollide(vec3 PositionObject, Player player, vec3 Dimens
 	return false;
 }
 
-bool Collision_Helper::CollideWithBlock(Map_Creator map,Player player)
+bool Collision_Helper::CollideWithBlock(Map_Creator map,Player player,Drawing_Manager drawing_manager)
 {
 	
 	int Index = 0;
@@ -38,7 +38,7 @@ bool Collision_Helper::CollideWithBlock(Map_Creator map,Player player)
 			{
 				OldPlayerPosition = player.Position;
 				player.Position = StaticHandle::Get_projected_Position(player.Position);
-				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
+				drawing_manager.RenderCollision(player.Position);
 				
 				Initial_TilePosition = map.Get_Initial_TilePosition(i,j);
 				Final_TilePosition = map.Set_Tile_Position(Initial_TilePosition);
@@ -53,7 +53,7 @@ bool Collision_Helper::CollideWithBlock(Map_Creator map,Player player)
 					return true;
 				}
 
-				//Collision_Helper::RenderCollision(Models_factory,Final_TilePosition); 
+				drawing_manager.RenderCollision(Final_TilePosition); 
 				
 			}
 			j++;
@@ -65,15 +65,7 @@ bool Collision_Helper::CollideWithBlock(Map_Creator map,Player player)
 	return false;
 }
 
-void Collision_Helper::Update(Map_Creator map, Player player)
+void Collision_Helper::Update(Map_Creator map, Player player,Drawing_Manager drawing_manager)
 {
-	player.IsCollide = CollideWithBlock(map,player);
+	player.IsCollide = CollideWithBlock(map,player,drawing_manager);
 }
-
-/*
-void Collision_Helper::RenderCollision(Model_Factory Models_factory,vec3 Position)
-{
-	StaticHandle::mv_matrix = translate(Position) * scale(2.0f);
-	Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
-}
-*/
