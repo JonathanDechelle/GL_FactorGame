@@ -26,55 +26,11 @@ vec3 Map_Creator::Get_Initial_TilePosition(int i, int j)
 				  0.0f);
 }
 
-/*
+
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 {
-	Initial_TilePosition[0] += StaticHandle::MapBase_matrix[3][0];
-	Initial_TilePosition[1] += StaticHandle::MapBase_matrix[3][1];
-	Initial_TilePosition[2] += StaticHandle::MapBase_matrix[3][2];
-	return Collision_Helper::Get_projected_Position(Initial_TilePosition);
-}*/
-
-
-/*
-bool Map_Creator::CollideWithBlock(Model_Factory Models_factory,vec3 PlayerPosition)
-{
-	int Index = 0;
-	int i = 0, j = 0;
-	vec3 Final_TilePosition;
-	vec3 Initial_TilePosition;
-	vec3 Final_PlayerPosition;
-
-	while(i < 20)
-	{
-		while(j < 20)
-		{
-			Index += 3;
-			if(Content[Index] != TypeContent::T_Nothing && Content[Index]!= TypeContent::T_Saw && Content[Index] != TypeContent::T_Trampoline)
-			{
-				//Final_PlayerPosition = Collision_Helper::Get_projected_Position(PlayerPosition);
-				//Collision_Helper::RenderCollision(Models_factory,Final_PlayerPosition);
-
-				Initial_TilePosition = Get_Initial_TilePosition(i,j);
-				Final_TilePosition = Set_Tile_Position(Initial_TilePosition);
-				
-				
-				if(Collision_Helper::IsCollide(Final_TilePosition,Final_PlayerPosition,DimensionObject))
-				{
-					//cout << "Collide with " << i << " " << j <<endl;
-					return true;
-				}
-
-				//Collision_Helper::RenderCollision(Models_factory,Final_TilePosition); 
-			}
-			j++;
-		}
-		i++;
-		j = 0;
-	}
-	return false;
+	return StaticHandle::Get_projected_Position(Initial_TilePosition);
 }
-*/
 
 void Map_Creator::SetTexture(int i, int j, int Index)
 {

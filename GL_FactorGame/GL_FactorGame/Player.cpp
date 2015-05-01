@@ -98,23 +98,21 @@ void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 	Futur_Position = Position  + Next_Position;
 	Position = Futur_Position;
 
-	//IsCollide = Map.CollideWithBlock(Models_factory,Position);
-
-	//if(!Collision_Helper::OnTopOf)
-	//{
-	//	if(IsCollide)
-	//	{
-	//		Falling *= -0.50f;
-	//		Next_Position *= -0.75f;
-	//	}
-	//}
-	//else
-	//{
-	//	Next_Position[Y] = 0;
-	//	Falling *= -0.50f;
-	//	Position[Y] = Last_Position[1];
-	//	if(keyboard.IsPressed(' ')) Jump();
-	//}
+	if(OnTopOf)
+	{
+		if(IsCollide)
+		{
+			Falling *= -0.50f;
+			Next_Position *= -0.75f;
+		}
+	}
+	else
+	{
+		Next_Position[Y] = 0;
+		Falling *= -0.50f;
+		Position[Y] = Last_Position[1];
+		if(keyboard.IsPressed(' ')) Jump();
+	}
 
 	if(IsHurt)
 	{

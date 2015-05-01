@@ -16,5 +16,6 @@ public:
 	static mat4 MapBase_matrix;
 	vec3 PlayerDirectionDamage;
 	static Light light;
+	static vec3 Get_projected_Position(vec3 Position);
 };
 

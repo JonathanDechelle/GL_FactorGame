@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Map_Creator.h"
 #include "Shader_Compiler.h"
+#include "Collision_Helper.h"
 
 
 GLuint vertex_array_object,buffer;
@@ -139,7 +140,7 @@ void render(float CurrentTime)
 
 	StaticHandle::light.Update(StaticHandle::CurrentTime);
 	
-	//player.Udpate(keyboard,Models_factory);
+	player.Udpate(keyboard,Models_factory);
 	camera.Update(player.Position);
 
 	keyUpdate();
@@ -151,6 +152,8 @@ void render(float CurrentTime)
 	Drawing_manager.PlayerPosition = player.Position;
 	Drawing_manager.PlayerRotation = player.Rotation;
 	Drawing_manager.Draw(CurrentTime,StaticHandle::GameSpeed);
+
+	Collision_Helper::Update(Map,player);
 }
 
 void display() 
