@@ -11,22 +11,26 @@ void Player::Reset()
 	
 	for(int i = 0; i < 3; i++)
 	{
-		Position[i] = 0;
 		Next_Position[i] = 0;
 		Distance[i] = 0;
+		BasePosition[i] = 0;
 	}
 
 	BaseFactor = 10000;
 	Fake_Floor = -20;
 	Falling = 0;
-	BasePosition = Position;
 	gravity = 0.000015f;
-	//BaseJump = 1.05f; //off sector
-	BaseJump = 0.65f; //on sector
+	BaseJump = 0.65f; //off sector
+	//BaseJump = 0.65f; //on sector
 
 	StartPosition = vec3(0.0f,-22.0f,-19.0f);
+	Position = StartPosition;
+	Last_Position = Position;
+	Futur_Position = Position;
 	IsHurt = false;
 	Rebound = false;
+	OnTopOf = false;
+	IsCollide = false;
 	Life = 100;
 	MaxLife = 100;
 }
@@ -55,8 +59,8 @@ void Check_Limit(float &Next_Position, float Distance)
 
 void Player::Jump()
 {
-	Next_Position[1] += 0.15f;
-	Falling = -BaseJump;
+	Next_Position[1] += 0.01f;
+	Falling -= BaseJump;
 	keyboard.SetActive(' ',false);
 }
 
@@ -93,12 +97,13 @@ void Player::Manage_Keyboard(Keyboard keyboard)
 void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 {
 	Manage_Keyboard(keyboard);
-	Next_Position = GetNextPosition();	
-	
-	Futur_Position = Position  + Next_Position;
-	Position = Futur_Position;
 
-	if(OnTopOf)
+	if(IsCollide)
+	{
+		Position = Last_Position;
+	}
+
+	if(!OnTopOf)
 	{
 		if(IsCollide)
 		{
@@ -110,35 +115,39 @@ void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 	{
 		Next_Position[Y] = 0;
 		Falling *= -0.50f;
-		Position[Y] = Last_Position[1];
 		if(keyboard.IsPressed(' ')) Jump();
 	}
 
 	if(IsHurt)
 	{
 		Jump();
-		Life -= 2;
+		//StaticHandle::PlayerLife -= 2;
 	}
 
 	if (Rebound)
 	{
 		Jump();
 	}
-
-	if(Life < 0)
+	/*
+	if(StaticHandle::PlayerLife < 0)
 	{
 		Reset();
-		SetBase_Position(StartPosition);
-		Life = MaxLife;
-	}
+		SetBase_Position(StaticHandle::PlayerStartPosition);
+		StaticHandle::PlayerLife = StaticHandle::PlayerMaxLife;
+	}*/
 
 	
+	Next_Position = GetNextPosition();
 	Position += Next_Position;
 
-	Last_Position = Position;
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 	
+	Futur_Position = Position  + Next_Position;
+	Futur_Position[Y] -= Falling;
+	Last_Position = Position;
+
 	ApplyGravity(gravity * StaticHandle::GameSpeed);
+
 	IsHurt = false;
 	Rebound = false;
 }

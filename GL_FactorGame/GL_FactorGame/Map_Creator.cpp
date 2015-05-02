@@ -29,6 +29,9 @@ vec3 Map_Creator::Get_Initial_TilePosition(int i, int j)
 
 vec3 Map_Creator::Set_Tile_Position(vec3 Initial_TilePosition)
 {
+	Initial_TilePosition[0] += StaticHandle::MapBase_matrix[3][0];
+	Initial_TilePosition[1] += StaticHandle::MapBase_matrix[3][1];
+	Initial_TilePosition[2] += StaticHandle::MapBase_matrix[3][2];
 	return StaticHandle::Get_projected_Position(Initial_TilePosition);
 }
 
@@ -106,7 +109,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 			}
 		}
 	}
-
+	/*
 	for(int i = 0; i < 5; i++)
 	{
 		TabSaw[i].Update();
@@ -117,5 +120,5 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 	{
 		TabTrampo[i].Update();
 		TabTrampo[i].Draw(drawing_manager);
-	}
+	}*/
 }

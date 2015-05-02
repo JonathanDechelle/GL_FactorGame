@@ -141,6 +141,8 @@ void render(float CurrentTime)
 	StaticHandle::light.Update(StaticHandle::CurrentTime);
 	
 	player.Udpate(keyboard,Models_factory);
+	Collision_Helper::Update(Map,player,Drawing_manager);
+
 	camera.Update(player.Position);
 
 	keyUpdate();
@@ -153,7 +155,7 @@ void render(float CurrentTime)
 	Drawing_manager.PlayerRotation = player.Rotation;
 	Drawing_manager.Draw(CurrentTime,StaticHandle::GameSpeed);
 
-	Collision_Helper::Update(Map,player,Drawing_manager);
+	
 }
 
 void display() 
