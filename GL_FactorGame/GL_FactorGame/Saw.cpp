@@ -43,12 +43,6 @@ void Saw::Update()
 		StartPosition = Position;
 		Sens *= -1;
 	}
-
-	/*
-	if(Collision_Helper::IsCollide(Position,player.Position,vec3(3,3,4)))
-	{
-		player.IsHurt = true;
-	}*/
 }
 
 void Saw::Draw(Drawing_Manager drawing_Manager)

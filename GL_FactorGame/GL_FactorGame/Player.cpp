@@ -96,13 +96,30 @@ void Player::Manage_Keyboard(Keyboard keyboard)
 
 void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 {
-	Manage_Keyboard(keyboard);
+	if(IsHurt)
+	{
+		Jump();
+		Life -= 2;
+	}
+
+	if (Rebound)
+	{
+		Jump();
+	}
+
+	if(Life < 0)
+	{
+		Reset();
+		SetBase_Position(StartPosition);
+		Life = MaxLife;
+	}
 
 	if(IsCollide)
 	{
 		Position = Last_Position;
 	}
 
+	Manage_Keyboard(keyboard);
 	if(!OnTopOf)
 	{
 		if(IsCollide)
@@ -118,25 +135,6 @@ void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 		if(keyboard.IsPressed(' ')) Jump();
 	}
 
-	if(IsHurt)
-	{
-		Jump();
-		//StaticHandle::PlayerLife -= 2;
-	}
-
-	if (Rebound)
-	{
-		Jump();
-	}
-	/*
-	if(StaticHandle::PlayerLife < 0)
-	{
-		Reset();
-		SetBase_Position(StaticHandle::PlayerStartPosition);
-		StaticHandle::PlayerLife = StaticHandle::PlayerMaxLife;
-	}*/
-
-	
 	Next_Position = GetNextPosition();
 	Position += Next_Position;
 

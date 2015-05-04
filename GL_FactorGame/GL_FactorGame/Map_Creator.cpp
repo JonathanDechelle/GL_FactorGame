@@ -109,7 +109,7 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 			}
 		}
 	}
-	/*
+
 	for(int i = 0; i < 5; i++)
 	{
 		TabSaw[i].Update();
@@ -120,5 +120,5 @@ void Map_Creator::UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Mo
 	{
 		TabTrampo[i].Update();
 		TabTrampo[i].Draw(drawing_manager);
-	}*/
+	}
 }

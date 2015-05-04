@@ -151,11 +151,8 @@ void render(float CurrentTime)
 
 	Map.UpdateAndDraw(Drawing_manager,Models_factory);
 
-	Drawing_manager.PlayerPosition = player.Position;
-	Drawing_manager.PlayerRotation = player.Rotation;
+	Drawing_manager.Update(player);
 	Drawing_manager.Draw(CurrentTime,StaticHandle::GameSpeed);
-
-	
 }
 
 void display() 
