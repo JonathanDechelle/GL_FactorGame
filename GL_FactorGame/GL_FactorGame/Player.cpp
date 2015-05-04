@@ -128,10 +128,10 @@ void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_fac
 		StaticHandle::PlayerLife = StaticHandle::PlayerMaxLife;
 	}
 
-	
-	Position += Next_Position;
 
 	Last_Position = Position;
+	Position += Next_Position;
+
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 	
 	ApplyGravity(gravity * StaticHandle::GameSpeed);
