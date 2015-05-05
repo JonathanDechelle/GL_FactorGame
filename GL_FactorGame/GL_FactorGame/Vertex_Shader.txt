@@ -34,8 +34,6 @@ void main(void)
 		          (PositionNormalized.y - Light_DirectionOriented.y)
 				+ (PositionNormalized.x - Light_DirectionOriented.x) * 
 		          (PositionNormalized.x - Light_DirectionOriented.x) 
-				+ (PositionNormalized.x - Light_DirectionOriented.z) *
-				  (PositionNormalized.x - Light_DirectionOriented.z) 
 				);
 
 	if(DistanceBetween_Light_Object > Light_Radius) 
