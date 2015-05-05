@@ -45,23 +45,23 @@ void keyUpdate()
 	camera.Keyboard_Update(keyboard);
 
 	//Light Direction
-	//if(keyboard.IsHold('u')) Light_Direction[0] += StaticHandle::GameSpeed;
-	//else if(keyboard.IsHold('j')) Light_Direction[0] -= StaticHandle::GameSpeed;
+	if(keyboard.IsHold('u')) StaticHandle::light.Light_Direction[0] += StaticHandle::GameSpeed * 0.00001;
+	else if(keyboard.IsHold('j')) StaticHandle::light.Light_Direction[0] -= StaticHandle::GameSpeed * 0.00001;
 
-	//if(keyboard.IsHold('y')) Light_Direction[1] += StaticHandle::GameSpeed;
-	//else if(keyboard.IsHold('h')) Light_Direction[1] -= StaticHandle::GameSpeed;
+	if(keyboard.IsHold('y')) StaticHandle::light.Light_Direction[1] += StaticHandle::GameSpeed * 0.00001;
+	else if(keyboard.IsHold('h')) StaticHandle::light.Light_Direction[1] -= StaticHandle::GameSpeed * 0.00001;
 
-	//if(keyboard.IsHold('o')) Light_Direction[2] += StaticHandle::GameSpeed;
-	//else if(keyboard.IsHold('l')) Light_Direction[2] -= StaticHandle::GameSpeed;
+	if(keyboard.IsHold('o')) StaticHandle::light.Light_Direction[2] += StaticHandle::GameSpeed * 0.00001;
+	else if(keyboard.IsHold('l')) StaticHandle::light.Light_Direction[2] -= StaticHandle::GameSpeed * 0.00001;
 
-	////Light Brightness 
-	//if(keyboard.IsHold('R')) Light_Brightness += StaticHandle::GameSpeed * 3;
-	//else if(keyboard.IsHold('F')) Light_Brightness -= StaticHandle::GameSpeed * 3; 
+	//Light Brightness 
+	if(keyboard.IsHold('R')) StaticHandle::light.Light_Brightness += StaticHandle::GameSpeed * 0.00001 * 3;
+	else if(keyboard.IsHold('F')) StaticHandle::light.Light_Brightness -= StaticHandle::GameSpeed * 0.00001 * 3; 
 
-	////Light Radius
-	//if(keyboard.IsHold('Z')) Light_Radius += StaticHandle::GameSpeed/2;
-	//else if(keyboard.IsHold('X')) Light_Radius -= StaticHandle::GameSpeed/2;
-	//if(Light_Radius < 0) Light_Radius = 0;
+	//Light Radius
+	if(keyboard.IsHold('Z')) StaticHandle::light.Light_Radius += StaticHandle::GameSpeed/2 * 0.00001;
+	else if(keyboard.IsHold('X')) StaticHandle::light.Light_Radius -= StaticHandle::GameSpeed/2 * 0.00001;
+	if(StaticHandle::light.Light_Radius < 0) StaticHandle::light.Light_Radius = 0;
 }
 
 void Set_VertexArray()
@@ -142,7 +142,7 @@ void render(float CurrentTime)
 {
 	glClearColor(0,0,0, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	
 	StaticHandle::light.Update(StaticHandle::CurrentTime);
 
 	player.Udpate(keyboard,Map,Models_factory);
