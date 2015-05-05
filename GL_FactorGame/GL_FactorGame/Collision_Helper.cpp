@@ -13,7 +13,7 @@ bool Collision_Helper::IsCollide(vec3 PositionObject, Player &player, vec3 Dimen
 	{
 		//cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
 		
-		if(OnTopOfCheck) player.OnTopOf = (player.Position[1] > PositionObject[1] && DistanceY > 2.5f);
+		if(OnTopOfCheck) player.OnTopOf = (player.Futur_Position[1] > PositionObject[1] && DistanceY > 2.5f);
 		return true;
 	}
 	return false;
