@@ -59,7 +59,6 @@ void Check_Limit(float &Next_Position, float Distance)
 
 void Player::Jump()
 {
-	Next_Position[1] += 0.01f;
 	Falling -= BaseJump;
 	keyboard.SetActive(' ',false);
 }
@@ -77,7 +76,7 @@ vec3 Player::GetNextPosition()
 		Distance[Axe] = abs(Next_Position[Axe]);
 
 		if(Axe != Y)	ApplyFriction(Distance[Axe],Friction * StaticHandle::GameSpeed);
-		else			ApplyFriction(Distance[1],Friction * 3 *  StaticHandle::GameSpeed);
+		else			ApplyFriction(Distance[Y],Friction * 3 *  StaticHandle::GameSpeed);
 
 		Check_Limit(Next_Position[Axe],Distance[Axe]);
 	}
@@ -96,21 +95,24 @@ void Player::Manage_Keyboard(Keyboard keyboard)
 
 void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 {
-	Manage_Keyboard(keyboard);
-	if(IsCollide)
-	{
-		Position = Last_Position;
-		Falling *= -0.50f;
-	}
-
-	Next_Position = GetNextPosition();
-	Position += Next_Position;
-
 	if(IsHurt || Rebound)
 	{
 		Jump();
 		if(IsHurt)	Life -= 2;
 	}
+	else
+	{
+		if(IsCollide)
+		{
+			Position = Last_Position;
+			Falling *= -0.50f;
+		}
+	}
+
+	Manage_Keyboard(keyboard);
+
+	Next_Position = GetNextPosition();
+	Position += Next_Position;
 
 	if(Life < 0)
 	{
