@@ -124,6 +124,31 @@ vec3 Player::Get_PastPosition()
 	return Position;
 }
 
+vec3 Player::Get_NormalPosition()
+{
+	//Cross product
+	vec3 Normal;
+	vec3 Floor = vec3(1,0,0);
+	vec3 NextMove_Normalized = normalize(Next_Move);
+
+	Normal[0] = (Floor[1] * NextMove_Normalized[2]) - (Floor[2] * NextMove_Normalized[1]);
+	Normal[1] = (Floor[2] * NextMove_Normalized[0]) - (Floor[0] * NextMove_Normalized[2]);
+	Normal[2] = (Floor[0] * NextMove_Normalized[1]) - (Floor[1] * NextMove_Normalized[0]);
+
+	return Normal;
+}
+
+vec3 Player::Get_ReflectionPosition()
+{
+	vec3 Rin = Position;
+	vec3 Rreflect;
+	vec3 N = Get_NormalPosition();
+
+	Rreflect = Rin - ((2.0f * N) * Rin)* N;
+
+	return Rreflect;
+}
+
 void Player::Remove_Life(float value)
 {
 	Life -= value;
@@ -148,6 +173,8 @@ void Player::Set_NextBehaviour()
 				/* Reflexion here prochain code*/
 				Next_Move *= -0.75f;
 				Position += Next_Move;
+
+				//Position += Get_ReflectionPosition();
 			}
 		}
 
