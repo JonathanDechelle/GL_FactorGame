@@ -11,9 +11,9 @@ bool Collision_Helper::IsCollide(vec3 PositionObject, Player &player, vec3 Dimen
 
 	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
 	{
-		//cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
+		cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
 		
-		if(OnTopOfCheck) player.OnTopOf = (player.Futur_Position[1] > PositionObject[1] && DistanceY > 2.5f);
+		if(OnTopOfCheck) player.OnTopOf = (player.Futur_Position[1] > PositionObject[1] && DistanceY >  DimensionObject[2] * 0.90f && DistanceY < DimensionObject[2]);
 		return true;
 	}
 	return false;
@@ -42,10 +42,8 @@ bool Collision_Helper::CollideWithBlock(Map_Creator map,Player &player,Drawing_M
 				
 				Initial_TilePosition = map.Get_Initial_TilePosition(i,j);
 				Final_TilePosition = map.Set_Tile_Position(Initial_TilePosition);
-				//player.Position = Final_PlayerPosition;
-
-				resultOfCollide = IsCollide(Final_TilePosition,player,map.DimensionObject,true);
 				
+				resultOfCollide = IsCollide(Final_TilePosition,player,map.DimensionObject,true);
 				player.Position = OldPlayerPosition;
 
 				if(resultOfCollide)

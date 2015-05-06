@@ -126,6 +126,7 @@ void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 		if(IsCollide)
 		{
 			Next_Position *= -0.75f;
+			Position += Next_Position;
 		}
 	}
 	else
