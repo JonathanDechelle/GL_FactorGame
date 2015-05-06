@@ -11,18 +11,28 @@ void Player::Reset()
 	
 	for(int i = 0; i < 3; i++)
 	{
-		Position[i] = 0;
 		Next_Position[i] = 0;
 		Distance[i] = 0;
+		BasePosition[i] = 0;
 	}
 
 	BaseFactor = 10000;
 	Fake_Floor = -20;
 	Falling = 0;
-	BasePosition = Position;
 	gravity = 0.000015f;
-	//BaseJump = 1.05f; //off sector
-	BaseJump = 0.65f; //on sector
+	BaseJump = 0.65f; //off sector
+	//BaseJump = 0.65f; //on sector
+
+	StartPosition = vec3(0.0f,-22.0f,-19.0f);
+	Position = StartPosition;
+	Last_Position = Position;
+	Futur_Position = Position;
+	IsHurt = false;
+	Rebound = false;
+	OnTopOf = false;
+	IsCollide = false;
+	Life = 100;
+	MaxLife = 100;
 }
 
 Player::Player()
@@ -49,8 +59,7 @@ void Check_Limit(float &Next_Position, float Distance)
 
 void Player::Jump()
 {
-	Next_Position[1] += 0.15f;
-	Falling = -BaseJump;
+	Falling -= BaseJump;
 	keyboard.SetActive(' ',false);
 }
 
@@ -67,7 +76,7 @@ vec3 Player::GetNextPosition()
 		Distance[Axe] = abs(Next_Position[Axe]);
 
 		if(Axe != Y)	ApplyFriction(Distance[Axe],Friction * StaticHandle::GameSpeed);
-		else			ApplyFriction(Distance[1],Friction * 3 *  StaticHandle::GameSpeed);
+		else			ApplyFriction(Distance[Y],Friction * 3 *  StaticHandle::GameSpeed);
 
 		Check_Limit(Next_Position[Axe],Distance[Axe]);
 	}
@@ -84,58 +93,56 @@ void Player::Manage_Keyboard(Keyboard keyboard)
 	if(keyboard.IsHold('D')) Next_Position[X]+= Speed * StaticHandle::GameSpeed;
 }
 
-void Player::Udpate(Keyboard keyboard, Map_Creator Map, Model_Factory Models_factory)
+void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 {
-	Manage_Keyboard(keyboard);
-	Next_Position = GetNextPosition();	
-	
-	Futur_Position = Position  + Next_Position;
-	StaticHandle::PlayerPosition = Futur_Position;
-
-	IsCollide = Map.CollideWithBlock(Models_factory);
-
-	if(!Collision_Helper::OnTopOf)
+	if(IsHurt || Rebound)
+	{
+		Jump();
+		if(IsHurt)	Life -= 2;
+	}
+	else
 	{
 		if(IsCollide)
 		{
+			Position = Last_Position;
 			Falling *= -0.50f;
+		}
+	}
+
+	Manage_Keyboard(keyboard);
+
+	Next_Position = GetNextPosition();
+	Position += Next_Position;
+
+	if(Life < 0)
+	{
+		Reset();
+		SetBase_Position(StartPosition);
+		Life = MaxLife;
+	}
+	
+	if(!OnTopOf)
+	{
+		if(IsCollide)
+		{
 			Next_Position *= -0.75f;
+			Position += Next_Position;
 		}
 	}
 	else
 	{
-		Next_Position[Y] = 0;
-		Falling *= -0.50f;
-		Position[Y] = Last_Position[1];
 		if(keyboard.IsPressed(' ')) Jump();
 	}
 
-	if(StaticHandle::PlayerIsHurt)
-	{
-		Jump();
-		StaticHandle::PlayerLife -= 2;
-	}
-
-	if (StaticHandle::PlayerRebound)
-	{
-		Jump();
-	}
-
-	if(StaticHandle::PlayerLife < 0)
-	{
-		Reset();
-		SetBase_Position(StaticHandle::PlayerStartPosition);
-		StaticHandle::PlayerLife = StaticHandle::PlayerMaxLife;
-	}
-
-
-	Last_Position = Position;
-	Position += Next_Position;
-
 	Rotation = (Next_Position - Position) * (Friction * BaseFactor) + (BasePosition * Friction * BaseFactor);
 	
+	Futur_Position = Position  + Next_Position;
+	Futur_Position[Y] -= Falling;
+	Last_Position = Position;
+
 	ApplyGravity(gravity * StaticHandle::GameSpeed);
-	StaticHandle::PlayerIsHurt = false;
-	StaticHandle::PlayerRebound = false;
+
+	IsHurt = false;
+	Rebound = false;
 }
 

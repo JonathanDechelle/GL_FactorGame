@@ -3,12 +3,13 @@
 #include "..\Include\SOIL.h"
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
-#include "StaticHandle.h"
 using namespace std;
 
 class Load_Image
 {
 public:
+	static int rendering_program;
+	static void Initialize(int new_rendering_program);
 	static void generate_texture(string FileName);
 	static void generate_Map(string FileName,  unsigned int* &Map_TileType);
 	static void generate_texture(string FileName,GLuint* textures, int Index);

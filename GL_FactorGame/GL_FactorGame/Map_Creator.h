@@ -1,10 +1,6 @@
 #pragma once
-#include "Load_Image.h"
-#include "Model_Factory.h"
 #include "Saw.h"
 #include "Trampoline.h"
-#include "StaticHandle.h"
-#include "Collision_Helper.h"
 
 class Map_Creator
 {
@@ -15,7 +11,7 @@ public:
 	void SetTexture(int i, int j, int Index);
 	void SetBase_Position(vec3 Position);
 	void UpdateAndDraw(Drawing_Manager drawing_manager,Model_Factory Models_factory);
-	bool CollideWithBlock(Model_Factory Models_factory);
+	//bool CollideWithBlock(Model_Factory Models_factory,vec3 PlayerPosition);
 	vec3 Set_Tile_Position(vec3 Initial_TilePosition);
 	vec3 Get_Initial_TilePosition(int i, int j);
 

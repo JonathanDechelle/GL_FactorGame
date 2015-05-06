@@ -12,11 +12,13 @@ float StaticHandle::GameSpeed = 1500; //on sector
 mat4 StaticHandle::mv_matrix = 0;
 mat4 StaticHandle::proj_matrix = 0;
 mat4 StaticHandle::MapBase_matrix = 0;
-vec3 StaticHandle::PlayerPosition = 0;
-vec3 StaticHandle::PlayerStartPosition = vec3(0.0f,-22.0f,-19.0f);
-bool StaticHandle::PlayerIsHurt = false;
-bool StaticHandle::PlayerRebound = false;
-float StaticHandle::PlayerLife = 100;
-float StaticHandle::PlayerMaxLife = 100;
-
 Light StaticHandle::light;
+
+vec3 StaticHandle::Get_projected_Position(vec3 Position)
+{
+	Position[0] += StaticHandle::proj_matrix[3][0] * StaticHandle::proj_matrix[0][0];
+	Position[1] += StaticHandle::proj_matrix[3][1] * StaticHandle::proj_matrix[1][1];
+	Position[2] += StaticHandle::proj_matrix[3][2] * StaticHandle::proj_matrix[2][2];
+
+	return Position;
+}

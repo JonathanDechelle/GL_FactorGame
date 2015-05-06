@@ -95,17 +95,31 @@ void Drawing_Manager::DrawTrampoline(vec3 Position,float size)
 	Models_factory.Draw_Models(Models_factory.ModelType::Trampoline,Load_Image::RedCircuit);
 }
 
-void Drawing_Manager::DrawLifeBar()
+void Drawing_Manager::DrawLifeBar(vec3 PlayerPosition, float PlayerLife, float PlayerMaxLife)
 {
 	StaticHandle::mv_matrix = translate(vec3(PlayerPosition[0],PlayerPosition[1],-19.0f) + vec3(0.0f,14.0f,5.0f)) * 
 		//rotate(90.0f, 1.0f, 0.0f, 0.0f) * content
 		rotate(0.0f,1.0f,0.0f,0.0f) * 
 		scale(14.0f,7.0f,10.0f);
 
-	float LifeRatio = StaticHandle::PlayerLife/StaticHandle::PlayerMaxLife;
+	float LifeRatio = PlayerLife / PlayerMaxLife;
 
 	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Frame,Load_Image::WoodBox);
 	Models_factory.Draw_Models(Models_factory.ModelType::LifeBar_Content,Load_Image::LifeBarContent,LifeRatio);
+}
+
+void Drawing_Manager::RenderCollision(vec3 Position)
+{
+	StaticHandle::mv_matrix = translate(Position) * scale(2.0f);
+	Models_factory.Draw_Models(Models_factory.ModelType::Cube,Load_Image::Type_Image::Leaf); 
+}
+
+void Drawing_Manager::Update(Player player)
+{
+	PlayerPosition = player.Position;
+	PlayerRotation = player.Rotation;
+	PlayerLife = player.Life;
+	PlayerMaxLife = player.MaxLife;
 }
 
 void Drawing_Manager::Draw(float CurrentTime,float GameSpeed)
@@ -114,6 +128,6 @@ void Drawing_Manager::Draw(float CurrentTime,float GameSpeed)
 	this->GameSpeed = GameSpeed;
 
 	DrawPlayer();
-	DrawLifeBar();
+	DrawLifeBar(PlayerPosition,PlayerLife,PlayerMaxLife);
 }
 

@@ -17,10 +17,11 @@ Trampoline::Trampoline(vec3 Position)
 
 void Trampoline::Update()
 {
-	if(Collision_Helper::IsCollide(Position,StaticHandle::PlayerPosition,vec3(3,3,4)))
+	/*
+	if(Collision_Helper::IsCollide(Position,player.Position,vec3(3,3,4)))
 	{
-		StaticHandle::PlayerRebound = true;
-	}
+		player.Rebound = true;
+	}*/
 }
 
 void Trampoline::Draw(Drawing_Manager drawing_Manager)

@@ -43,11 +43,6 @@ void Saw::Update()
 		StartPosition = Position;
 		Sens *= -1;
 	}
-
-	if(Collision_Helper::IsCollide(Position,StaticHandle::PlayerPosition,vec3(3,3,4)))
-	{
-		StaticHandle::PlayerIsHurt = true;
-	}
 }
 
 void Saw::Draw(Drawing_Manager drawing_Manager)

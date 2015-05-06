@@ -3,19 +3,13 @@
 #include <ctime>
 #include "..\Include\glew.h"
 #include "..\Include\glut.h"
-#include "Shader_Compiler.h"
-#include "vmath.h"
-#include "vertex.h"
-#include "DATA.h"
 #include "Load_Image.h"
-#include "Keyboard.h"
-#include "Camera.h"
-#include "Model_Factory.h"
-#include "Player.h"
-#include "Map_Creator.h"
-#include "Drawing_Manager.h"
-#include "Saw.h"
 #include "StaticHandle.h"
+#include "Player.h"
+#include "Camera.h"
+#include "Map_Creator.h"
+#include "Shader_Compiler.h"
+#include "Collision_Helper.h"
 
 
 GLuint vertex_array_object,buffer;
@@ -109,6 +103,7 @@ void Initialize_ALL()
 	Set_VertexArray();																					//initialize DataVertex and Model
 
 	glUseProgram(StaticHandle::rendering_program);
+	Load_Image::Initialize(StaticHandle::rendering_program);
 	Load_Image::set_UniformTexture("BlueCircuit.jpg", Load_Image::Type_Image::BlueCircuit);
 	Load_Image::set_UniformTexture("Or.jpg",Load_Image::Type_Image::Or);
 	Load_Image::set_UniformTexture("Metal.jpg",Load_Image::Type_Image::Metal);
@@ -128,7 +123,7 @@ void Initialize_ALL()
 	Map = Map_Creator();
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
 	Map.Load("Map1.png");
-	player.SetBase_Position(StaticHandle::PlayerStartPosition);
+	player.SetBase_Position(player.StartPosition);
 	Drawing_manager = Drawing_Manager(Models_factory);
 }
 
@@ -144,9 +139,11 @@ void render(float CurrentTime)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	StaticHandle::light.Update(StaticHandle::CurrentTime);
+	
+	player.Udpate(keyboard,Models_factory);
+	Collision_Helper::Update(Map,player,Drawing_manager);
 
-	player.Udpate(keyboard,Map,Models_factory);
-	camera.Update(player);
+	camera.Update(player.Position);
 
 	keyUpdate();
 
@@ -154,8 +151,7 @@ void render(float CurrentTime)
 
 	Map.UpdateAndDraw(Drawing_manager,Models_factory);
 
-	Drawing_manager.PlayerPosition = player.Position;
-	Drawing_manager.PlayerRotation = player.Rotation;
+	Drawing_manager.Update(player);
 	Drawing_manager.Draw(CurrentTime,StaticHandle::GameSpeed);
 }
 
