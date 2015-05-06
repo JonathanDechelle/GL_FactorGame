@@ -123,7 +123,7 @@ void Initialize_ALL()
 	Map = Map_Creator();
 	Map.SetBase_Position(vec3(-10.0f,0.0f,-20.0f));
 	Map.Load("Map1.png");
-	player.SetBase_Position(player.StartPosition);
+	player.Set_BasePosition(player.Start_Position);
 	Drawing_manager = Drawing_Manager(Models_factory);
 }
 
