@@ -57,5 +57,6 @@ public:
 	
 	bool IsCollide; 
 	bool OnTopOf;
+	float AngleCollision;
 };
 
