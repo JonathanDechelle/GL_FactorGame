@@ -29,6 +29,8 @@ public:
 	vec3 Get_NextMove();
 	vec3 Get_FuturPosition();
 	vec3 Get_PastPosition();
+	vec3 Get_NormalPosition();
+	vec3 Get_ReflectionPosition();
 
 	vec3 Position;
 	vec3 Last_Position;
@@ -55,5 +57,6 @@ public:
 	
 	bool IsCollide; 
 	bool OnTopOf;
+	float AngleCollision;
 };
 

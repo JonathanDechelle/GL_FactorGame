@@ -1,12 +1,11 @@
 #include "Collision_Helper.h"
 
-
-
 bool Collision_Helper::IsCollide(vec3 PositionObject, Player &player, vec3 DimensionObject, bool OnTopOfCheck = false)
 {
 	float DistanceX = abs(PositionObject[0] - player.Futur_Position[0]); 
 	float DistanceY = abs(PositionObject[1] - player.Futur_Position[1]); 
 	float DistanceZ = abs(PositionObject[2] - player.Futur_Position[2]); 
+	vec3 Result_Vector = vec3(DistanceX,DistanceY,DistanceZ);
 	if(OnTopOfCheck) player.OnTopOf = false;
 
 	if(DistanceX < DimensionObject[0] && DistanceY < DimensionObject[1] && DistanceZ < DimensionObject[2])
@@ -14,6 +13,8 @@ bool Collision_Helper::IsCollide(vec3 PositionObject, Player &player, vec3 Dimen
 		//cout << DistanceX << " " << DistanceY << " " << DistanceZ << " " << endl;
 		
 		if(OnTopOfCheck) player.OnTopOf = (player.Futur_Position[1] > PositionObject[1] && DistanceY >  DimensionObject[2] * 0.90f && DistanceY < DimensionObject[2]);
+		player.AngleCollision = atan2(DistanceY, DistanceX);
+	
 		return true;
 	}
 	return false;

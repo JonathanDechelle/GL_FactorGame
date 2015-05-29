@@ -124,6 +124,31 @@ vec3 Player::Get_PastPosition()
 	return Position;
 }
 
+vec3 Player::Get_NormalPosition()
+{
+	//Cross product
+	vec3 Normal;
+	vec3 Floor = vec3(0,1,0);
+	vec3 NextMove_Normalized = normalize(Next_Move);
+
+	Normal[0] = (Floor[1] * NextMove_Normalized[2]) - (Floor[2] * NextMove_Normalized[1]);
+	Normal[1] = (Floor[2] * NextMove_Normalized[0]) - (Floor[0] * NextMove_Normalized[2]);
+	Normal[2] = (Floor[0] * NextMove_Normalized[1]) - (Floor[1] * NextMove_Normalized[0]);
+
+	return Normal;
+}
+
+vec3 Player::Get_ReflectionPosition()
+{
+	vec3 Rin = normalize(Next_Move);
+	float Add_MoreImportanceToX = 0.5f;
+	vec3 N = normalize(vec3(sin(AngleCollision + Add_MoreImportanceToX),cos(AngleCollision),0));
+
+	vec3 Rreflect = 2*(dot(Rin,N)) * N - Rin;
+
+	return Rreflect * abs(Next_Move);
+}
+
 void Player::Remove_Life(float value)
 {
 	Life -= value;
@@ -145,8 +170,7 @@ void Player::Set_NextBehaviour()
 
 			if(!OnTopOf)
 			{
-				/* Reflexion here prochain code*/
-				Next_Move *= -0.75f;
+				Next_Move = Get_ReflectionPosition();
 				Position += Next_Move;
 			}
 		}
@@ -158,6 +182,7 @@ void Player::Set_NextBehaviour()
 
 void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 {
+	Apply_Gravity(gravity * StaticHandle::GameSpeed);
 	Set_NextBehaviour();
 	Apply_KeyboardAction(keyboard);
 
@@ -166,8 +191,6 @@ void Player::Udpate(Keyboard keyboard, Model_Factory Models_factory)
 	Futur_Position = Get_FuturPosition();
 	Last_Position = Get_PastPosition();
 	
-	Apply_Gravity(gravity * StaticHandle::GameSpeed);
-
 	Life < 0 ? Reset_DefaultAll() : Reset_CurrentState(); 
 }
 
