@@ -478,7 +478,7 @@ static inline T distance(const vecN<T,len>& a, const vecN<T,len>& b)
 template <typename T, int len>
 static inline T angle(const vecN<T,len>& a, const vecN<T,len>& b)
 {
-    return arccos(dot(a, b));
+    return acos(dot(a, b));
 }
 
 template <typename T>
@@ -1135,6 +1135,20 @@ static inline vecN<T,N> min(const vecN<T,N>& x, const vecN<T,N>& y)
 
     return t;
 }
+
+template <typename T, const int N>
+static inline vecN<T,N> abs(const vecN<T,N>& x)
+{
+	vecN<T,N> t;
+	
+	for (int i = 0; i < N; i++)
+	{
+		t[i] = abs(x[i]);
+	}
+
+	return t;
+}
+
 
 template <typename T, const int N>
 static inline vecN<T,N> max(const vecN<T,N>& x, const vecN<T,N>& y)
